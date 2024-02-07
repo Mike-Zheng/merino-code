@@ -1,47 +1,46 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  <Editor v-if="!isMobile()"/>
+  <Mobile v-else/>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
+<script lang="ts" setup>
+import { onMounted } from 'vue'
+import { deleteDiscardedDB } from '@/utils/database'
+import { useMainStore, useSnapshotStore } from '@/store'
+import { storeToRefs } from 'pinia'
+import { isMobile } from '@/utils/common'
+import { LocalStorageDiscardedKey } from '@/configs/canvas'
+import Editor from '@/views/Editor/index.vue'
+import Mobile from './views/Editor/mobile.vue'
+
+const snapshotStore = useSnapshotStore()
+const mainStore = useMainStore()
+const { databaseId } = storeToRefs(useMainStore())
+
+onMounted(async () => {
+  await deleteDiscardedDB()
+  await snapshotStore.initSnapshotDatabase()
+  mainStore.setSystemFonts()
+})
+
+if (import.meta.env.MODE === 'production') {
+  window.onbeforeunload = () => false
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
+// 应用注销时向 localStorage 中记录下本次 indexedDB 的数据库ID，用于之后清除数据库
+window.addEventListener('unload', () => {
+  const discardedDB = localStorage.getItem(LocalStorageDiscardedKey)
+  const discardedDBList: string[] = discardedDB ? JSON.parse(discardedDB) : []
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+  discardedDBList.push(databaseId.value)
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
+  const newDiscardedDB = JSON.stringify(discardedDBList)
+  localStorage.setItem(LocalStorageDiscardedKey, newDiscardedDB)
+})
+</script>
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+<style lang="scss">
+#app {
+  height: 100%;
 }
 </style>
