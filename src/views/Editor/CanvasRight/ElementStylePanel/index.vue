@@ -24,6 +24,7 @@ const panelMap = {
   [ElementNames.TEXT]: TextboxStylePanel,
   [ElementNames.ITEXT]: TextboxStylePanel,
   [ElementNames.IMAGE]: ImageStylePanel,
+  [ElementNames.SVGIMAGE]: ImageStylePanel,
   [ElementNames.CROPIMAGE]: ImageStylePanel,
   [ElementNames.PATH]: PathStylePanel,
   [ElementNames.RECT]: PathStylePanel,
@@ -42,7 +43,7 @@ const { canvasObject } = storeToRefs(useMainStore())
 
 const currentPanelComponent = computed(() => {
   if (!canvasObject.value) return null
-  console.log('canvasObject:', canvasObject.value.id)
+  console.log('canvasObject:', canvasObject.value.id, canvasObject.value.type)
   const canvasType = canvasObject.value.name ? canvasObject.value.name : canvasObject.value.type
   return panelMap[canvasType.toLowerCase() as ElementNames.TEXT]
 })

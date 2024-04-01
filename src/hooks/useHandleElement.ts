@@ -21,27 +21,27 @@ export default () => {
   const { setZindex } = useCanvasZindex()
 
   const sortElement = async (eventData: { moved: { newIndex: number, oldIndex: number, element: FabricObject} }) => {
-    // if (WorkSpaceCommonType.includes(eventData.moved.element.id)) return
-    // const newIndex = eventData.moved.newIndex, oldIndex = eventData.moved.oldIndex, option = eventData.moved.element
-    // if (oldIndex === newIndex) return
-    // const element = queryElement(option.id)
-    // if (!element) return
-    // if (element.group) {
-    //   const elementGroup = queryOption((element.group as GroupElement).id) as Group
-    //   if (!elementGroup) return
-    //   const _element = elementGroup.objects[oldIndex]
-    //   elementGroup.objects.splice(oldIndex, 1)
-    //   elementGroup.objects.splice(newIndex, 0, _element)
-    // } 
-    // else {
-    //   const _elements = JSON.parse(JSON.stringify(currentTemplate.value.objects))
-    //   const _element = _elements[oldIndex]
-    //   _elements.splice(oldIndex, 1)
-    //   _elements.splice(newIndex, 0, _element)
-    //   currentTemplate.value.objects = _elements
-    // }
-    // await templatesStore.renderElement()
-    // templatesStore.modifedElement()
+    if (WorkSpaceCommonType.includes(eventData.moved.element.id)) return
+    const newIndex = eventData.moved.newIndex, oldIndex = eventData.moved.oldIndex, option = eventData.moved.element
+    if (oldIndex === newIndex) return
+    const element = queryElement(option.id)
+    if (!element) return
+    if (element.group) {
+      const elementGroup = queryOption((element.group as GroupElement).id) as Group
+      if (!elementGroup) return
+      const _element = elementGroup.objects[oldIndex]
+      elementGroup.objects.splice(oldIndex, 1)
+      elementGroup.objects.splice(newIndex, 0, _element)
+    } 
+    else {
+      const _elements = JSON.parse(JSON.stringify(currentTemplate.value.objects))
+      const _element = _elements[oldIndex]
+      _elements.splice(oldIndex, 1)
+      _elements.splice(newIndex, 0, _element)
+      currentTemplate.value.objects = _elements
+    }
+    await templatesStore.renderElement()
+    templatesStore.modifedElement()
   }
 
   const layerElement = (e: any, originalEvent: any) => {
@@ -56,6 +56,13 @@ export default () => {
     if (!element) return
     element.lockMovementX = status
     element.lockMovementY = status
+    element.selectable = !status;
+    if (status ) {
+      element.hoverCursor = 'not-allowed';
+      if (canvasObject.value && canvasObject.value.id == element.id) {
+        canvas.discardActiveObject();
+      }
+    }
     canvas.renderAll()
     templatesStore.modifedElement()
   }
@@ -65,7 +72,7 @@ export default () => {
     clonedObject.value = await canvasObject.value.clone(propertiesToInclude)
   }
 
-  const patseEelement = async () => {
+  const pasteElement = async () => {
     const [ canvas ] = useCanvas()
     if (!clonedObject.value) return
     const clonedObj = await clonedObject.value.clone(propertiesToInclude) as FabricObject
@@ -238,7 +245,7 @@ export default () => {
         return item
       }
       if (item.type === ElementNames.GROUP) {
-        return findElement(eid, (item as GroupElement).objects)
+        return findElement(eid, (item as GroupElement)._objects)
       }
     }
     return
@@ -343,7 +350,7 @@ export default () => {
   const queryTextboxChecked = (elements: FabricObject[]): boolean => {
     for (let i = 0; i < elements.length; i++) {
       const element = elements[i]
-      if (element.type === ElementNames.TEXTBOX && (element as TextboxElement).isCheck) {
+      if (element.type === ElementNames.TEXTBOX && (element as TextboxElement).editable) {
         return true
       }
       if (element.type === ElementNames.GROUP) {
@@ -358,7 +365,8 @@ export default () => {
   const checkElement = (eid: string) => {
     const [ canvas ] = useCanvas()
     const element = queryElement(eid) as TextboxElement
-    element.isCheck = !element.isCheck
+    element.editable = !element.editable
+    canvas.discardActiveObject();
     canvas.renderAll()
     templatesStore.modifedElement()
     const elements = canvas.getObjects().filter(item => !WorkSpaceCommonType.includes((item as CanvasElement).id)) as FabricObject[]
@@ -372,7 +380,7 @@ export default () => {
     lockElement,
     copyElement,
     cutElement,
-    patseEelement,
+    pasteElement,
     deleteElement,
     moveElement,
     combineElements,

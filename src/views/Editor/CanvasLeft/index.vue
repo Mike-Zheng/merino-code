@@ -1,97 +1,85 @@
 <template>
   <div>
-    <div class="left-top-tabs">
+    <div class="left-top-tabs" id="left-top-tabs">
       <div class="top-tab">
-        <IconAllApplication class="handler-item" ref="menuRef"/>
-        <HomePopover :menu-ref="menuRef" :menu-popover-ref="menuPopoverRef"/>
+        <IconAllApplication class="handler-item" ref="menuRef" />
+        <HomePopover :menu-ref="menuRef" :menu-popover-ref="menuPopoverRef" />
       </div>
     </div>
     <div class="left-bottom-tabs">
       <div class="center-tabs">
-        <div 
-          class="center-tab" 
-          :class="{ 'left-active': tab.key === poolType }"
-          v-for="tab in topTabs"
-          :key="tab.key"
-          @click="setPoolType(tab.key)"
-          >
-          <div><SvgIcon :icon-class="tab.icon" className="svg-size"/></div>
-          <div class="left-name">{{tab.label}}</div>
+        <div class="center-tab" :class="{ 'left-active': tab.key === poolType }" v-for="tab in topTabs" :key="tab.key" @click="setPoolType(tab.key)">
+          <div :id="`left-tabs-${tab.key}`">
+            <div><SvgIcon :icon-class="tab.icon" className="svg-size" /></div>
+            <div class="left-name">{{ $t(tab.label) }}</div>
+          </div>
         </div>
       </div>
       <div class="bottom-tabs">
-        <div 
-          class="bottom-tab" 
-          :class="{ 'left-active': 'layer' === poolType }"
-          @click="setPoolType('layer')"
-          >
-          <div><SvgIcon icon-class="layer" className="svg-size"/></div>
-          <div class="left-name">图层</div>
+        <div class="bottom-tab" :class="{ 'left-active': 'layer' === poolType }" @click="setPoolType('layer')">
+          <div :id="`left-tabs-layer`">
+            <div><SvgIcon icon-class="layer" className="svg-size" /></div>
+            <div class="left-name">{{ $t("message.layer") }}</div>
+          </div>
         </div>
-        <div 
-          class="bottom-tab" 
-          :class="{ 'left-active': 'help' === poolType }"
-          ref="helpRef"
-          @click="setPoolType('help')"
-          >
-          <div><SvgIcon icon-class="help" className="svg-size"/></div>
-          <div class="left-name">帮助</div>
+        <div class="bottom-tab" :class="{ 'left-active': 'help' === poolType }" ref="helpRef" @click="setPoolType('help')">
+          <div :id="`left-tabs-help`">
+            <div><SvgIcon icon-class="help" className="svg-size" /></div>
+            <div class="left-name">{{ $t("message.help") }}</div>
+          </div>
         </div>
-        <HelpPopover :help-ref="helpRef" :help-popover-ref="helpPopoverRef"/>
-        <HotkeyDrawer :has-hotkey="hasHotkey"/>
+        <HelpPopover :help-ref="helpRef" :help-popover-ref="helpPopoverRef" />
+        <HotkeyDrawer :has-hotkey="hasHotkey" />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { useMainStore } from '@/store'
-import { PoolType } from '@/types/common'
-import { storeToRefs } from 'pinia'
-import { ref } from 'vue'
-import HotkeyDrawer from './components/HotkeyDrawer.vue'
-import HelpPopover from './components/HelpPopover.vue'
-import HomePopover from './components/HomePopover.vue'
+import { useMainStore } from "@/store";
+import { PoolType } from "@/types/common";
+import { storeToRefs } from "pinia";
+import { ref } from "vue";
+import HotkeyDrawer from "./components/HotkeyDrawer.vue";
+import HelpPopover from "./components/HelpPopover.vue";
+import HomePopover from "./components/HomePopover.vue";
 
-const mainStore = useMainStore()
+const mainStore = useMainStore();
+const { poolType, poolShow } = storeToRefs(mainStore);
 
-const { poolType, poolShow } = storeToRefs(mainStore)
-
-const helpRef = ref()
-const menuRef = ref()
-const helpPopoverRef = ref()
-const menuPopoverRef = ref()
-const hasHotkey = ref(false)
+const helpRef = ref();
+const menuRef = ref();
+const helpPopoverRef = ref();
+const menuPopoverRef = ref();
+const hasHotkey = ref(false);
 
 interface TabItem {
-  key: PoolType
-  label: string
-  icon: string
-  index: number
+  key: PoolType;
+  label: string;
+  icon: string;
+  index: number;
 }
 
 const topTabs: TabItem[] = [
-  { key: 'editor', label: '编辑', icon: `editor`, index: 0},
-  { key: 'template', label: '模板', icon: `template`, index: 1},
-  { key: 'material', label: '素材', icon: `material`, index: 2 },
-  { key: 'text', label: '文字', icon: 'text', index: 3 },
-  { key: 'image', label: '图片', icon: 'picture', index: 4 },
-  { key: 'toolkit', label: '工具', icon: 'toolkit', index: 5 },
-]
+  { key: "editor", label: "message.edit", icon: `editor`, index: 0 },
+  { key: "template", label: "message.template", icon: `template`, index: 1 },
+  { key: "material", label: "message.material", icon: `material`, index: 2 },
+  { key: "text", label: "message.text", icon: "text", index: 3 },
+  { key: "image", label: "message.image", icon: "picture", index: 4 },
+  { key: "toolkit", label: "message.tool", icon: "toolkit", index: 5 },
+];
 
 const setPoolType = (tab: PoolType) => {
   if (poolShow.value && tab === poolType.value) {
-    poolShow.value = false
-  } 
-  else {
-    poolShow.value = tab !== 'editor' && tab !== 'help' ? true : false
+    poolShow.value = false;
+  } else {
+    poolShow.value = tab !== "editor" && tab !== "help" ? true : false;
   }
-  mainStore.setPoolType(tab)
-}
+  mainStore.setPoolType(tab);
+};
 </script>
 
 <style lang="scss" scoped>
-
 .top-tab {
   width: 100%;
   height: 40px;
@@ -139,7 +127,7 @@ const setPoolType = (tab: PoolType) => {
   }
 }
 .left-active {
-  color: $themeColor
+  color: $themeColor;
 }
 .left-name {
   font-size: 14px;
@@ -155,7 +143,7 @@ const setPoolType = (tab: PoolType) => {
   height: 41px;
   left: -3px;
   position: absolute;
-  transition: top .2s;
+  transition: top 0.2s;
   width: 6px;
   z-index: 20;
 }
@@ -186,7 +174,7 @@ const setPoolType = (tab: PoolType) => {
   right: -16px;
   top: 50%;
   transform: translateY(-50%);
-  transition: right .1s linear;
+  transition: right 0.1s linear;
   width: 16px;
   z-index: 1;
   border-top-right-radius: 20px;
@@ -211,9 +199,18 @@ const setPoolType = (tab: PoolType) => {
   align-items: center;
   cursor: pointer;
   background: #fff;
+  position: relative;
 
   .help-handle {
     font-size: 20px;
+  }
+  #left-tabs-help,
+  #left-tabs-layer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 }
 .has-help {
@@ -229,7 +226,7 @@ const setPoolType = (tab: PoolType) => {
 
   .help-pop-text {
     padding-left: 10px;
-  } 
+  }
 }
 .help-pop-row:hover {
   background-color: $hoverColor;

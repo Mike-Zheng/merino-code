@@ -1,8 +1,8 @@
 import { TControlSet } from '@/types/fabric'
 import { polygonPositionHandler, anchorWrapper, actionHandler} from '@/app/fabricControls'
-import type {  Group , Canvas , StaticCanvas , ActiveSelection } from 'fabric'
+import type {  Group , Canvas , StaticCanvas , ActiveSelection, TSVGReviver } from 'fabric'
 import { Object as FabricObject, Point, TransformActionHandler, Control, Polygon as OriginPolygon, classRegistry, XY, util, CanvasEvents } from 'fabric'
-import { ElementNames } from '@/types/elements'
+import { ElementNames, LinePoint } from '@/types/elements'
 import { check } from '@/utils/check'
 
 
@@ -34,7 +34,7 @@ const Keys = <T extends object>(obj: T): (keyof T)[] => {
 
 export class Polygon extends OriginPolygon {
   private canvasEvents
-
+  private pointSize = 10
   private aligningLineMargin = 10
   private aligningLineWidth = 1
   private aligningLineColor = '#F68066'
@@ -44,9 +44,13 @@ export class Polygon extends OriginPolygon {
   private ignoreObjTypes: IgnoreObjTypes = []
   private pickObjTypes: IgnoreObjTypes = []
 
-  constructor(points?: XY[], options?: FabricObject<Polygon>) {
-    super(points, options)
+  public startStyle: LinePoint
+  public endStyle: LinePoint
 
+  constructor(points?: XY[], options?: any) {
+    super(points, options)
+    this.startStyle = options.startStyle
+    this.endStyle = options.endStyle
     const mouseUp = () => {
       if (this.horizontalLines.length || this.verticalLines.length) {
         this.clearGuideline()
@@ -241,7 +245,6 @@ export class Polygon extends OriginPolygon {
     return { objHeight, objWidth }
   }
 
-  // 当对象被旋转时，需要忽略一些坐标，例如水平辅助线只取最上、下边的坐标（参考 figma）
   private omitCoords(objCoords: ACoordsAppendCenter, type: 'vertical' | 'horizontal') {
     const newCoords = objCoords
     const axis = type === 'vertical' ? 'x' : 'y'
@@ -323,28 +326,90 @@ export class Polygon extends OriginPolygon {
     // )
   }
 
+  public setLineMode(value: LinePoint, mode: 'start' | 'end') {
+    if (mode === 'start') {
+      this.startStyle = value
+    }
+    if (mode === 'end') {
+      this.endStyle = value
+    }
+  }
 
   _render(ctx: CanvasRenderingContext2D) {
     super._render(ctx)
     this.clearGuideline()
-    if (this.name === ElementNames.ARROW) {
+    this.renderStartStyle(ctx)
+    this.renderEndStyle(ctx)
+    this.drawGuideLines()
+  }
+
+  renderStartStyle(ctx: CanvasRenderingContext2D) {
+    if (!this.startStyle) return
+    const firstPoint = this.points[0]
+    const lastPoint = this.points[this.points.length - 1]
+    const xDiff = firstPoint.x - lastPoint.x;
+    const yDiff = firstPoint.y - lastPoint.y;
+    const angle = Math.atan2(yDiff, xDiff);
+    if (this.startStyle === ElementNames.ARROW) {
       ctx.save();
-      const xDiff = this.points[1].x - this.points[0].x;
-      const yDiff = this.points[1].y - this.points[0].y;
-      const angle = Math.atan2(yDiff, xDiff);
-      ctx.translate((this.points[1].x - this.points[0].x) / 2, (this.points[1].y - this.points[0].y) / 2);
+      ctx.translate((firstPoint.x - lastPoint.x) / 2, (firstPoint.y - lastPoint.y) / 2);
       ctx.rotate(angle);
       ctx.beginPath();
-      ctx.moveTo(5, 0);
-      ctx.lineTo(-5, 5);
-      ctx.lineTo(-5, -5);
+      ctx.moveTo(this.pointSize, 0);
+      ctx.lineTo(-this.pointSize, this.pointSize);
+      ctx.lineTo(-this.pointSize, -this.pointSize);
       ctx.closePath();
       ctx.fillStyle = this.stroke as string;
       ctx.fill();
       ctx.restore();
     }
-    this.drawGuideLines()
+    if (this.startStyle === ElementNames.DOT) {
+      ctx.save();
+      ctx.translate((firstPoint.x - lastPoint.x) / 2, (firstPoint.y - lastPoint.y) / 2);
+      ctx.rotate(angle);
+      ctx.beginPath();
+      ctx.arc(0, 0, this.pointSize, 0, 2 * Math.PI)
+      ctx.closePath();
+      ctx.fillStyle = this.stroke as string;
+      ctx.fill();
+      ctx.restore();
+    }
   }
+
+  renderEndStyle(ctx: CanvasRenderingContext2D) {
+    if (!this.endStyle) return
+    const firstPoint = this.points[0]
+    const lastPoint = this.points[this.points.length - 1]
+    const xDiff = lastPoint.x - this.points[0].x;
+    const yDiff = lastPoint.y - this.points[0].y;
+    const angle = Math.atan2(yDiff, xDiff);
+    if (this.endStyle === ElementNames.ARROW) {
+      ctx.save();
+      ctx.translate((lastPoint.x - this.points[0].x) / 2, (lastPoint.y - this.points[0].y) / 2);
+      ctx.rotate(angle);
+      ctx.beginPath();
+      ctx.moveTo(this.pointSize, 0);
+      ctx.lineTo(-this.pointSize, this.pointSize);
+      ctx.lineTo(-this.pointSize, -this.pointSize);
+      ctx.closePath();
+      ctx.fillStyle = this.stroke as string;
+      ctx.fill();
+      ctx.restore();
+    }
+    if (this.endStyle === ElementNames.DOT) {
+      ctx.save();
+      ctx.translate((lastPoint.x - this.points[0].x) / 2, (lastPoint.y - this.points[0].y) / 2);
+      ctx.rotate(angle);
+      ctx.beginPath();
+      ctx.arc(0, 0, this.pointSize, 0, 2 * Math.PI)
+      ctx.closePath();
+      ctx.fillStyle = this.stroke as string;
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+
 
   private drawVerticalLine(coords: VerticalLineCoords, movingCoords: ACoordsAppendCenter) {
     // if (!Object.values(movingCoords).some((coord) => Math.abs(coord.x - coords.x) < 0.0001)) return
@@ -429,6 +494,12 @@ export class Polygon extends OriginPolygon {
     this.dirty = false
     if (!this.canvas.contextTop) return
     this.canvas.clearContext(this.canvas.getTopContext())
+  }
+
+  public toSVG(reviver?: TSVGReviver | undefined): string {
+    const svg = super.toSVG(reviver)
+    console.log('svg:', svg)
+    return svg
   }
 
   public dispose(): void {

@@ -20,6 +20,7 @@
         </el-tooltip>
         <div class="element-type">{{ element.type }}</div>
         <div class="element-text" v-if="element.type === ElementNames.TEXTBOX || element.type === ElementNames.TEXT">{{ (element as TextboxElement).text }}</div>
+        <div class="element-layer" v-if="element.layer">{{ element.layer }}</div>
       </div>
       
       <div class="element-handler">
@@ -34,9 +35,9 @@
         <el-tooltip placement="top" :hide-after="0" content="删除">
           <IconDelete class="common-icon" @click.stop="deleteElement(element.id)"/>
         </el-tooltip>
-        <div v-if="element.type.toLowerCase() === ElementNames.TEXTBOX || element.type.toLowerCase() === ElementNames.TEXT">
-          <el-tooltip placement="top" :hide-after="0" :content="(element as TextboxElement).isCheck ? '取消可变' : '可变数据'">
-            <IconCheckOne class="common-icon" v-if="(element as TextboxElement).isCheck" @click.stop="checkElement(element.id)"/>
+        <div v-if="element.type.toLowerCase() === ElementNames.TEXTBOX || element.type.toLowerCase() === ElementNames.ITEXT">
+          <el-tooltip placement="top" :hide-after="0" :content="(element as TextboxElement).editable ? '可编辑文字' : '不可编辑文字'">
+            <IconCheckOne class="common-icon" v-if="(element as TextboxElement).editable" @click.stop="checkElement(element.id)"/>
             <IconRound class="common-icon" v-else  @click.stop="checkElement(element.id)"/>
           </el-tooltip>
         </div>
@@ -76,7 +77,7 @@ const props = defineProps({
     required: true,
   }
 })
-
+// console.log('props:', props.element, 'id:', props.element.id, 'layerName:', props.element.layer)
 const mainStore = useMainStore()
 const { canvasObject } = storeToRefs(mainStore)
 
@@ -131,7 +132,18 @@ const handleElement = computed(() => canvasObject.value as FabricObject)
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
+.element-layer {
+  width: 80px;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  &:hover {
+    text-overflow:inherit; 
+    overflow: visible; 
+    white-space: pre-line;
+  }
+}
 .common-icon {
   width: 24px;
   height: 24px;

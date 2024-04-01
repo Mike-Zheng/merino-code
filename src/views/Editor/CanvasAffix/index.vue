@@ -2,21 +2,21 @@
   <div>
     <el-affix position="bottom" :offset="45" v-show="unitMode === 0" style="width: calc(100%)">
       <el-checkbox-group v-model="showWorkLines" @change="changeWorkLines">
-        <el-checkbox-button type="primary" class="clip-btn" label="clip" :checked="showClip">
-          <el-tooltip placement="top" :hide-after="0" :content="(showClip ? '隐藏' : '显示') + '出血线'">
+        <el-tooltip placement="top" :hide-after="0" :content="(showClip ?t('message.hideBloodsLine') : t('message.showBloodsLine'))">
+          <el-checkbox-button type="primary" class="clip-btn" value="clip" :checked="showClip">
             <IconCuttingOne/>
-          </el-tooltip>
-        </el-checkbox-button>
-        <el-checkbox-button type="primary" label="drag" :checked="isDrag">
-          <el-tooltip placement="top" :hide-after="0" content="拖拽画布">
+          </el-checkbox-button>
+        </el-tooltip>
+        <el-tooltip placement="top" :hide-after="0" :content="t('message.draggingCanvas')">
+          <el-checkbox-button type="primary" value="drag" :checked="isDrag">
             <IconClickTap/>
-          </el-tooltip>
-        </el-checkbox-button>
-        <el-checkbox-button type="primary" class="safe-btn" label="safe" :checked="showSafe">
-          <el-tooltip placement="top" :hide-after="0" :content="(showSafe ? '隐藏' : '显示') + '安全线'">
+          </el-checkbox-button>
+        </el-tooltip>
+        <el-tooltip placement="top" :hide-after="0" :content="(showSafe ? t('message.showSafeLine') : t('message.hideSafeLine'))">
+          <el-checkbox-button type="primary" class="safe-btn" value="safe" :checked="showSafe">
             <IconShield/>
-          </el-tooltip>
-        </el-checkbox-button>
+          </el-checkbox-button>
+        </el-tooltip>
       </el-checkbox-group>
     </el-affix>
   </div>
@@ -29,6 +29,7 @@ import { CanvasElement } from '@/types/canvas'
 import { WorkSpaceClipType, WorkSpaceSafeType } from '@/configs/canvas'
 import { useFabricStore, useKeyboardStore, useMainStore } from '@/store'
 import useCanvas from '@/views/Canvas/useCanvas'
+import useI18n from '@/hooks/useI18n'
 
 
 const fabricStore = useFabricStore()
@@ -36,6 +37,7 @@ const mainStore = useMainStore()
 const keyboardStore = useKeyboardStore()
 const { showClip, showSafe } = storeToRefs(fabricStore)
 const { unitMode } = storeToRefs(mainStore)
+const { t } = useI18n()
 const showWorkLines = ref<string[]>([])
 const isDrag = ref(false)
 

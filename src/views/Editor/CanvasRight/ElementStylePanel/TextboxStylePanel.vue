@@ -40,12 +40,12 @@
             <el-popover trigger="click" placement="bottom" :width="265">
               <template #reference>
                 <el-button class="high-light">
-                  <TextColorButton :color="handleElement.backgroundColor">
+                  <TextColorButton :color="elementBackgrounColor">
                     <IconHighLight />
                   </TextColorButton>
                 </el-button>
               </template>
-              <ColorPicker :modelValue="handleElement.backgroundColor" @update:modelValue="(color: string) => updateBackgroundColor(color)"/>
+              <ColorPicker :modelValue="elementBackgrounColor" @update:modelValue="(color: string) => updateBackgroundColor(color)"/>
             </el-popover>
           </div>
         </el-tooltip>
@@ -70,7 +70,7 @@
     <el-row class="mt-10">
       <div class="full-checkbox">
         <el-tooltip placement="top" content="加粗" :hide-after="0">
-          <el-checkbox-button :label="hasFontWeight" @change="handleElementBlod()">
+          <el-checkbox-button :value="hasFontWeight" @change="handleElementBlod()">
             <IconTextBold />
           </el-checkbox-button>
         </el-tooltip>
@@ -121,22 +121,22 @@
       <el-col :span="24">
         <el-radio-group class="full-ratio" v-model="textAlign" @change="handleTextAlign">
           <el-tooltip placement="top" content="左对齐" :hide-after="0">
-            <el-radio-button label="justify-left">
+            <el-radio-button value="justify-left">
               <IconAlignTextLeft />
             </el-radio-button>
           </el-tooltip>
           <el-tooltip placement="top" content="居中" :hide-after="0">
-            <el-radio-button label="justify-center">
+            <el-radio-button value="justify-center">
               <IconAlignTextCenter />
             </el-radio-button>
           </el-tooltip>
           <el-tooltip placement="top" content="右对齐" :hide-after="0">
-            <el-radio-button label="justify-right">
+            <el-radio-button value="justify-right">
               <IconAlignTextRight />
             </el-radio-button>
           </el-tooltip>
           <el-tooltip placement="top" content="两边对齐" :hide-after="0">
-            <el-radio-button label="justify-right">
+            <el-radio-button value="justify">
               <IconAlignTextBoth />
             </el-radio-button>
           </el-tooltip>
@@ -161,28 +161,53 @@
       </el-col>
     </el-row>
 
+    <el-row class="mt-10" v-show="handleElement.type.toLowerCase() === ElementNames.ARCTEXT">
+      <el-col :span="4" class="flex-align">
+        <el-radio-group class="full-ratio" v-model="handleElement.showCurvature" @change="changeArcTextStatus">
+          <el-tooltip placement="top" content="隐藏弧度" :hide-after="0" v-if="handleElement.showCurvature">
+            <el-radio-button :value="false">
+              <IconPreviewClose />
+            </el-radio-button>
+          </el-tooltip>
+          <el-tooltip placement="top" content="显示弧度" :hide-after="0" v-else>
+            <el-radio-button :value="true">
+              <IconPreviewOpen />
+            </el-radio-button>
+          </el-tooltip>
+        </el-radio-group>
+      </el-col>
+      <el-col :span="1"></el-col>
+      <el-col :span="12" class="flex-align">
+        <el-slider :min="66" :max="1000" :step="1" v-model="handleElement.radius" @change="changeArcTextRadius" size="small"></el-slider>
+      </el-col>
+      <el-col :span="1"></el-col>
+      <el-col :span="6" class="flex-align">
+        <el-input :min="1" :max="10" v-model="handleElement.radius" controls-position="right" size="default"/>
+      </el-col>
+    </el-row>
+
     <el-divider />
     <ElementFill />
     <el-divider />
 
     <div class="row">
       <div style="flex: 2;">行距：</div>
-      <el-select style="flex: 3" suffix-icon="IconRowHeight" v-model="handleElement.lineHeight">
+      <el-select style="flex: 3" suffix-icon="IconRowHeight" v-model="handleElement.lineHeight" @change="changeLineHeight">
         <el-option v-for="item in LineHeightLibs" :key="item" :value="item" :label="item"></el-option>
       </el-select>
       <div style="flex: 1;"></div>
       <div style="flex: 2;">字距：</div>
-      <el-select style="flex: 3" suffix-icon="IconFullwidth" v-model="handleElement.charSpacing">
+      <el-select style="flex: 3" suffix-icon="IconFullwidth" v-model="handleElement.charSpacing" @change="changeCharSpacing">
         <el-option v-for="item in CharSpaceLibs" :key="item" :value="item" :label="item"></el-option>
       </el-select>
     </div>
 
     <el-divider />
-    <ElementStroke />
+    <ElementStroke :hasStroke="hasStroke" />
     <el-divider />
-    <ElementShadow />
+    <ElementShadow :hasShadow="hasShadow" />
     <el-divider />
-    <ElementPatterns />
+    <ElementPatterns :hasPatterns="hasPatterns" />
     <el-divider />
     <ElementOpacity />
   </div>
@@ -195,9 +220,14 @@ import { storeToRefs } from 'pinia'
 import { ElMessage } from 'element-plus'
 import { FontSizeLibs, LineHeightLibs, CharSpaceLibs } from '@/configs/texts'
 import { WEB_FONTS } from '@/configs/fonts'
+import { propertiesToInclude } from '@/configs/canvas'
 import { TextboxElement } from '@/types/canvas'
-import { FontGroupOption } from '@/types/elements'
+import { ElementNames, FontGroupOption } from '@/types/elements'
 import { loadFont } from '@/utils/fonts'
+import { nanoid } from 'nanoid'
+import { ArcText } from '@/extension/object/ArcText'
+import { CurvedText } from '@/extension/object/CurvedText'
+import { VerticalText } from '@/extension/object/VerticalText'
 import opentype from "opentype.js"
 import ElementPosition from '../Components/ElementPosition.vue'
 import ElementStroke from '../Components/ElementStroke.vue'
@@ -215,14 +245,24 @@ const templatesStore = useTemplatesStore()
 const { canvasObject, systemFonts } = storeToRefs(mainStore)
 const { createPathElement } = useHandleCreate()
 const [ canvas ] = useCanvas()
-const handleElement = computed(() => canvasObject.value as TextboxElement)
+const handleElement = computed(() => canvasObject.value as TextboxElement | ArcText)
 const elementGrapheme = computed(() => handleElement.value.splitByGrapheme)
+const elementBackgrounColor = computed(() => {
+  if (handleElement.value.type.toLowerCase() === ElementNames.ARCTEXT) {
+    return handleElement.value.textBackgroundColor
+  }
+  return handleElement.value.backgroundColor
+})
 const hasFontFamily = computed(() => handleElement.value.fontFamily)
 const hasFontWeight = computed(() => handleElement.value.fontWeight !== 'normal')
 const hasFontStyle = computed(() => handleElement.value.fontStyle !== 'normal')
 const hasUnderline = computed(() => handleElement.value.underline)
 const hasLinethrough = computed(() => handleElement.value.linethrough)
 const textAlign = computed(() => handleElement.value.textAlign)
+const radius = computed(() => 0)
+const hasStroke = computed(() => handleElement.value.stroke ? true : false)
+const hasShadow = computed(() => handleElement.value.shadow ? true : false)
+const hasPatterns = computed(() => (handleElement.value as TextboxElement).fillType === 1 ? true : false)
 const elementFontFamily = ref<string>(hasFontFamily.value)
 const fontSizeRef = ref<Element>()
 const fontOptionGroups = ref<FontGroupOption[]>([
@@ -276,12 +316,15 @@ const updateFontColor = (fill: string) => {
 
 // 修改背景颜色
 const updateBackgroundColor = (backgroundColor: string) => {
-  
+  let changeData: Record<string, any> = { backgroundColor }
+  if (handleElement.value.type.toLowerCase() === ElementNames.ARCTEXT) {
+    changeData = { 'textBackgroundColor': backgroundColor }
+  }
   if (handleElement.value.isEditing) {
-    handleElement.value.setSelectionStyles({backgroundColor})
+    handleElement.value.setSelectionStyles(changeData)
   }
   else {
-    handleElement.value.set({backgroundColor})
+    handleElement.value.set(changeData)
   }
   templatesStore.modifedElement()
   canvas.renderAll()
@@ -400,8 +443,37 @@ const handleElementCharSpacing = (mode: '+' | '-') => {
   canvas.renderAll()
 }
 
+const changeLineHeight = (lineHeight: number) => {
+  if (handleElement.value.isEditing) {
+    handleElement.value.setSelectionStyles({lineHeight})
+  }
+  else {
+    handleElement.value.set({lineHeight})
+  }
+  templatesStore.modifedElement()
+  canvas.renderAll()
+}
+
+const changeCharSpacing = (charSpacing: number) => {
+  if (handleElement.value.isEditing) {
+    handleElement.value.setSelectionStyles({charSpacing})
+  }
+  else {
+    handleElement.value.set({charSpacing})
+  }
+  templatesStore.modifedElement()
+  canvas.renderAll()
+}
+
 const handleElementArrange = (status: boolean) => {
-  handleElement.value.set({splitByGrapheme: status, width: handleElement.value.fontSize})
+  // handleElement.value.set({splitByGrapheme: status, width: handleElement.value.fontSize})
+  const options = handleElement.value.toObject(propertiesToInclude as any[]) as any
+  options.lineHeight = 12
+  delete options.type
+  options.id = nanoid(10)
+  const verticalText = new VerticalText(handleElement.value.text, options)
+  // const verticalText = new VerticalText('abc你好啊xyz', options)
+  canvas.add(verticalText)
   templatesStore.modifedElement()
   canvas.renderAll()
 }
@@ -427,12 +499,30 @@ const handleElementCurve = async () => {
 }
 
 const handleElementDeformation = () => {
-  
+  const options = handleElement.value.toObject(propertiesToInclude as any[]) as any
+  delete options.type
+  options.id = nanoid(10)
+  const arcText = new ArcText(options.text, options)
+  canvas.add(arcText)
+  handleElement.value.set({visible: false})
+  templatesStore.modifedElement()
+  canvas.setActiveObject(arcText)
+  canvas.renderAll()
 }
 
 const handleElementStyleClear = () => {
   handleElement.value.cleanStyle('fontWeight')
   templatesStore.modifedElement()
+  canvas.renderAll()
+}
+
+const changeArcTextRadius = (val: number) => {
+  (handleElement.value as ArcText).setRadius(val)
+  canvas.renderAll()
+}
+
+const changeArcTextStatus = (showCurvature: boolean) => {
+  (handleElement.value as ArcText).set({showCurvature})
   canvas.renderAll()
 }
 
@@ -536,6 +626,10 @@ onMounted(() => {
   .el-radio-button__inner {
     width: 100%
   }
+}
+.flex-align {
+  display: flex;
+  align-items: center;
 }
 
 .full-checkbox {

@@ -162,6 +162,8 @@ import {
   DividingLine,
   AlignTextBoth,
   Distortion,
+  Translate,
+  MagicWand,
 } from '@icon-park/vue-next'
 
 export const icons = {
@@ -324,6 +326,8 @@ export const icons = {
   IconDividingLine: DividingLine,
   IconAlignTextBoth: AlignTextBoth,
   IconDistortion: Distortion,
+  IconTranslate: Translate,
+  IconMagicWand: MagicWand
 }
 
 export default {

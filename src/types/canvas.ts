@@ -1,4 +1,4 @@
-import { Gradient, Pattern, Textbox, SerializedImageProps, Path, Rect, Image, Point, Polygon, Group, Line, Object as FabricObject, ImageProps } from "fabric"
+import { Gradient, Pattern, Textbox, SerializedImageProps, Path, Rect, Image, Point, Polygon, Group, Line, Object as FabricObject, ImageProps, IText } from "fabric"
 import { ColorStop } from "./elements"
 import JsBarcode from "jsbarcode"
 export type LineOption = [number, number, number, number]
@@ -84,7 +84,15 @@ export interface TextboxElement extends Textbox, CommenElement {
   color: string
   fillRepeat: TPatternRepeat
   fillURL: string
-  isCheck?: boolean
+  editable: boolean
+}
+
+export interface ITextElement extends IText, CommenElement {
+  fontFamily: string
+  color: string
+  fillRepeat: TPatternRepeat
+  fillURL: string
+  editable: boolean
 }
 
 export interface PathElement extends Path, CommenElement {
@@ -132,7 +140,7 @@ export interface QRCodeProps extends ImageProps {
   codeOption: QRCodeOption
 }
 
-export interface GuideLineProps extends Line {
+export interface ReferenceLineProps extends Line {
   type: string
   axis: 'horizontal' | 'vertical' | ''
 }

@@ -6,11 +6,12 @@ import { useFabricStore, useTemplatesStore } from '@/store'
 import { WorkSpaceThumbType, WorkSpaceClipType, WorkSpaceCommonType, WorkSpaceSafeType, propertiesToInclude } from '@/configs/canvas'
 import { ImageFormat } from 'fabric'
 import { downloadSVGFile, downloadLinkFile } from '@/utils/download'
+import { changeDpiDataUrl } from 'changedpi'
 import useCanvas from '@/views/Canvas/useCanvas'
 import useCenter from '@/views/Canvas/useCenter'
-import { handleMessage } from "@/worker/pdf"
 import { exportFile } from '@/api/file'
-// const worker = new PDFWorker()
+import { Base64 } from 'js-base64'
+import { ElementNames } from '@/types/elements'
 
 export default () => {
   
@@ -25,15 +26,19 @@ export default () => {
     const zoom = canvas.getZoom()
     const viewportTransform = canvas.viewportTransform
     const activeObject = canvas.getActiveObject()
-    const ignoreObjects = canvas.getObjects().filter(obj => WorkSpaceCommonType.includes(obj.id))
+    let ignoreObjects = canvas.getObjects().filter(obj => WorkSpaceCommonType.includes(obj.id))
+    if (format === 'jpeg') {
+      ignoreObjects = canvas.getObjects().filter(obj => WorkSpaceThumbType.includes(obj.id))
+    }
     if (ignoreClip) {
       ignoreObjects.map(item => item.set({visible: false}))
       canvas.renderAll()
     }
     if (activeObject) canvas.discardActiveObject()
+    canvas.getObjects().filter(item => item.type === ElementNames.REFERENCELINE && item.visible === true).map(item => item.set({visible: false}))
     canvas.set({background: 'rgba(255,255,255,0)'})
     canvas.renderAll()
-    const result = canvas.toDataURL({
+    let result = canvas.toDataURL({
       multiplier: 1 / zoom,
       quality: quality,
       format: format,
@@ -42,19 +47,21 @@ export default () => {
       left: left * zoom + viewportTransform[4],
       top: top * zoom + viewportTransform[5]
     })
-    // const data = changeDataURLDPI(result, dpi)
+    result = changeDpiDataUrl(result, dpi)
     saveAs(result, `yft-design-${Date.now()}.${format}`)
     Exporting.value = false
     ignoreObjects.map(item => item.set({visible: true}))
     canvas.getObjects().filter(obj => obj.id === WorkSpaceClipType).map(item => item.set({visible: showClip.value}))
     canvas.getObjects().filter(obj => obj.id === WorkSpaceSafeType).map(item => item.set({visible: showSafe.value}))
     if (activeObject) canvas.setActiveObject(activeObject)
+    canvas.getObjects().filter(item => item.type === ElementNames.REFERENCELINE && item.visible === false).map(item => item.set({visible: true}))
     canvas.renderAll()
   }
 
   const getSVGData = () => {
     const [ canvas ] = useCanvas()
     const { left, top, width, height } = useCenter()
+    canvas.getObjects().filter(item => item.type === ElementNames.REFERENCELINE && item.visible === true).map(item => item.set({visible: false}))
     canvas.renderAll()
     const data = canvas.toSVG({
       viewBox: {
@@ -66,6 +73,8 @@ export default () => {
       width: width + 'px',
       height: height + 'px'
     }, (element) => element)
+    canvas.getObjects().filter(item => item.type === ElementNames.REFERENCELINE && item.visible === false).map(item => item.set({visible: true}))
+    canvas.renderAll()
     return data
   }
 
@@ -76,6 +85,8 @@ export default () => {
     serializer.zoom = currentTemplate.value.zoom
     serializer.width = currentTemplate.value.width
     serializer.height = currentTemplate.value.height
+    console.log(JSON.stringify(serializer));
+    
     return serializer
   }
 
@@ -94,14 +105,24 @@ export default () => {
 
   // 导出PDF
   const exportPDF = async () => {
+    convertFile('pdf')
+  }
+
+  // 导出PSD
+  const exportPSD = async () => {
+    convertFile('psd')
+  }
+
+  const convertFile = async (filetype: string) => {
     const content = {
-      data: getSVGData(),
+      data: Base64.encode(getSVGData()),
+      filetype,
       width: currentTemplate.value.width / currentTemplate.value.zoom,
       height: currentTemplate.value.height / currentTemplate.value.zoom,
     }
     const result = await exportFile(content)
     if (result && result.data.link) {
-      downloadLinkFile(result.data.link, `yft-design-${Date.now()}.pdf`)
+      downloadLinkFile(result.data.link, `yft-design-${Date.now()}.${filetype}`)
     }
   }
 
@@ -115,6 +136,7 @@ export default () => {
   return {
     exportImage,
     exportPDF,
+    exportPSD,
     exportJSON,
     exportSVG,
     getJSONData,
