@@ -61,6 +61,7 @@ declare module 'vue' {
     IconTooling: typeof import('./src/components/icons/IconTooling.vue')['default']
     ImageMatting: typeof import('./src/components/ImageMatting/index.vue')['default']
     Lang: typeof import('./src/components/Lang/index.vue')['default']
+    LinePointMarker: typeof import('./src/components/LinePointMarker.vue')['default']
     Matting: typeof import('./src/components/ImageMatting/matting.vue')['default']
     MenuContent: typeof import('./src/components/Contextmenu/MenuContent.vue')['default']
     Saturation: typeof import('./src/components/ColorPicker/Saturation.vue')['default']

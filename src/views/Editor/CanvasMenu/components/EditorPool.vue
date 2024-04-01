@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="edit-pool">
     <div class="edit-section pt-20px">
       <div class="font-bold text-lg mb-6px">文件</div>
-      <el-row :gutter="10">
+      <el-row :gutter="10" class="mt-10">
         <el-col :span="8">
           <el-upload ref="uploadRef" :on-exceed="handleExceed" action="http" :http-request="uploadHandle" :limit="1" :accept="fileAccept" v-loading="uploading">
             <div class="item-box">
@@ -15,7 +15,7 @@
     </div>
     <div class="edit-section">
       <div class="font-bold text-lg mb-6px">文字</div>
-      <el-row :gutter="10">
+      <el-row :gutter="10" class="mt-10">
         <el-col :span="8">
           <div class="item-box" @click="drawText(80)">
             <IconH1 class="icon-font" />
@@ -34,7 +34,7 @@
             <div class="mt-8px">横排正文</div>
           </div>
         </el-col>
-        <el-col :span="8" @click="drawText(36, 'direction')">
+        <el-col :span="8" @click="drawVerticalText(36)">
           <div class="item-box">
             <IconTextRotationDown class="icon-font" />
             <div class="mt-8px">竖排正文</div>
@@ -56,7 +56,7 @@
     </div>
     <div class="edit-section">
       <div class="font-bold text-lg mb-6px">形状</div>
-      <el-row :gutter="10">
+      <el-row :gutter="10" class="mt-10">
         <el-col :span="8" v-for="(shape, index) in PathShapeLibs" :key="index" @click="drawPath(shape)">
           <div class="item-box">
             <svg overflow="visible" width="20" height="20">
@@ -66,7 +66,7 @@
             </svg>
           </div>
         </el-col>
-        <el-col :span="8" v-for="(line, j) in PathLineLibs" :key="j" @click="drawLine(line)">
+        <el-col :span="8" v-for="(line, j) in LinePoolItems" :key="j" @click="drawLine(line)">
           <div class="item-box">
             <svg overflow="visible" width="20" height="20">
               <defs>
@@ -90,7 +90,7 @@
     </div>
     <div class="edit-section">
       <div class="font-bold text-lg mb-6px">组件</div>
-      <el-row :gutter="10">
+      <el-row :gutter="10" class="mt-10">
         <el-col :span="8">
           <div class="item-box" @click="createBarElement">
             <IconPayCodeTwo class="icon-font" />
@@ -120,24 +120,39 @@ import { ref } from "vue";
 import { Base64 } from "js-base64";
 import { Search } from "@element-plus/icons-vue";
 import { ShapePathFormulasKeys, PathListItem } from "@/types/elements";
-
+import { ElMessage, genFileId, UploadInstance, UploadProps, UploadRawFile } from "element-plus"
 import { encodeData, renderer25D, rendererRect, rendererRound, rendererRandRound, rendererDSJ, rendererRandRect, rendererImage, rendererCircle, rendererLine, rendererLine2, rendererFuncA, rendererFuncB, CodeOption } from "beautify-qrcode";
-
-import { QRCodeType } from "@/types/canvas";
+import { PathPoolItem } from '@/types/elements'
+import { QRCodeType, Template } from "@/types/canvas";
+import { getImageDataURL, getImageText } from "@/utils/image";
+import { LinePoolItems, LinePoolItem } from "@/configs/lines";
+import { loadSVGFromString } from 'fabric'
+import { uploadFile } from '@/api/file'
+import useCanvasScale from '@/hooks/useCanvasScale'
+import useHandleCreate from '@/hooks/useHandleCreate'
+import useHandleTemplate from '@/hooks/useHandleTemplate'
 import JsBarCode from "jsbarcode";
-import useHandleCreate from "@/hooks/useHandleCreate";
 import useI18n from "@/hooks/useI18n";
 import useCanvas from "@/views/Canvas/useCanvas";
-import { getImageDataURL, getImageText } from "@/utils/image";
-import LinePointMarker from "@/views/Editor/CanvasMenu/components/MaterialComponents/Components/LinePointMarker.vue";
-import { PresetLine } from "@/configs/lines";
-import { ArcText } from '@/extension/object/ArcText'
 
 const { t } = useI18n();
-const { createQRCodeElement, createBarCodeElement, createImageElement, createTextElement, createPathElement, createLineElement, createArcTextElement, createVideoElement } = useHandleCreate();
+const { addTemplate } = useHandleTemplate()
+const { setCanvasTransform } = useCanvasScale()
+const { 
+  createQRCodeElement, 
+  createBarCodeElement, 
+  createImageElement, 
+  createTextElement, 
+  createPathElement, 
+  createLineElement, 
+  createArcTextElement, 
+  createVerticalTextElement, 
+  createVideoElement 
+} = useHandleCreate();
 const codeContent = ref<string>(window.location.href);
 const codeSpace = ref<boolean>(true);
 const codeError = ref<number>(0);
+const uploadRef = ref<UploadInstance>()
 const dialogVisible = ref(false);
 const generateQRCodeMap = {
   A1: rendererRect,
@@ -155,7 +170,7 @@ const generateQRCodeMap = {
 };
 const fileAccept = ref(".pdf,.psd,.cdr,.ai,.svg,.jpg,.jpeg,.png,.webp,.json,.mp4");
 const uploading = ref(false);
-const PathShapeLibs: PathListItem[] = [
+const PathShapeLibs: PathPoolItem[] = [
   {
     viewBox: [200, 200],
     path: "M 0 0 L 200 0 L 200 200 L 0 200 Z",
@@ -168,17 +183,6 @@ const PathShapeLibs: PathListItem[] = [
   {
     viewBox: [200, 200],
     path: "M 100 0 A 50 50 0 1 1 100 200 A 50 50 0 1 1 100 0 Z",
-  },
-];
-const PathLineLibs: PresetLine[] = [
-  {
-    path: "M 0 0 L 20 20",
-    style: "solid",
-    points: ["", ""],
-    data: [
-      { x: 0, y: 0 },
-      { x: 200, y: 0 },
-    ],
   },
 ];
 
@@ -257,9 +261,9 @@ const uploadHandle = async (option: any) => {
   const res = await uploadFile(option.file, fileSuffix);
   uploading.value = false;
   if (res && res.data.code === 200) {
-    const template = res.data.data;
+    const template = res.data.data as Template;
     if (!template) return;
-    await templatesStore.addTemplate(template);
+    await addTemplate(template);
     setCanvasTransform();
   }
 };
@@ -278,7 +282,11 @@ const drawText = (fontSize: number, textStyle: "transverse" | "direction" = "tra
 
 // 添加环形文字
 const drawArcText = () => {
-    createArcTextElement(36,)
+  createArcTextElement(36)
+}
+
+const drawVerticalText = (fontSize: number) => {
+  createVerticalTextElement(fontSize)
 }
 
 // 添加形状
@@ -294,13 +302,19 @@ const drawLine = (line: LinePoolItem) => {
 </script>
 
 <style lang="scss" scoped>
+.edit-pool {
+  overflow: scroll;
+}
+.mt-10 {
+  margin-top: 10px;
+}
 .edit-section {
   width: 90%;
   margin: 0px 20px 0px 20px;
   .item-box {
     background-color: #f6f6f6;
     border-radius: 5px;
-    padding: 16px;
+    padding: 15px 10px;
     display: flex;
     justify-content: center;
     align-items: center;
