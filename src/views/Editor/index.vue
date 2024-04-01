@@ -58,7 +58,7 @@ import CanvasTour from "./CanvasTour/index.vue";
   user-select: none;
 }
 .layout-content-center {
-  width: calc(100% - 50px - 160px - 260px);
+  width: calc(100% - 50px - 160px );
 
   .center-header {
     position: relative;
@@ -86,10 +86,12 @@ import CanvasTour from "./CanvasTour/index.vue";
   }
 }
 .layout-content-right {
+  position: absolute;
+  top: 80px;
+  right: 0;
+  background-color: transparent;
   width: 260px;
-  height: 100%;
-  border-left: solid 1px $borderColor;
-  background-color: #fff;
+  // border-left: solid 1px $borderColor;
   display: flex;
   flex-direction: column;
 }

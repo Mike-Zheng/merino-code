@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="right-tabs">
+    <!-- <div class="right-tabs">
       <div
         class="tab"
         :class="[
@@ -14,7 +14,7 @@
       >
         {{ tab.label }}
       </div>
-    </div>
+    </div> -->
     <div class="right-content">
       <component :is="currentPanelComponent"></component>
     </div>
@@ -98,6 +98,7 @@ const currentPanelComponent = computed(() => {
   }
 }
 .right-content {
+  
   padding: 10px 5px 10px 10px;
   font-size: 13px;
   overflow: scroll;
