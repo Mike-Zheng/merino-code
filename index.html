@@ -1,13 +1,96 @@
 <!doctype html>
+<!-- Copyright MizTech -->
+<!-- Licensed MikeZheng -->
+<!-- https: //mike-zheng.github.io/ -->
+<!--  
+            _   _____         _     
+          (_) |_   _|       | |    
+_ __ ___  _ ___| | ___  ___| |__  
+| '_ ` _ \| |_  / |/ _ \/ __| '_ \ 
+| | | | | | |/ /| |  __/ (__| | | |
+|_| |_| |_|_/___\_/\___|\___|_| |_|
+              mike-zheng.github.io
+-->
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + Vue + TS</title>
+    <title>Merino Editor©</title>
+    <style>
+      .loader-modal {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #212528cc;
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 499;
+        background-color: #202326;
+      }
+      .loader-wrapper {
+        position: absolute;
+        z-index: 2000;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .app-loader {
+        width: 80px;
+        height: 80px;
+        display: inline-block;
+        padding: 0px;
+        text-align: left;
+      }
+      .app-loader span {
+        position: absolute;
+        display: inline-block;
+        width: 80px;
+        height: 80px;
+        border-radius: 100%;
+        background: rgba(135, 211, 124, 1);
+        -webkit-animation: loader3 1.5s linear infinite;
+        animation: loader3 1.5s linear infinite;
+      }
+      .app-loader span:last-child {
+        animation-delay: -0.9s;
+        -webkit-animation-delay: -0.9s;
+      }
+      @keyframes loader3 {
+        0% {
+          transform: scale(0, 0);
+          opacity: 0.8;
+        }
+        100% {
+          transform: scale(1, 1);
+          opacity: 0;
+        }
+      }
+    </style>
   </head>
-  <body>
-    <div id="app"></div>
+  </head>
+  <body oncontextmenu="return false;">
+    <noscript>
+      <strong
+        >We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work
+        properly without JavaScript enabled. Please enable it to
+        continue.</strong
+      >
+    </noscript>
+    <div id="app">
+      <div class="loader-modal">
+        <div class="loader-wrapper">
+          <div class="app-loader">
+            <span />
+            <span />
+          </div>
+        </div>
+      </div>
+    </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
