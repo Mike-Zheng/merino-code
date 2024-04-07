@@ -34,10 +34,10 @@ const mainStore = useMainStore();
 const { canvasObject, rightState } = storeToRefs(mainStore);
 
 const designTabs = [
-  { label: t("style.canvas"), value: RightStates.ELEMENT_WORKER },
+  { label: t("style.canvas"), value: RightStates.ELEMENT_WORKER }
 ];
 const styleTabs = [
-  { label: t("style.style"), value: RightStates.ELEMENT_STYLE },
+  { label: t("style.style"), value: RightStates.ELEMENT_STYLE }
   // { label: '位置', value: RightStates.ELEMENT_POSITION },
 ];
 
@@ -64,12 +64,11 @@ watch(currentTabs, () => {
 const currentPanelComponent = computed(() => {
   const panelMap = {
     [RightStates.ELEMENT_WORKER]: WorkStylePanel,
-    [RightStates.ELEMENT_STYLE]: ElemnetStylePanel,
+    [RightStates.ELEMENT_STYLE]: ElemnetStylePanel
   };
   return panelMap[rightState.value as RightStates.ELEMENT_STYLE];
 });
 </script>
-
 
 <style lang="scss" scoped>
 .right-tabs {
@@ -98,7 +97,6 @@ const currentPanelComponent = computed(() => {
   }
 }
 .right-content {
-  
   padding: 10px 5px 10px 10px;
   font-size: 13px;
   overflow: scroll;

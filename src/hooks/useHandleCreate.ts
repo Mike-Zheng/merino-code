@@ -6,23 +6,28 @@ import { RightStates, ElementNames } from "@/types/elements";
 import { nanoid } from "nanoid";
 import { QRCodeElement, QRCodeOption } from "@/types/canvas";
 import { getImageSize } from "@/utils/image";
-import { Object as FabricObject, Path, classRegistry, XY, util, Image as FabricImage } from "fabric";
+import {
+  Object as FabricObject,
+  Path,
+  classRegistry,
+  XY,
+  util,
+  Image as FabricImage
+} from "fabric";
 import { Textbox } from "@/extension/object/Textbox";
 import { LinePoint } from "@/types/elements";
 import { Image } from "@/extension/object/Image";
 import { QRCode } from "@/extension/object/QRCode";
 import { BarCode } from "@/extension/object/BarCode";
-import { ArcText } from '@/extension/object/ArcText'
-import { VerticalText } from '@/extension/object/VerticalText'
+import { ArcText } from "@/extension/object/ArcText";
+import { VerticalText } from "@/extension/object/VerticalText";
 import JsBarcode from "jsbarcode";
-import { i18nObj } from "@/plugins/i18n/index"
+import { i18nObj } from "@/plugins/i18n/index";
 import useCenter from "@/views/Canvas/useCenter";
 import useCanvas from "@/views/Canvas/useCanvas";
 import useCanvasZindex from "./useCanvasZindex";
 
-
 export default () => {
-
   const mainStore = useMainStore();
   const templatesStore = useTemplatesStore();
   const { setZindex } = useCanvasZindex();
@@ -39,10 +44,15 @@ export default () => {
     templatesStore.modifedElement();
   };
 
-  const createTextElement = (fontSize: number, textStyle = "transverse", textHollow = false, textValue = t("default.textValue")) => {
+  const createTextElement = (
+    fontSize: number,
+    textStyle = "transverse",
+    textHollow = false,
+    textValue = t("default.textValue")
+  ) => {
     if (textStyle === "direction") {
-      createVerticalTextElement(fontSize, textHollow, textValue)
-      return
+      createVerticalTextElement(fontSize, textHollow, textValue);
+      return;
     }
     const { centerPoint } = useCenter();
     const textBoxElement = new Textbox(textValue, {
@@ -63,9 +73,12 @@ export default () => {
       textAlign: "justify-center",
       name: ElementNames.TEXTBOX,
       splitByGrapheme: false,
-      width: fontSize * textValue.length / 2
+      width: (fontSize * textValue.length) / 2
     });
-    textBoxElement.set({left: textBoxElement.left - textBoxElement.width / 2, top: textBoxElement.top - textBoxElement.height / 2})
+    textBoxElement.set({
+      left: textBoxElement.left - textBoxElement.width / 2,
+      top: textBoxElement.top - textBoxElement.height / 2
+    });
     if (textHollow) {
       textBoxElement.fill = "";
       textBoxElement.stroke = "black";
@@ -74,9 +87,14 @@ export default () => {
     renderCanvas(textBoxElement);
   };
 
-  const createArcTextElement = (fontSize: number, textStyle = 'transverse', textHollow = false, textValue = '双击修改文字') => {
-    const { centerPoint } = useCenter()
-    
+  const createArcTextElement = (
+    fontSize: number,
+    textStyle = "transverse",
+    textHollow = false,
+    textValue = "双击修改文字"
+  ) => {
+    const { centerPoint } = useCenter();
+
     const textBoxElement = new ArcText(textValue, {
       id: nanoid(10),
       left: centerPoint.x,
@@ -86,28 +104,35 @@ export default () => {
       fillType: 0,
       hasControls: true,
       hasBorders: true,
-      fontWeight: 'normal',
+      fontWeight: "normal",
       charSpacing: 3,
       opacity: 1,
       lineHeight: 1.3,
-      originX: 'left',
-      originY: 'top',
-      textAlign: 'justify-center',
+      originX: "left",
+      originY: "top",
+      textAlign: "justify-center",
       name: ElementNames.TEXTBOX,
-      splitByGrapheme: textStyle === 'direction' ? true : false,
-    })
-    textBoxElement.set({left: textBoxElement.left - textBoxElement.width / 2, top: textBoxElement.top - textBoxElement.height / 2})
+      splitByGrapheme: textStyle === "direction" ? true : false
+    });
+    textBoxElement.set({
+      left: textBoxElement.left - textBoxElement.width / 2,
+      top: textBoxElement.top - textBoxElement.height / 2
+    });
     if (textHollow) {
-      textBoxElement.fill = ''
-      textBoxElement.stroke = 'black'
-      textBoxElement.strokeWidth = 1 
+      textBoxElement.fill = "";
+      textBoxElement.stroke = "black";
+      textBoxElement.strokeWidth = 1;
     }
-    renderCanvas(textBoxElement)
-  }
+    renderCanvas(textBoxElement);
+  };
 
-  const createVerticalTextElement = (fontSize: number, textHollow = false, textValue = '双击修改文字') => {
-    const { centerPoint } = useCenter()
-    
+  const createVerticalTextElement = (
+    fontSize: number,
+    textHollow = false,
+    textValue = "双击修改文字"
+  ) => {
+    const { centerPoint } = useCenter();
+
     const textBoxElement = new VerticalText(textValue, {
       id: nanoid(10),
       left: centerPoint.x,
@@ -117,22 +142,25 @@ export default () => {
       fillType: 0,
       hasControls: true,
       hasBorders: true,
-      fontWeight: 'normal',
+      fontWeight: "normal",
       charSpacing: 3,
       opacity: 1,
       lineHeight: 1.3,
-      originX: 'left',
-      originY: 'top',
-      name: ElementNames.VERTICALTEXT,
-    })
-    textBoxElement.set({left: textBoxElement.left - textBoxElement.width / 2, top: textBoxElement.top - textBoxElement.height / 2})
+      originX: "left",
+      originY: "top",
+      name: ElementNames.VERTICALTEXT
+    });
+    textBoxElement.set({
+      left: textBoxElement.left - textBoxElement.width / 2,
+      top: textBoxElement.top - textBoxElement.height / 2
+    });
     if (textHollow) {
       textBoxElement.fill = "";
       textBoxElement.stroke = "black";
       textBoxElement.strokeWidth = 1;
     }
-    renderCanvas(textBoxElement)
-  }
+    renderCanvas(textBoxElement);
+  };
 
   const createPathElement = (path: string, left?: number, top?: number) => {
     const { centerPoint } = useCenter();
@@ -146,14 +174,19 @@ export default () => {
       originX: "left",
       originY: "top",
       fill: "#ff5e17",
-      name: ElementNames.PATH,
+      name: ElementNames.PATH
     });
     pathElement.left -= pathElement.width / 2;
     pathElement.top -= pathElement.height / 2;
     renderCanvas(pathElement);
   };
 
-  const createLineElement = (path: XY[], startStyle: LinePoint, endStyle: LinePoint, strokeDashArray?: [number, number]) => {
+  const createLineElement = (
+    path: XY[],
+    startStyle: LinePoint,
+    endStyle: LinePoint,
+    strokeDashArray?: [number, number]
+  ) => {
     // const { centerPoint } = useCenter()
     // const lineElement = new Line([0, 0, 300, 0], {
     //   id: nanoid(10),
@@ -177,7 +210,12 @@ export default () => {
     // createArrowElement(path)
   };
 
-  const createPolylineElement = (path: XY[], startStyle: LinePoint, endStyle: LinePoint, strokeDashArray?: [number, number]) => {
+  const createPolylineElement = (
+    path: XY[],
+    startStyle: LinePoint,
+    endStyle: LinePoint,
+    strokeDashArray?: [number, number]
+  ) => {
     const { centerPoint } = useCenter();
     // const points = [ { x: 0, y: 0 }, { x: 200, y: 0 } ]
     const Polyline = classRegistry.getClass("Polyline");
@@ -199,14 +237,15 @@ export default () => {
       objectCaching: false,
       transparentCorners: false,
       strokeDashArray,
-      name: ElementNames.LINE,
+      name: ElementNames.LINE
     });
     renderCanvas(element);
   };
 
   const createImageElement = (url: string) => {
     const { zoom } = storeToRefs(useFabricStore());
-    const { currentTemplateWidth, currentTemplateHeight } = storeToRefs(useTemplatesStore());
+    const { currentTemplateWidth, currentTemplateHeight } =
+      storeToRefs(useTemplatesStore());
     const { centerPoint } = useCenter();
     const [canvas] = useCanvas();
     getImageSize(url).then(async ({ width, height }) => {
@@ -231,13 +270,17 @@ export default () => {
         originY: "top",
         borderColor: "#ff8d23",
         name: ElementNames.IMAGE,
-        crossOrigin: "anonymous",
+        crossOrigin: "anonymous"
       });
       renderCanvas(imageElement);
     });
   };
 
-  const createQRCodeElement = async (url: string, codeOption: QRCodeOption, codeContent?: string) => {
+  const createQRCodeElement = async (
+    url: string,
+    codeOption: QRCodeOption,
+    codeContent?: string
+  ) => {
     const { centerPoint } = useCenter();
     // const QRCode = classRegistry.getClass('QRCode')
     const codeObject = (await QRCode.fromURL(url, {
@@ -254,7 +297,7 @@ export default () => {
       borderColor: "#ff8d23",
       codeContent,
       codeOption,
-      crossOrigin: "anonymous",
+      crossOrigin: "anonymous"
     })) as QRCodeElement;
     console.log("codeObject", codeObject);
     codeObject.left -= codeObject.width / 2;
@@ -262,7 +305,11 @@ export default () => {
     renderCanvas(codeObject);
   };
 
-  const createBarCodeElement = async (url: string, codeContent: string, codeOption: JsBarcode.BaseOptions) => {
+  const createBarCodeElement = async (
+    url: string,
+    codeContent: string,
+    codeOption: JsBarcode.BaseOptions
+  ) => {
     const { centerPoint } = useCenter();
     // const Barcode = classRegistry.getClass('BarCode')
     const barcodeObject = await BarCode.fromURL(url, {
@@ -279,7 +326,7 @@ export default () => {
       borderColor: "#ff8d23",
       codeContent,
       codeOption,
-      crossOrigin: "anonymous",
+      crossOrigin: "anonymous"
     });
     barcodeObject.left -= barcodeObject.width / 2;
     barcodeObject.top -= barcodeObject.height / 2;
@@ -308,10 +355,10 @@ export default () => {
         top: centerPoint.y,
         originX: "center",
         originY: "center",
-        objectCaching: false,
+        objectCaching: false
       });
       canvas.add(videoElement);
-      const viedoSource = videoElement.getElement() as any
+      const viedoSource = videoElement.getElement() as any;
       viedoSource.play();
       util.requestAnimFrame(function render() {
         canvas.renderAll();
@@ -329,6 +376,6 @@ export default () => {
     createBarCodeElement,
     createVideoElement,
     createArcTextElement,
-    createVerticalTextElement,
+    createVerticalTextElement
   };
 };

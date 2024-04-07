@@ -28,7 +28,7 @@
               width:
                 (img.previewHeight <= 120
                   ? (img.previewWidth / img.previewHeight) * 120
-                  : img.previewWidth) + 'px',
+                  : img.previewWidth) + 'px'
             }"
             v-for="(img, index) in item.category"
             :key="index"
@@ -64,7 +64,7 @@
           v-for="(img, index) in categoryData.total"
           :key="index"
           :style="{
-            justifyContent: index % 2 === 0 ? 'flex-start' : 'flex-end',
+            justifyContent: index % 2 === 0 ? 'flex-start' : 'flex-end'
           }"
         >
           <img
@@ -130,7 +130,7 @@ const getContainScroll = () => {
   if (!categoryRef.value)
     return {
       startIndex,
-      endIndex,
+      endIndex
     };
   const scrollTop = categoryRef.value.scrollTop;
   const containerHeight = categoryRef.value.clientHeight;
@@ -139,7 +139,7 @@ const getContainScroll = () => {
   endIndex = Math.ceil((scrollTop + containerHeight) / itemHeight);
   return {
     startIndex,
-    endIndex,
+    endIndex
   };
 };
 

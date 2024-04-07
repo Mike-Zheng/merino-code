@@ -1,32 +1,33 @@
 // 1. 给定范围内的随机数 getRandom(70, 80)
-export const getRandom = (n: number, m: number) => Math.floor(Math.random() * (m - n + 1) + n)
+export const getRandom = (n: number, m: number) =>
+  Math.floor(Math.random() * (m - n + 1) + n);
 
 // 生成 100 长度的数组
-export function createArr(defaultParams = 'Tom') {
+export function createArr(defaultParams = "Tom") {
   const allItems = Array.from(Array(100).keys(), (item) => {
-    return { defaultParams, idx: item }
-  })
+    return { defaultParams, idx: item };
+  });
   // const fillArr = new Array(10).fill({ defaultParams })
-  return allItems
+  return allItems;
 }
 
 // 获取数组的最深层级
 export const getLevel = (list: any) => {
-  let max = 0
-  const stack = [list]
+  let max = 0;
+  const stack = [list];
   while (stack.length > 0) {
-    const data = stack.pop()
+    const data = stack.pop();
     for (let i = 0; i < data.length; i++) {
-      const item = data[i]
+      const item = data[i];
       if (Array.isArray(item)) {
-        (item as any).level = (data.level || 1) + 1
-        max = Math.max((item as any).level, max)
-        stack.push(item)
+        (item as any).level = (data.level || 1) + 1;
+        max = Math.max((item as any).level, max);
+        stack.push(item);
       }
     }
   }
-  return max
-}
+  return max;
+};
 
 // // 树形数组平铺
 // export const treeToArr = (arr: any) => {

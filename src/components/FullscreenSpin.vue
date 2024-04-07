@@ -1,18 +1,20 @@
 <template>
-  <div class="fullscreen-spin" v-if="loading"><Spin :tip="tip" size="large" /></div>
+  <div class="fullscreen-spin" v-if="loading">
+    <Spin :tip="tip" size="large" />
+  </div>
 </template>
 
 <script lang="ts" setup>
 const props = defineProps({
   loading: {
     type: Boolean,
-    default: false,
+    default: false
   },
   tip: {
     type: String,
-    default: '',
-  },
-})
+    default: ""
+  }
+});
 </script>
 
 <style lang="scss" scoped>
@@ -26,6 +28,6 @@ const props = defineProps({
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba($color: #f1f1f1, $alpha: .7);
+  background-color: rgba($color: #f1f1f1, $alpha: 0.7);
 }
 </style>

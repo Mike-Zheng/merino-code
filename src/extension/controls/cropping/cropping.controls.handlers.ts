@@ -1,14 +1,20 @@
-import * as fabric from 'fabric';
-import { normalizePoint } from '../../controls/util';
+import * as fabric from "fabric";
+import { normalizePoint } from "../../controls/util";
 
 export function fireCropImageEvent(target: fabric.Object) {
-  target.canvas?.fire('object:modified', <any>{
-    action: 'cropImage',
-    target,
+  target.canvas?.fire("object:modified", <any>{
+    action: "cropImage",
+    target
   });
 }
 
-export function calcScale(newPoint: { x: number, y: number }, height: number, width: number, flipX?: boolean, flipY?: boolean) {
+export function calcScale(
+  newPoint: { x: number; y: number },
+  height: number,
+  width: number,
+  flipX?: boolean,
+  flipY?: boolean
+) {
   const scaleX = Math.abs(newPoint.x / width);
   const scaleY = Math.abs(newPoint.y / height);
   if (flipX || flipY) {
@@ -18,29 +24,38 @@ export function calcScale(newPoint: { x: number, y: number }, height: number, wi
 }
 
 /**
-* Crops image dragging left to right.
-* @private
-* @param {Object} eventData
-* @param {Number} x pointer's x coordinate
-* @param {Number} y pointer's y coordinate
-* @return {Boolean} true if the cropping occurred
-*/
+ * Crops image dragging left to right.
+ * @private
+ * @param {Object} eventData
+ * @param {Number} x pointer's x coordinate
+ * @param {Number} y pointer's y coordinate
+ * @return {Boolean} true if the cropping occurred
+ */
 // @ts-ignore
 function cropFromLeft(eventData, transform, x, y) {
   const t = transform;
-  const anchorPoint = 'right';
+  const anchorPoint = "right";
   const { width } = t.target;
   const left = -(width / 2);
   const centerPoint = t.target.getRelativeCenterPoint();
-  const newLeft = normalizePoint(t.target, new fabric.Point(x, y), 'center', 'center');
+  const newLeft = normalizePoint(
+    t.target,
+    new fabric.Point(x, y),
+    "center",
+    "center"
+  );
   // const newLeft = fabric.controlsUtils.getLocalPoint(transform, 'center', 'center', x, y);
-  const constraint = t.target.translateToOriginPoint(centerPoint, anchorPoint, t.originY);
+  const constraint = t.target.translateToOriginPoint(
+    centerPoint,
+    anchorPoint,
+    t.originY
+  );
 
   let changeX = newLeft.x / t.target.scaleX - left;
   let newWidth = width - changeX;
 
-  if ((t.target.cropX + changeX) < 0) {
-    changeX = -(t.target.cropX);
+  if (t.target.cropX + changeX < 0) {
+    changeX = -t.target.cropX;
     newWidth = width + t.target.cropX;
   }
   if (newWidth <= 0) {
@@ -57,15 +72,24 @@ function cropFromLeft(eventData, transform, x, y) {
 // @ts-ignore
 function cropFromLeftFlig(eventData, transform, x, y) {
   const t = transform;
-  const anchorPoint = 'right';
+  const anchorPoint = "right";
   const { width } = t.target;
   const naturalWidth = t.target.getOriginalElementWidth();
   const left = -(width / 2);
   const centerPoint = t.target.getRelativeCenterPoint();
-  const newLeft = normalizePoint(t.target, new fabric.Point(x, y), 'center', 'center');
-  const constraint = t.target.translateToOriginPoint(centerPoint, anchorPoint, t.originY);
+  const newLeft = normalizePoint(
+    t.target,
+    new fabric.Point(x, y),
+    "center",
+    "center"
+  );
+  const constraint = t.target.translateToOriginPoint(
+    centerPoint,
+    anchorPoint,
+    t.originY
+  );
 
-  let newWidth = width - ( newLeft.x / t.target.scaleX - left);
+  let newWidth = width - (newLeft.x / t.target.scaleX - left);
   if (newWidth + t.target.cropX > naturalWidth) {
     newWidth = naturalWidth - t.target.cropX;
   }
@@ -89,13 +113,22 @@ function cropFromLeftFlig(eventData, transform, x, y) {
 // @ts-ignore
 function cropFromRight(eventData, transform, x, y) {
   const t = transform;
-  const anchorPoint = 'left';
+  const anchorPoint = "left";
   const { width } = t.target;
   const naturalWidth = t.target.getOriginalElementWidth();
   const right = width / 2;
   const centerPoint = t.target.getRelativeCenterPoint();
-  const newRight = normalizePoint(t.target, new fabric.Point(x, y), 'center', 'center');
-  const constraint = t.target.translateToOriginPoint(centerPoint, anchorPoint, t.originY);
+  const newRight = normalizePoint(
+    t.target,
+    new fabric.Point(x, y),
+    "center",
+    "center"
+  );
+  const constraint = t.target.translateToOriginPoint(
+    centerPoint,
+    anchorPoint,
+    t.originY
+  );
 
   let newWidth = width - (right - newRight.x / t.target.scaleX);
 
@@ -113,19 +146,29 @@ function cropFromRight(eventData, transform, x, y) {
 // @ts-ignore
 function cropFromRightFlig(eventData, transform, x, y) {
   const t = transform;
-  const anchorPoint = 'left';
+  const anchorPoint = "left";
   const { width } = t.target;
   const right = width / 2;
   const centerPoint = t.target.getRelativeCenterPoint();
   // const newRight = normalizePoint(t.target, new fabric.Point(x, y), 'center', 'center');
-  const newRight = fabric.controlsUtils.getLocalPoint(transform, 'center', 'center', x, y);
-  const constraint = t.target.translateToOriginPoint(centerPoint, anchorPoint, t.originY);
+  const newRight = fabric.controlsUtils.getLocalPoint(
+    transform,
+    "center",
+    "center",
+    x,
+    y
+  );
+  const constraint = t.target.translateToOriginPoint(
+    centerPoint,
+    anchorPoint,
+    t.originY
+  );
 
   let changeX = right - newRight.x / t.target.scaleX;
   let newWidth = width - changeX;
 
-  if ((t.target.cropX + changeX) < 0) {
-    changeX = -(t.target.cropX);
+  if (t.target.cropX + changeX < 0) {
+    changeX = -t.target.cropX;
     newWidth = width + t.target.cropX;
   }
   if (newWidth <= 0) {
@@ -149,19 +192,29 @@ function cropFromRightFlig(eventData, transform, x, y) {
 // @ts-ignore
 function cropFromTop(eventData, transform, x, y) {
   const t = transform;
-  const anchorPoint = 'bottom';
+  const anchorPoint = "bottom";
   const { height } = t.target;
   const top = -(height / 2);
   const centerPoint = t.target.getRelativeCenterPoint();
   // const newTop = normalizePoint(t.target, new fabric.Point(x, y), 'center', 'center');
-  const newTop = fabric.controlsUtils.getLocalPoint(transform, 'center', 'center', x, y);
-  const constraint = t.target.translateToOriginPoint(centerPoint, t.originX, anchorPoint);
+  const newTop = fabric.controlsUtils.getLocalPoint(
+    transform,
+    "center",
+    "center",
+    x,
+    y
+  );
+  const constraint = t.target.translateToOriginPoint(
+    centerPoint,
+    t.originX,
+    anchorPoint
+  );
 
   let changeY = newTop.y / t.target.scaleY - top;
   let newHeight = height - changeY;
 
-  if ((t.target.cropY + changeY) < 0) {
-    changeY = -(t.target.cropY);
+  if (t.target.cropY + changeY < 0) {
+    changeY = -t.target.cropY;
     newHeight = height + t.target.cropY;
   }
   if (newHeight <= 0) {
@@ -177,14 +230,24 @@ function cropFromTop(eventData, transform, x, y) {
 // @ts-ignore
 function cropFromTopFlig(eventData, transform, x, y) {
   const t = transform;
-  const anchorPoint = 'bottom';
+  const anchorPoint = "bottom";
   const { height } = t.target;
   const naturalHeight = t.target.getOriginalElementHeight();
   const top = -(height / 2);
   const centerPoint = t.target.getRelativeCenterPoint();
   // const newTop = normalizePoint(t.target, new fabric.Point(x, y), 'center', 'center');
-  const newTop = fabric.controlsUtils.getLocalPoint(transform, 'center', 'center', x, y);
-  const constraint = t.target.translateToOriginPoint(centerPoint, t.originX, anchorPoint);
+  const newTop = fabric.controlsUtils.getLocalPoint(
+    transform,
+    "center",
+    "center",
+    x,
+    y
+  );
+  const constraint = t.target.translateToOriginPoint(
+    centerPoint,
+    t.originX,
+    anchorPoint
+  );
 
   let newHeight = height - (newTop.y / t.target.scaleY - top);
   if (newHeight + t.target.cropY > naturalHeight) {
@@ -209,14 +272,24 @@ function cropFromTopFlig(eventData, transform, x, y) {
 // @ts-ignore
 function cropFromBottom(eventData, transform, x, y) {
   const t = transform;
-  const anchorPoint = 'top';
+  const anchorPoint = "top";
   const { height } = t.target;
   const naturalHeight = t.target.getOriginalElementHeight();
   const bottom = height / 2;
   const centerPoint = t.target.getRelativeCenterPoint();
   // const newBottom = normalizePoint(t.target, new fabric.Point(x, y), 'center', 'center');
-  const newBottom = fabric.controlsUtils.getLocalPoint(transform, 'center', 'center', x, y);
-  const constraint = t.target.translateToOriginPoint(centerPoint, t.originX, anchorPoint);
+  const newBottom = fabric.controlsUtils.getLocalPoint(
+    transform,
+    "center",
+    "center",
+    x,
+    y
+  );
+  const constraint = t.target.translateToOriginPoint(
+    centerPoint,
+    t.originX,
+    anchorPoint
+  );
 
   let newHeight = height - (bottom - newBottom.y / t.target.scaleY);
 
@@ -235,19 +308,29 @@ function cropFromBottom(eventData, transform, x, y) {
 // @ts-ignore
 function cropFromBottomFlig(eventData, transform, x, y) {
   const t = transform;
-  const anchorPoint = 'top';
+  const anchorPoint = "top";
   const { height } = t.target;
   const bottom = height / 2;
   const centerPoint = t.target.getRelativeCenterPoint();
   // const newBottom = normalizePoint(t.target, new fabric.Point(x, y), 'center', 'center');
-  const newBottom = fabric.controlsUtils.getLocalPoint(transform, 'center', 'center', x, y);
-  const constraint = t.target.translateToOriginPoint(centerPoint, t.originX, anchorPoint);
+  const newBottom = fabric.controlsUtils.getLocalPoint(
+    transform,
+    "center",
+    "center",
+    x,
+    y
+  );
+  const constraint = t.target.translateToOriginPoint(
+    centerPoint,
+    t.originX,
+    anchorPoint
+  );
 
-  let changeY = bottom - newBottom.y / t.target.scaleY
+  let changeY = bottom - newBottom.y / t.target.scaleY;
   let newHeight = height - changeY;
 
-  if ((t.target.cropY + changeY) < 0) {
-    changeY = -(t.target.cropY);
+  if (t.target.cropY + changeY < 0) {
+    changeY = -t.target.cropY;
     newHeight = height + t.target.cropY;
   }
   if (newHeight <= 0) {
@@ -268,36 +351,60 @@ const withReadapatingTheShape = (handler) => (eventData, transform, x, y) => {
 };
 
 // @ts-ignore
-const cropFromTopLeft = withReadapatingTheShape((eventData, transform, x, y) => {
-  const { target } =  transform;
-  const left = target.flipX ?  cropFromLeftFlig(eventData, transform, x, y) : cropFromLeft(eventData, transform, x, y);
-  const top = target.flipY ? cropFromTopFlig(eventData, transform, x, y) : cropFromTop(eventData, transform, x, y);
-  return left || top;
-});
+const cropFromTopLeft = withReadapatingTheShape(
+  (eventData, transform, x, y) => {
+    const { target } = transform;
+    const left = target.flipX
+      ? cropFromLeftFlig(eventData, transform, x, y)
+      : cropFromLeft(eventData, transform, x, y);
+    const top = target.flipY
+      ? cropFromTopFlig(eventData, transform, x, y)
+      : cropFromTop(eventData, transform, x, y);
+    return left || top;
+  }
+);
 
 // @ts-ignore
-const cropFromBottomRight = withReadapatingTheShape((eventData, transform, x, y) => {
-  const { target } =  transform;
-  const right = target.flipX ? cropFromRightFlig(eventData, transform, x, y) : cropFromRight(eventData, transform, x, y);
-  const bottom = target.flipY ? cropFromBottomFlig(eventData, transform, x, y) : cropFromBottom(eventData, transform, x, y);
-  return right || bottom;
-});
+const cropFromBottomRight = withReadapatingTheShape(
+  (eventData, transform, x, y) => {
+    const { target } = transform;
+    const right = target.flipX
+      ? cropFromRightFlig(eventData, transform, x, y)
+      : cropFromRight(eventData, transform, x, y);
+    const bottom = target.flipY
+      ? cropFromBottomFlig(eventData, transform, x, y)
+      : cropFromBottom(eventData, transform, x, y);
+    return right || bottom;
+  }
+);
 
 // @ts-ignore
-const cropFromBottomLeft = withReadapatingTheShape((eventData, transform, x, y) => {
-  const { target } =  transform;
-  const left = target.flipX ? cropFromLeftFlig(eventData, transform, x, y) : cropFromLeft(eventData, transform, x, y);
-  const bottom = target.flipY ? cropFromBottomFlig(eventData, transform, x, y) : cropFromBottom(eventData, transform, x, y);
-  return left || bottom;
-});
+const cropFromBottomLeft = withReadapatingTheShape(
+  (eventData, transform, x, y) => {
+    const { target } = transform;
+    const left = target.flipX
+      ? cropFromLeftFlig(eventData, transform, x, y)
+      : cropFromLeft(eventData, transform, x, y);
+    const bottom = target.flipY
+      ? cropFromBottomFlig(eventData, transform, x, y)
+      : cropFromBottom(eventData, transform, x, y);
+    return left || bottom;
+  }
+);
 
 // @ts-ignore
-const cropFromTopRight = withReadapatingTheShape((eventData, transform, x, y) => {
-  const { target } =  transform;
-  const right = target.flipX ? cropFromRightFlig(eventData, transform, x, y) : cropFromRight(eventData, transform, x, y);
-  const top = target.flipY ? cropFromTopFlig(eventData, transform, x, y) : cropFromTop(eventData, transform, x, y);
-  return right || top;
-});
+const cropFromTopRight = withReadapatingTheShape(
+  (eventData, transform, x, y) => {
+    const { target } = transform;
+    const right = target.flipX
+      ? cropFromRightFlig(eventData, transform, x, y)
+      : cropFromRight(eventData, transform, x, y);
+    const top = target.flipY
+      ? cropFromTopFlig(eventData, transform, x, y)
+      : cropFromTop(eventData, transform, x, y);
+    return right || top;
+  }
+);
 
 // @ts-ignore
 function imageCornerTL(dim, finalMatrix, fabricObject /* currentControl */) {
@@ -305,9 +412,9 @@ function imageCornerTL(dim, finalMatrix, fabricObject /* currentControl */) {
   const vpt = fabricObject.getViewportTransform();
   const _finalMatrix = fabric.util.multiplyTransformMatrices(vpt, matrix);
   const point = {
-    x: (-fabricObject.width / 2 - fabricObject.cropX),
-    y: (-fabricObject.height / 2 - fabricObject.cropY),
-  }
+    x: -fabricObject.width / 2 - fabricObject.cropX,
+    y: -fabricObject.height / 2 - fabricObject.cropY
+  };
   return fabric.util.transformPoint(point, _finalMatrix);
 }
 
@@ -318,9 +425,9 @@ function imageCornerTR(dim, finalMatrix, fabricObject /* currentControl */) {
   const _finalMatrix = fabric.util.multiplyTransformMatrices(vpt, matrix);
   const fullWidth = fabricObject.getOriginalElementWidth();
   const point = {
-    x: (fullWidth - fabricObject.width / 2 - fabricObject.cropX),
-    y: (-fabricObject.height / 2 - fabricObject.cropY),
-  }
+    x: fullWidth - fabricObject.width / 2 - fabricObject.cropX,
+    y: -fabricObject.height / 2 - fabricObject.cropY
+  };
   return fabric.util.transformPoint(point, _finalMatrix);
 }
 
@@ -332,9 +439,9 @@ function imageCornerBR(dim, finalMatrix, fabricObject /* currentControl */) {
   const fullWidth = fabricObject.getOriginalElementWidth();
   const fullHeight = fabricObject.getOriginalElementHeight();
   const point = {
-    x: (fullWidth - fabricObject.width / 2 - fabricObject.cropX),
-    y: (fullHeight - fabricObject.height / 2 - fabricObject.cropY),
-  }
+    x: fullWidth - fabricObject.width / 2 - fabricObject.cropX,
+    y: fullHeight - fabricObject.height / 2 - fabricObject.cropY
+  };
   return fabric.util.transformPoint(point, _finalMatrix);
 }
 
@@ -345,9 +452,9 @@ function imageCornerBL(dim, finalMatrix, fabricObject /* currentControl */) {
   const _finalMatrix = fabric.util.multiplyTransformMatrices(vpt, matrix);
   const fullHeight = fabricObject.getOriginalElementHeight();
   const point = {
-    x: (-fabricObject.width / 2 - fabricObject.cropX),
-    y: (fullHeight - fabricObject.height / 2 - fabricObject.cropY),
-  }
+    x: -fabricObject.width / 2 - fabricObject.cropX,
+    y: fullHeight - fabricObject.height / 2 - fabricObject.cropY
+  };
   // @ts-ignore
   return fabric.util.transformPoint(point, _finalMatrix);
 }
@@ -361,12 +468,28 @@ function scaleEquallyCropTR(eventData, transform, x, y) {
   const anchorOriginX = target.cropX / target.width;
   const anchorOriginY = remainderY / target.height;
   const centerPoint = target.getRelativeCenterPoint();
-  const constraint = target.translateToOriginPoint(centerPoint, -anchorOriginX, 1 + anchorOriginY);
+  const constraint = target.translateToOriginPoint(
+    centerPoint,
+    -anchorOriginX,
+    1 + anchorOriginY
+  );
   // const newPoint = normalizePoint(target, new fabric.Point(x, y), -anchorOriginX, 1 + anchorOriginY);
-  const newPoint = fabric.controlsUtils.getLocalPoint(transform, -anchorOriginX, 1 + anchorOriginY, x, y);
+  const newPoint = fabric.controlsUtils.getLocalPoint(
+    transform,
+    -anchorOriginX,
+    1 + anchorOriginY,
+    x,
+    y
+  );
   const oldScaleX = target.scaleX;
   const oldScaleY = target.scaleY;
-  const scale = calcScale(newPoint, fullHeight, fullWidth, target.flipX, target.flipY);
+  const scale = calcScale(
+    newPoint,
+    fullHeight,
+    fullWidth,
+    target.flipX,
+    target.flipY
+  );
   const scaleChangeX = scale / oldScaleX;
   const scaleChangeY = scale / oldScaleY;
   const newWidth = target.width / scaleChangeX;
@@ -375,7 +498,10 @@ function scaleEquallyCropTR(eventData, transform, x, y) {
   const newCropX = target.cropX / scaleChangeX;
   const newCropY = fullHeight - newHeight - newRemainderY;
 
-  if (newCropX + newWidth > fullWidth || newRemainderY + newHeight > fullHeight) {
+  if (
+    newCropX + newWidth > fullWidth ||
+    newRemainderY + newHeight > fullHeight
+  ) {
     return false;
   }
   target.scaleX = scale;
@@ -404,12 +530,28 @@ function scaleEquallyCropTRFlig(eventData, transform, x, y) {
   const anchorOriginX = remainderX / target.width;
   const anchorOriginY = target.cropY / target.height;
   const centerPoint = target.getRelativeCenterPoint();
-  const constraint = target.translateToOriginPoint(centerPoint, -anchorOriginX, 1 + anchorOriginY);
+  const constraint = target.translateToOriginPoint(
+    centerPoint,
+    -anchorOriginX,
+    1 + anchorOriginY
+  );
   // const newPoint = normalizePoint(target, new fabric.Point(x, y), -anchorOriginX, 1 + anchorOriginY);
-  const newPoint = fabric.controlsUtils.getLocalPoint(transform, -anchorOriginX, 1 + anchorOriginY, x, y);
+  const newPoint = fabric.controlsUtils.getLocalPoint(
+    transform,
+    -anchorOriginX,
+    1 + anchorOriginY,
+    x,
+    y
+  );
   const oldScaleX = target.scaleX;
   const oldScaleY = target.scaleY;
-  const scale = calcScale(newPoint, fullHeight, fullWidth, target.flipX, target.flipY);
+  const scale = calcScale(
+    newPoint,
+    fullHeight,
+    fullWidth,
+    target.flipX,
+    target.flipY
+  );
   const scaleChangeX = scale / oldScaleX;
   const scaleChangeY = scale / oldScaleY;
   const newWidth = target.width / scaleChangeX;
@@ -435,7 +577,11 @@ function scaleEquallyCropTRFlig(eventData, transform, x, y) {
   const newAnchorOriginX = scaledRemainderX / newWidth;
   const newAnchorOriginY = newCropY / newHeight;
 
-  target.setPositionByOrigin(constraint, -newAnchorOriginX, 1 + newAnchorOriginY);
+  target.setPositionByOrigin(
+    constraint,
+    -newAnchorOriginX,
+    1 + newAnchorOriginY
+  );
   return true;
 }
 
@@ -447,12 +593,28 @@ function scaleEquallyCropBR(eventData, transform, x, y) {
   const extraOriginX = target.cropX / target.width;
   const extraOriginY = target.cropY / target.height;
   const centerPoint = target.getRelativeCenterPoint();
-  const constraint = target.translateToOriginPoint(centerPoint, -extraOriginX, -extraOriginY);
+  const constraint = target.translateToOriginPoint(
+    centerPoint,
+    -extraOriginX,
+    -extraOriginY
+  );
   // const newPoint = normalizePoint(target, new fabric.Point(x, y), -extraOriginX, -extraOriginY);
-  const newPoint = fabric.controlsUtils.getLocalPoint(transform, -extraOriginX, -extraOriginY, x, y);
+  const newPoint = fabric.controlsUtils.getLocalPoint(
+    transform,
+    -extraOriginX,
+    -extraOriginY,
+    x,
+    y
+  );
   const oldScaleX = target.scaleX;
   const oldScaleY = target.scaleY;
-  const scale = calcScale(newPoint, fullHeight, fullWidth, target.flipX, target.flipY);
+  const scale = calcScale(
+    newPoint,
+    fullHeight,
+    fullWidth,
+    target.flipX,
+    target.flipY
+  );
   const scaleChangeX = scale / oldScaleX;
   const scaleChangeY = scale / oldScaleY;
   const newWidth = target.width / scaleChangeX;
@@ -491,10 +653,26 @@ function scaleEquallyCropBRFlig(eventData, transform, x, y) {
   const anchorOriginX = remainderX / target.width;
   const anchorOriginY = remainderY / target.height;
   const centerPoint = target.getRelativeCenterPoint();
-  const constraint = target.translateToOriginPoint(centerPoint, -anchorOriginX, -anchorOriginY);
+  const constraint = target.translateToOriginPoint(
+    centerPoint,
+    -anchorOriginX,
+    -anchorOriginY
+  );
   // const newPoint = normalizePoint(target, new fabric.Point(x, y), -anchorOriginX, -anchorOriginY);
-  const newPoint = fabric.controlsUtils.getLocalPoint(transform, -anchorOriginX, -anchorOriginY, x, y);
-  const scale = calcScale(newPoint, fullHeight, fullWidth, target.flipX, target.flipY);
+  const newPoint = fabric.controlsUtils.getLocalPoint(
+    transform,
+    -anchorOriginX,
+    -anchorOriginY,
+    x,
+    y
+  );
+  const scale = calcScale(
+    newPoint,
+    fullHeight,
+    fullWidth,
+    target.flipX,
+    target.flipY
+  );
   const oldScaleX = target.scaleX;
   const oldScaleY = target.scaleY;
   const scaleChangeX = scale / oldScaleX;
@@ -506,7 +684,10 @@ function scaleEquallyCropBRFlig(eventData, transform, x, y) {
   const newCropX = fullWidth - newWidth - scaledRemainderX;
   const newCropY = fullHeight - newHeight - scaledRemainderY;
 
-  if (newWidth + scaledRemainderX > fullWidth || newHeight + scaledRemainderY > fullHeight) {
+  if (
+    newWidth + scaledRemainderX > fullWidth ||
+    newHeight + scaledRemainderY > fullHeight
+  ) {
     return false;
   }
 
@@ -535,12 +716,28 @@ function scaleEquallyCropBL(eventData, transform, x, y) {
   const anchorOriginX = remainderX / target.width;
   const anchorOriginY = target.cropY / target.height;
   const centerPoint = target.getRelativeCenterPoint();
-  const constraint = target.translateToOriginPoint(centerPoint, 1 + anchorOriginX, -anchorOriginY);
+  const constraint = target.translateToOriginPoint(
+    centerPoint,
+    1 + anchorOriginX,
+    -anchorOriginY
+  );
   // const newPoint = normalizePoint(target, new fabric.Point(x, y), 1 + anchorOriginX, -anchorOriginY);
-  const newPoint = fabric.controlsUtils.getLocalPoint(transform, 1 + anchorOriginX, -anchorOriginY, x, y);
+  const newPoint = fabric.controlsUtils.getLocalPoint(
+    transform,
+    1 + anchorOriginX,
+    -anchorOriginY,
+    x,
+    y
+  );
   const oldScaleX = target.scaleX;
   const oldScaleY = target.scaleY;
-  const scale = calcScale(newPoint, fullHeight, fullWidth, target.flipX, target.flipY);
+  const scale = calcScale(
+    newPoint,
+    fullHeight,
+    fullWidth,
+    target.flipX,
+    target.flipY
+  );
   const scaleChangeX = scale / oldScaleX;
   const scaleChangeY = scale / oldScaleY;
   const newWidth = target.width / scaleChangeX;
@@ -566,7 +763,11 @@ function scaleEquallyCropBL(eventData, transform, x, y) {
   const newAnchorOriginX = scaledRemainderX / newWidth;
   const newAnchorOriginY = newCropY / newHeight;
 
-  target.setPositionByOrigin(constraint, 1 + newAnchorOriginX, -newAnchorOriginY);
+  target.setPositionByOrigin(
+    constraint,
+    1 + newAnchorOriginX,
+    -newAnchorOriginY
+  );
   return true;
 }
 
@@ -579,12 +780,28 @@ function scaleEquallyCropBLFlig(eventData, transform, x, y) {
   const anchorOriginX = target.cropX / target.width;
   const anchorOriginY = remainderY / target.height;
   const centerPoint = target.getRelativeCenterPoint();
-  const constraint = target.translateToOriginPoint(centerPoint, 1 + anchorOriginX, -anchorOriginY);
+  const constraint = target.translateToOriginPoint(
+    centerPoint,
+    1 + anchorOriginX,
+    -anchorOriginY
+  );
   // const newPoint = normalizePoint(target, new fabric.Point(x, y), 1 + anchorOriginX, -anchorOriginY);
-  const newPoint = fabric.controlsUtils.getLocalPoint(transform, 1 + anchorOriginX, -anchorOriginY, x, y);
+  const newPoint = fabric.controlsUtils.getLocalPoint(
+    transform,
+    1 + anchorOriginX,
+    -anchorOriginY,
+    x,
+    y
+  );
   const oldScaleX = target.scaleX;
   const oldScaleY = target.scaleY;
-  const scale = calcScale(newPoint, fullHeight, fullWidth, target.flipX, target.flipY);
+  const scale = calcScale(
+    newPoint,
+    fullHeight,
+    fullWidth,
+    target.flipX,
+    target.flipY
+  );
   const scaleChangeX = scale / oldScaleX;
   const scaleChangeY = scale / oldScaleY;
   const newWidth = target.width / scaleChangeX;
@@ -593,7 +810,10 @@ function scaleEquallyCropBLFlig(eventData, transform, x, y) {
   const newCropX = target.cropX / scaleChangeX;
   const newCropY = fullHeight - newHeight - newRemainderY;
 
-  if (newCropX + newWidth > fullWidth || newRemainderY + newHeight > fullHeight) {
+  if (
+    newCropX + newWidth > fullWidth ||
+    newRemainderY + newHeight > fullHeight
+  ) {
     return false;
   }
   target.scaleX = scale;
@@ -620,13 +840,29 @@ function scaleEquallyCropTL(eventData, transform, x, y) {
   const fullHeight = target.getOriginalElementHeight();
   const remainderX = fullWidth - target.width - target.cropX;
   const remainderY = fullHeight - target.height - target.cropY;
-  const anchorOriginX = 1 + (remainderX / target.width);
-  const anchorOriginY = 1 + (remainderY / target.height);
+  const anchorOriginX = 1 + remainderX / target.width;
+  const anchorOriginY = 1 + remainderY / target.height;
   const centerPoint = target.getRelativeCenterPoint();
-  const constraint = target.translateToOriginPoint(centerPoint, anchorOriginX, anchorOriginY);
+  const constraint = target.translateToOriginPoint(
+    centerPoint,
+    anchorOriginX,
+    anchorOriginY
+  );
   // const newPoint = normalizePoint(target, new fabric.Point(x, y), anchorOriginX, anchorOriginY);
-  const newPoint = fabric.controlsUtils.getLocalPoint(transform, anchorOriginX, anchorOriginY, x, y);
-  const scale = calcScale(newPoint, fullHeight, fullWidth, target.flipX, target.flipY);
+  const newPoint = fabric.controlsUtils.getLocalPoint(
+    transform,
+    anchorOriginX,
+    anchorOriginY,
+    x,
+    y
+  );
+  const scale = calcScale(
+    newPoint,
+    fullHeight,
+    fullWidth,
+    target.flipX,
+    target.flipY
+  );
   const oldScaleX = target.scaleX;
   const oldScaleY = target.scaleY;
   const scaleChangeX = scale / oldScaleX;
@@ -638,7 +874,10 @@ function scaleEquallyCropTL(eventData, transform, x, y) {
   const newCropX = fullWidth - newWidth - scaledRemainderX;
   const newCropY = fullHeight - newHeight - scaledRemainderY;
 
-  if (newWidth + scaledRemainderX > fullWidth || newHeight + scaledRemainderY > fullHeight) {
+  if (
+    newWidth + scaledRemainderX > fullWidth ||
+    newHeight + scaledRemainderY > fullHeight
+  ) {
     return false;
   }
 
@@ -652,10 +891,10 @@ function scaleEquallyCropTL(eventData, transform, x, y) {
     target.clippingPath.scaleX /= scaleChangeX;
     target.clippingPath.scaleY /= scaleChangeY;
   }
-  const newAnchorOriginX = 1 + (scaledRemainderX / newWidth);
-  const newAnchorOriginY = 1 + (scaledRemainderY / newHeight);
+  const newAnchorOriginX = 1 + scaledRemainderX / newWidth;
+  const newAnchorOriginY = 1 + scaledRemainderY / newHeight;
   target.setPositionByOrigin(constraint, newAnchorOriginX, newAnchorOriginY);
-  console.log(target, 'target');
+  console.log(target, "target");
   return true;
 }
 
@@ -664,15 +903,31 @@ function scaleEquallyCropTLFlig(eventData, transform, x, y) {
   const { target } = transform;
   const fullWidth = target.getOriginalElementWidth();
   const fullHeight = target.getOriginalElementHeight();
-  const extraOriginX = 1 + (target.cropX / target.width);
-  const extraOriginY = 1 + (target.cropY / target.height);
+  const extraOriginX = 1 + target.cropX / target.width;
+  const extraOriginY = 1 + target.cropY / target.height;
   const centerPoint = target.getRelativeCenterPoint();
-  const constraint = target.translateToOriginPoint(centerPoint, extraOriginX, extraOriginY);
+  const constraint = target.translateToOriginPoint(
+    centerPoint,
+    extraOriginX,
+    extraOriginY
+  );
   // const newPoint = normalizePoint(target, new fabric.Point(x, y), extraOriginX, extraOriginY);
-  const newPoint = fabric.controlsUtils.getLocalPoint(transform, extraOriginX, extraOriginY, x, y);
+  const newPoint = fabric.controlsUtils.getLocalPoint(
+    transform,
+    extraOriginX,
+    extraOriginY,
+    x,
+    y
+  );
   const oldScaleX = target.scaleX;
   const oldScaleY = target.scaleY;
-  const scale = calcScale(newPoint, fullHeight, fullWidth, target.flipX, target.flipY);
+  const scale = calcScale(
+    newPoint,
+    fullHeight,
+    fullWidth,
+    target.flipX,
+    target.flipY
+  );
   const scaleChangeX = scale / oldScaleX;
   const scaleChangeY = scale / oldScaleY;
   const newWidth = target.width / scaleChangeX;
@@ -695,8 +950,8 @@ function scaleEquallyCropTLFlig(eventData, transform, x, y) {
     target.clippingPath.scaleX /= scaleChangeX;
     target.clippingPath.scaleY /= scaleChangeY;
   }
-  const newExtraOriginX = 1 + (target.cropX / target.width);
-  const newExtraOriginY = 1 + (target.cropY / target.height);
+  const newExtraOriginX = 1 + target.cropX / target.width;
+  const newExtraOriginY = 1 + target.cropY / target.height;
   target.setPositionByOrigin(constraint, newExtraOriginX, newExtraOriginY);
   return true;
 }
@@ -725,5 +980,5 @@ export {
   scaleEquallyCropTLFlig,
   scaleEquallyCropBRFlig,
   scaleEquallyCropTRFlig,
-  scaleEquallyCropBLFlig,
+  scaleEquallyCropBLFlig
 };

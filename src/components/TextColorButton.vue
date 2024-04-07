@@ -2,7 +2,10 @@
   <div class="text-color-btn">
     <slot></slot>
     <div class="text-color-block">
-      <div class="text-color-block-content" :style="{ backgroundColor: color }"></div>
+      <div
+        class="text-color-block-content"
+        :style="{ backgroundColor: color }"
+      ></div>
     </div>
   </div>
 </template>
@@ -11,9 +14,9 @@
 defineProps({
   color: {
     type: String,
-    required: true,
-  },
-})
+    required: true
+  }
+});
 </script>
 
 <style lang="scss" scoped>

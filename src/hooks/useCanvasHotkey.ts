@@ -17,13 +17,31 @@ export default () => {
   const mainStore = useMainStore();
   const keyboardStore = useKeyboardStore();
   const templatesStore = useTemplatesStore();
-  const { disableHotkeys, handleElement, canvasObject, handleElementId, thumbnailsFocus, drawAreaFocus } = storeToRefs(mainStore);
+  const {
+    disableHotkeys,
+    handleElement,
+    canvasObject,
+    handleElementId,
+    thumbnailsFocus,
+    drawAreaFocus
+  } = storeToRefs(mainStore);
   const { currentTemplate, templateIndex } = storeToRefs(templatesStore);
-  const { ctrlKeyState, shiftKeyState, spaceKeyState } = storeToRefs(keyboardStore);
+  const { ctrlKeyState, shiftKeyState, spaceKeyState } =
+    storeToRefs(keyboardStore);
 
-  const { copyTemplate, cutTemplate, deleteTemplate, updateTemplateIndex } = useHandleTemplate();
+  const { copyTemplate, cutTemplate, deleteTemplate, updateTemplateIndex } =
+    useHandleTemplate();
 
-  const { copyElement, cutElement, pasteElement, deleteElement, moveElement, lockElement, combineElements, uncombineElements } = useHandleElement();
+  const {
+    copyElement,
+    cutElement,
+    pasteElement,
+    deleteElement,
+    moveElement,
+    lockElement,
+    combineElements,
+    uncombineElements
+  } = useHandleElement();
   const { createImageElement, createTextElement } = useHandleCreate();
   // const { selectAllElement } = useSelectAllElement()
   // const { moveElement } = useMoveElement()
@@ -121,7 +139,7 @@ export default () => {
     if (document.activeElement === document.body) {
       e.preventDefault();
     }
-  }
+  };
 
   const keydownListener = (e: KeyboardEvent) => {
     const [canvas] = useCanvas();
@@ -130,9 +148,11 @@ export default () => {
 
     const key = e.key.toUpperCase();
 
-    if (ctrlOrMetaKeyActive && !ctrlKeyState.value) keyboardStore.setCtrlKeyState(true);
+    if (ctrlOrMetaKeyActive && !ctrlKeyState.value)
+      keyboardStore.setCtrlKeyState(true);
     if (shiftKey && !shiftKeyState.value) keyboardStore.setShiftKeyState(true);
-    if (!disableHotkeys.value && key === KEYS.SPACE) keyboardStore.setSpaceKeyState(true);
+    if (!disableHotkeys.value && key === KEYS.SPACE)
+      keyboardStore.setSpaceKeyState(true);
 
     // if (ctrlOrMetaKeyActive && key === KEYS.P) {
     //   e.preventDefault()
@@ -276,21 +296,26 @@ export default () => {
     if (spaceKeyState.value) keyboardStore.setSpaceKeyState(false);
   };
 
-  const pasteListener = async (event: { preventDefault: () => void; clipboardData: any; originalEvent: { clipboardData: any } }) => {
-    console.log('document.activeElement', document.activeElement);
-    const { pasteElement } = useHandleElement()
+  const pasteListener = async (event: {
+    preventDefault: () => void;
+    clipboardData: any;
+    originalEvent: { clipboardData: any };
+  }) => {
+    console.log("document.activeElement", document.activeElement);
+    const { pasteElement } = useHandleElement();
     const [canvas] = useCanvas();
     if (document.activeElement === document.body) {
       event.preventDefault(); // 阻止默认粘贴行为
     } else {
-      return
+      return;
     }
 
-    const items = (event.clipboardData || event.originalEvent.clipboardData).items;
+    const items = (event.clipboardData || event.originalEvent.clipboardData)
+      .items;
     const fileAccept = ".pdf,.psd,.cdr,.ai,.svg,.jpg,.jpeg,.png,.webp,.json";
     const { addTemplate } = useHandleTemplate();
     const { setCanvasTransform } = useCanvasScale();
-    for (let item of items) {
+    for (const item of items) {
       if (item.kind === "file") {
         const file = item.getAsFile();
         const curFileSuffix: string | undefined = file.name.split(".").pop();
@@ -318,19 +343,32 @@ export default () => {
           await templatesStore.addTemplate(template);
           setCanvasTransform();
         }
-      } else if (item.kind === "string" && item.type.indexOf("text/plain") === 0) {
+      } else if (
+        item.kind === "string" &&
+        item.type.indexOf("text/plain") === 0
+      ) {
         // 文本数据
         item.getAsString((text: any) => {
           // 插入到文本框
           const activeObject = canvas.getActiveObject() as Textbox;
           // 如果是激活的文字把复制的内容插入到对应光标位置
-          if (activeObject && (activeObject.type === "textbox" || activeObject.type === "i-text")) {
+          if (
+            activeObject &&
+            (activeObject.type === "textbox" || activeObject.type === "i-text")
+          ) {
             const cursorPosition = activeObject.selectionStart;
-            const textBeforeCursorPosition = activeObject.text.substring(0, cursorPosition);
-            const textAfterCursorPosition = activeObject.text.substring(cursorPosition);
+            const textBeforeCursorPosition = activeObject.text.substring(
+              0,
+              cursorPosition
+            );
+            const textAfterCursorPosition =
+              activeObject.text.substring(cursorPosition);
 
             // 更新文本对象的文本
-            activeObject.set("text", textBeforeCursorPosition + text + textAfterCursorPosition);
+            activeObject.set(
+              "text",
+              textBeforeCursorPosition + text + textAfterCursorPosition
+            );
 
             // 重新设置光标的位置
             activeObject.selectionStart = cursorPosition + text.length;
@@ -353,6 +391,6 @@ export default () => {
   return {
     keydownListener,
     keyupListener,
-    pasteListener,
+    pasteListener
   };
 };

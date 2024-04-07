@@ -9,11 +9,19 @@
     <template v-if="openStroke">
       <div class="row">
         <div class="stroke-name">描边厚度：</div>
-        <el-slider class="slider" v-model="handleElement.strokeWidth" @change="updateStrokeWidth"></el-slider>
+        <el-slider
+          class="slider"
+          v-model="handleElement.strokeWidth"
+          @change="updateStrokeWidth"
+        ></el-slider>
       </div>
       <div class="row">
         <div class="stroke-name">描边样式：</div>
-        <el-select class="stroke-option" v-model="handleElement.strokeLineCap" @change="updateStrokeLineCap">
+        <el-select
+          class="stroke-option"
+          v-model="handleElement.strokeLineCap"
+          @change="updateStrokeLineCap"
+        >
           <el-option value="butt" label="butt"></el-option>
           <el-option value="round" label="round"></el-option>
           <el-option value="square" label="square"></el-option>
@@ -25,7 +33,10 @@
           <template #reference>
             <ColorButton :color="handleElement.stroke" class="stroke-option" />
           </template>
-          <ColorPicker :modelValue="handleElement.stroke" @update:modelValue="(color: string) => updateStrokeColor(color)"/>
+          <ColorPicker
+            :modelValue="handleElement.stroke"
+            @update:modelValue="(color: string) => updateStrokeColor(color)"
+          />
         </el-popover>
       </div>
     </template>
@@ -33,51 +44,58 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore } from '@/store'
-import { TextboxElement } from '@/types/canvas'
-import useCanvas from '@/views/Canvas/useCanvas'
+import { ref, computed } from "vue";
+import { storeToRefs } from "pinia";
+import { useMainStore } from "@/store";
+import { TextboxElement } from "@/types/canvas";
+import useCanvas from "@/views/Canvas/useCanvas";
 
 const props = defineProps({
   hasStroke: {
     type: Boolean,
-    required: true,
-  },
-})
+    required: true
+  }
+});
 
-const [ canvas ] = useCanvas()
-const { canvasObject } = storeToRefs(useMainStore())
+const [canvas] = useCanvas();
+const { canvasObject } = storeToRefs(useMainStore());
 
-
-const handleElement = computed(() => canvasObject.value as TextboxElement)
-const openStroke = ref(props.hasStroke)
+const handleElement = computed(() => canvasObject.value as TextboxElement);
+const openStroke = ref(props.hasStroke);
 
 const updateStrokeColor = (stroke: string) => {
-  if (!handleElement.value) return
-  handleElement.value.set({stroke})
-  canvas.renderAll()
-}
+  if (!handleElement.value) return;
+  handleElement.value.set({ stroke });
+  canvas.renderAll();
+};
 
 const updateStrokeWidth = (strokeWidth: number) => {
-  if (!handleElement.value) return
-  handleElement.value.set({strokeWidth})
-  canvas.renderAll()
-}
+  if (!handleElement.value) return;
+  handleElement.value.set({ strokeWidth });
+  canvas.renderAll();
+};
 
 const updateStrokeLineCap = (strokeLineCap: string) => {
-  if (!handleElement.value) return
-  handleElement.value.set({strokeLineCap})
-  canvas.renderAll()
-}
+  if (!handleElement.value) return;
+  handleElement.value.set({ strokeLineCap });
+  canvas.renderAll();
+};
 
 const toggleStroke = () => {
-  if (!handleElement.value) return
-  const stroke = openStroke.value ? (!handleElement.value.stroke ? '#000' : '') : ''
-  const strokeWidth = openStroke.value ? (!handleElement.value.stroke ? 1 : 0) : 0
-  handleElement.value.set({stroke, strokeWidth})
-  canvas.renderAll()
-}
+  if (!handleElement.value) return;
+  const stroke = openStroke.value
+    ? !handleElement.value.stroke
+      ? "#000"
+      : ""
+    : "";
+  const strokeWidth = openStroke.value
+    ? !handleElement.value.stroke
+      ? 1
+      : 0
+    : 0;
+  handleElement.value.set({ stroke, strokeWidth });
+  canvas.renderAll();
+};
 </script>
 
 <style lang="scss" scoped>

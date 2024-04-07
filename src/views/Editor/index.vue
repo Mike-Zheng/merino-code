@@ -1,5 +1,11 @@
 <template>
-  <div class="yft-design" v-drop-image="{ url: 'YourUploadUrl', highlightStyle: { backgroundColor: 'lightblue' } }">
+  <div
+    class="yft-design"
+    v-drop-image="{
+      url: 'YourUploadUrl',
+      highlightStyle: { backgroundColor: 'lightblue' }
+    }"
+  >
     <div class="layout-content">
       <CanvasLeft class="layout-content-left" />
       <CanvasMenu class="layout-content-menu" />
@@ -58,7 +64,7 @@ import CanvasTour from "./CanvasTour/index.vue";
   user-select: none;
 }
 .layout-content-center {
-  width: calc(100% - 50px - 160px );
+  width: calc(100% - 50px - 160px);
 
   .center-header {
     position: relative;

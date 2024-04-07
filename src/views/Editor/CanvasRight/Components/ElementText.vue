@@ -11,19 +11,24 @@
           <el-option value="0"></el-option>
         </el-select>
       </el-col>
-    </el-row> 
+    </el-row>
 
     <el-row class="mt-10">
       <el-col :span="6">
         <el-tooltip placement="top" content="文字颜色">
           <div @click.stop class="tooltip-popover">
-            <el-popover trigger="click" placement="bottom" :width="265" @click.stop>
+            <el-popover
+              trigger="click"
+              placement="bottom"
+              :width="265"
+              @click.stop
+            >
               <template #reference>
                 <el-button class="font-color">
                   <IconText />
                 </el-button>
               </template>
-              <ColorPicker :modelValue="fontColor"/>
+              <ColorPicker :modelValue="fontColor" />
             </el-popover>
           </div>
         </el-tooltip>
@@ -37,7 +42,7 @@
                   <IconHighLight />
                 </el-button>
               </template>
-              <ColorPicker :modelValue="fontColor"/>
+              <ColorPicker :modelValue="fontColor" />
             </el-popover>
           </div>
         </el-tooltip>
@@ -45,15 +50,11 @@
       <el-col :span="12">
         <el-button-group class="full-group">
           <el-tooltip placement="top" content="增大字号">
-            <el-button class="font-size">
-              <IconFontSize />+
-            </el-button>
+            <el-button class="font-size"> <IconFontSize />+ </el-button>
           </el-tooltip>
 
           <el-tooltip placement="top" content="减小字号">
-            <el-button>
-              <IconFontSize />-
-            </el-button>
+            <el-button> <IconFontSize />- </el-button>
           </el-tooltip>
         </el-button-group>
       </el-col>
@@ -124,10 +125,9 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue'
-const fontColor = ref('#000')
-const handlePathText = ref(true)
-
+import { computed, ref, watch } from "vue";
+const fontColor = ref("#000");
+const handlePathText = ref(true);
 </script>
 
 <style lang="scss" scoped>

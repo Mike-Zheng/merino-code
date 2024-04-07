@@ -6,15 +6,15 @@
  */
 
 //
-export const pattern1 = /[?&]name=([^&]*)(&|$)/
+export const pattern1 = /[?&]name=([^&]*)(&|$)/;
 // 匹配标签
-export const regTag = /<text.+?<\/text>/
+export const regTag = /<text.+?<\/text>/;
 // 匹配标签内的内容
-export const regContent = /(?<=>).+?(?=<)/
+export const regContent = /(?<=>).+?(?=<)/;
 
 // 匹配两个字符之间的内容
 // 因为match带分组的话，会匹配出每个分组的内容
-export const reg1 = /a(\S*)b/
+export const reg1 = /a(\S*)b/;
 // const s = 'aasdfsdafsdfb'
 // const result = s.match(reg1)
 // if (result) {
@@ -22,4 +22,4 @@ export const reg1 = /a(\S*)b/
 // }
 
 // 匹配所有字符。 .* 不包括 \n
-export const regAllCharacter = /---([\s\S]*)---$/m
+export const regAllCharacter = /---([\s\S]*)---$/m;

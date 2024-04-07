@@ -1,4 +1,4 @@
-import type { 
+import type {
   Control,
   StaticCanvas,
   Canvas,
@@ -6,21 +6,19 @@ import type {
   Point,
   Object as FabricObject,
   Object as StaticFabricObject
-} from 'fabric';
+} from "fabric";
 // import type { FabricObjectSVGExportMixin } from 'fabric';
-import type { Group } from 'fabric';
-import type { TOriginX, TOriginY, TRadian } from './typedefs';
-import type { saveObjectTransform } from '@/utils/objectTransforms';
-
+import type { Group } from "fabric";
+import type { TOriginX, TOriginY, TRadian } from "./typedefs";
+import type { saveObjectTransform } from "@/utils/objectTransforms";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface, @typescript-eslint/no-unused-vars
-export interface BaseFabricObject
-  extends StaticFabricObject {}
-    // FabricObjectSVGExportMixin {}
+export interface BaseFabricObject extends StaticFabricObject {}
+// FabricObjectSVGExportMixin {}
 
 export type ModifierKey = keyof Pick<
   MouseEvent | PointerEvent | TouchEvent,
-  'altKey' | 'shiftKey' | 'ctrlKey' | 'metaKey'
+  "altKey" | "shiftKey" | "ctrlKey" | "metaKey"
 >;
 
 export type TOptionalModifierKey = ModifierKey | null | undefined;
@@ -106,11 +104,11 @@ export type BasicTransformEvent<E extends Event = TPointerEvent> = TEvent<E> & {
 };
 
 export type TModificationEvents =
-  | 'moving'
-  | 'scaling'
-  | 'rotating'
-  | 'skewing'
-  | 'resizing';
+  | "moving"
+  | "scaling"
+  | "rotating"
+  | "skewing"
+  | "resizing";
 
 export type ModifiedEvent<E extends Event = TPointerEvent> = TEvent<E> & {
   transform: Transform;
@@ -119,7 +117,7 @@ export type ModifiedEvent<E extends Event = TPointerEvent> = TEvent<E> & {
 };
 
 type ModificationEventsSpec<
-  Prefix extends string = '',
+  Prefix extends string = "",
   Modification = BasicTransformEvent,
   Modified = ModifiedEvent | never
 > = Record<`${Prefix}${TModificationEvents}`, Modification> &
@@ -128,11 +126,11 @@ type ModificationEventsSpec<
 type ObjectModificationEvents = ModificationEventsSpec;
 
 type CanvasModificationEvents = ModificationEventsSpec<
-  'object:',
+  "object:",
   BasicTransformEvent & { target: FabricObject },
   ModifiedEvent | { target: FabricObject }
 > & {
-  'before:transform': TEvent & { transform: Transform };
+  "before:transform": TEvent & { transform: Transform };
 };
 
 export type TPointerEventInfo<E extends TPointerEvent = TPointerEvent> =
@@ -179,35 +177,35 @@ type DnDEvents = {
   dragenter: DragEventData & InEvent;
   dragleave: DragEventData & OutEvent;
   dragend: DragEventData;
-  'drop:before': DropEventData;
+  "drop:before": DropEventData;
   drop: DropEventData;
-  'drop:after': DropEventData;
+  "drop:after": DropEventData;
 };
 
 type CanvasDnDEvents = DnDEvents & {
-  'drag:enter': DragEventData & InEvent;
-  'drag:leave': DragEventData & OutEvent;
+  "drag:enter": DragEventData & InEvent;
+  "drag:leave": DragEventData & OutEvent;
 };
 
 type CanvasSelectionEvents = {
-  'selection:created': Partial<TEvent> & {
+  "selection:created": Partial<TEvent> & {
     selected: FabricObject[];
   };
-  'selection:updated': Partial<TEvent> & {
+  "selection:updated": Partial<TEvent> & {
     selected: FabricObject[];
     deselected: FabricObject[];
   };
-  'before:selection:cleared': Partial<TEvent> & {
+  "before:selection:cleared": Partial<TEvent> & {
     deselected: FabricObject[];
   };
-  'selection:cleared': Partial<TEvent> & {
+  "selection:cleared": Partial<TEvent> & {
     deselected: FabricObject[];
   };
 };
 
 export type CollectionEvents = {
-  'object:added': { target: StaticFabricObject };
-  'object:removed': { target: StaticFabricObject };
+  "object:added": { target: StaticFabricObject };
+  "object:removed": { target: StaticFabricObject };
 };
 
 type BeforeSuffix<T extends string> = `${T}:before`;
@@ -215,10 +213,10 @@ type WithBeforeSuffix<T extends string> = T | BeforeSuffix<T>;
 
 type TPointerEvents<Prefix extends string> = Record<
   `${Prefix}${
-    | WithBeforeSuffix<'down'>
-    | WithBeforeSuffix<'move'>
-    | WithBeforeSuffix<'up'>
-    | 'dblclick'}`,
+    | WithBeforeSuffix<"down">
+    | WithBeforeSuffix<"move">
+    | WithBeforeSuffix<"up">
+    | "dblclick"}`,
   TPointerEventInfo
 > &
   Record<`${Prefix}wheel`, TPointerEventInfo<WheelEvent>> &
@@ -226,17 +224,17 @@ type TPointerEvents<Prefix extends string> = Record<
   Record<`${Prefix}out`, TPointerEventInfo & OutEvent>;
 
 export type TPointerEventNames =
-  | WithBeforeSuffix<'down'>
-  | WithBeforeSuffix<'move'>
-  | WithBeforeSuffix<'up'>
-  | 'dblclick'
-  | 'wheel';
+  | WithBeforeSuffix<"down">
+  | WithBeforeSuffix<"move">
+  | WithBeforeSuffix<"up">
+  | "dblclick"
+  | "wheel";
 
-export type ObjectPointerEvents = TPointerEvents<'mouse'>;
-export type CanvasPointerEvents = TPointerEvents<'mouse:'>;
+export type ObjectPointerEvents = TPointerEvents<"mouse">;
+export type CanvasPointerEvents = TPointerEvents<"mouse:">;
 
 export type MiscEvents = {
-  'contextmenu:before': SimpleEventHandler<Event>;
+  "contextmenu:before": SimpleEventHandler<Event>;
   contextmenu: SimpleEventHandler<Event>;
 };
 
@@ -257,16 +255,16 @@ export type ObjectEvents = ObjectPointerEvents &
     removed: { target: Group | Canvas | StaticCanvas };
 
     // erasing
-    'erasing:end': { path: FabricObject };
+    "erasing:end": { path: FabricObject };
   };
 
 export type StaticCanvasEvents = CollectionEvents & {
   // tree
-  'canvas:cleared': never;
+  "canvas:cleared": never;
 
   // rendering
-  'before:render': { ctx: CanvasRenderingContext2D };
-  'after:render': { ctx: CanvasRenderingContext2D };
+  "before:render": { ctx: CanvasRenderingContext2D };
+  "after:render": { ctx: CanvasRenderingContext2D };
 };
 
 export type CanvasEvents = StaticCanvasEvents &
@@ -276,12 +274,12 @@ export type CanvasEvents = StaticCanvasEvents &
   CanvasModificationEvents &
   CanvasSelectionEvents & {
     // brushes
-    'before:path:created': { path: FabricObject };
-    'path:created': { path: FabricObject };
+    "before:path:created": { path: FabricObject };
+    "path:created": { path: FabricObject };
 
     // erasing
-    'erasing:start': never;
-    'erasing:end':
+    "erasing:start": never;
+    "erasing:end":
       | never
       | {
           path: FabricObject;
@@ -294,8 +292,8 @@ export type CanvasEvents = StaticCanvasEvents &
         };
 
     // IText
-    'text:selection:changed': { target: IText };
-    'text:changed': { target: IText };
-    'text:editing:entered': { target: IText };
-    'text:editing:exited': { target: IText };
+    "text:selection:changed": { target: IText };
+    "text:changed": { target: IText };
+    "text:editing:entered": { target: IText };
+    "text:editing:exited": { target: IText };
   };

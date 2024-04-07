@@ -2,22 +2,23 @@
   <div class="export-svg-dialog">
     <div class="preview" v-html="svgHtml"></div>
     <div class="btns">
-      <el-button class="btn export" type="primary" @click="exportSVG()">导出 SVG</el-button>
+      <el-button class="btn export" type="primary" @click="exportSVG()"
+        >导出 SVG</el-button
+      >
       <el-button class="btn close" @click="emit('close')">关闭</el-button>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import useCanvasExport from '@/hooks/useCanvasExport'
+import { computed } from "vue";
+import useCanvasExport from "@/hooks/useCanvasExport";
 
-const emit = defineEmits<{(event: 'close'): void}>()
+const emit = defineEmits<{ (event: "close"): void }>();
 
-const { exportSVG, getSVGData } = useCanvasExport()
+const { exportSVG, getSVGData } = useCanvasExport();
 
-const svgHtml = computed(() => getSVGData())
-
+const svgHtml = computed(() => getSVGData());
 </script>
 
 <style lang="scss" scoped>

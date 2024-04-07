@@ -94,7 +94,7 @@ const changeImageFilter = () => {
   const blendFilter = new filters.BlendColor({
     color: maskColor.value,
     mode: "add",
-    alpha: maskAlpha.value,
+    alpha: maskAlpha.value
   });
   handleElement.value.filters = handleElement.value.filters.filter(
     (obj) => obj.type !== BlendColorFilter
@@ -115,7 +115,7 @@ const toggleColorMask = () => {
       const blendFilter = new filters.BlendColor({
         color: maskColor.value,
         mode: "add",
-        alpha: maskAlpha.value,
+        alpha: maskAlpha.value
       });
       handleElement.value.filters.push(blendFilter as filters.BaseFilter);
       handleElement.value.applyFilters();

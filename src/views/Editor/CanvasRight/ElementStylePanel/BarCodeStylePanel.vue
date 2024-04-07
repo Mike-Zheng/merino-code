@@ -25,14 +25,20 @@
       <el-col :span="11">
         <div class="title">{{ $t("style.width") }}：</div>
         <div class="row">
-          <el-input v-model="handleElement.codeOption.width" @change="generateBarCode"></el-input>
+          <el-input
+            v-model="handleElement.codeOption.width"
+            @change="generateBarCode"
+          ></el-input>
         </div>
       </el-col>
       <el-col :span="2"></el-col>
       <el-col :span="11">
         <div class="title">{{ $t("style.height") }}：</div>
         <div class="row">
-          <el-input v-model="handleElement.codeOption.height" @change="generateBarCode"></el-input>
+          <el-input
+            v-model="handleElement.codeOption.height"
+            @change="generateBarCode"
+          ></el-input>
         </div>
       </el-col>
     </el-row>
@@ -50,7 +56,9 @@
             </template>
             <ColorPicker
               :modelValue="handleElement.codeOption.background"
-              @update:modelValue="(value: string) => updateBackgroundColor(value)"
+              @update:modelValue="
+                (value: string) => updateBackgroundColor(value)
+              "
             />
           </el-popover>
         </div>

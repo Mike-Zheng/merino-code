@@ -1,6 +1,6 @@
 // https://iconpark.bytedance.com/official
 
-import { App } from 'vue'
+import { App } from "vue";
 import {
   PlayOne,
   FullScreenPlay,
@@ -165,8 +165,8 @@ import {
   Translate,
   MagicWand,
   H1,
-  H3,
-} from '@icon-park/vue-next'
+  H3
+} from "@icon-park/vue-next";
 
 export const icons = {
   IconPlayOne: PlayOne,
@@ -331,12 +331,12 @@ export const icons = {
   IconTranslate: Translate,
   IconMagicWand: MagicWand,
   IconH1: H1,
-  IconH3: H3,
-}
+  IconH3: H3
+};
 
 export default {
   install(app: App) {
-  for (const [key, component] of Object.entries(icons))
-    app.component(key, component)
+    for (const [key, component] of Object.entries(icons))
+      app.component(key, component);
   }
-}
+};

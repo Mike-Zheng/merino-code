@@ -1,20 +1,23 @@
-import mousetrap, { ExtendedKeyboardEvent } from 'mousetrap'
-import { isArray, isFunction, isObject, isString } from 'lodash-es'
-import { createDecorator } from './instantiation/instantiation'
-import { registerSingleton, InstantiationType } from './instantiation/extensions'
-import { runWhenIdle } from '@/utils/async'
+import mousetrap, { ExtendedKeyboardEvent } from "mousetrap";
+import { isArray, isFunction, isObject, isString } from "lodash-es";
+import { createDecorator } from "./instantiation/instantiation";
+import {
+  registerSingleton,
+  InstantiationType
+} from "./instantiation/extensions";
+import { runWhenIdle } from "@/utils/async";
 
-export const IKeybindingService = createDecorator<Keybinding>('Keybinding')
+export const IKeybindingService = createDecorator<Keybinding>("Keybinding");
 
-type Callback = (e: ExtendedKeyboardEvent, combo: string) => void
+type Callback = (e: ExtendedKeyboardEvent, combo: string) => void;
 
 export class Keybinding extends mousetrap {
-  declare readonly _serviceBrand: undefined
+  declare readonly _serviceBrand: undefined;
 
-  public mod = /Mac|iPod|iPhone|iPad/.test(navigator.platform) ? '⌘' : 'Ctrl'
+  public mod = /Mac|iPod|iPhone|iPad/.test(navigator.platform) ? "⌘" : "Ctrl";
 
   constructor() {
-    super()
+    super();
   }
 
   /**
@@ -32,32 +35,40 @@ export class Keybinding extends mousetrap {
    * as a second argument
    *
    */
-  override bind(keys: string | string[], callback: Callback, action?: string): this
-  override bind(keys: { [key: string]: Callback }, action?: string): this
+  override bind(
+    keys: string | string[],
+    callback: Callback,
+    action?: string
+  ): this;
+  override bind(keys: { [key: string]: Callback }, action?: string): this;
   override bind(
     keys: string | string[] | { [key: string]: Callback },
     callbackOrAction?: string | Callback,
-    action?: string,
+    action?: string
   ) {
     if ((isString(keys) || isArray(keys)) && isFunction(callbackOrAction)) {
-      return super.bind(keys, callbackOrAction, action)
+      return super.bind(keys, callbackOrAction, action);
     }
 
-    if (isObject(keys) && !isArray(keys) && (!callbackOrAction || isString(callbackOrAction))) {
+    if (
+      isObject(keys) &&
+      !isArray(keys) &&
+      (!callbackOrAction || isString(callbackOrAction))
+    ) {
       for (const key in keys) {
-        super.bind(key, keys[key], callbackOrAction)
+        super.bind(key, keys[key], callbackOrAction);
       }
     }
 
-    return this
+    return this;
   }
 
   override trigger(keys: string, action?: string | undefined) {
     runWhenIdle(() => {
-      super.trigger(keys, action)
-    })
-    return this
+      super.trigger(keys, action);
+    });
+    return this;
   }
 }
 
-registerSingleton(IKeybindingService, Keybinding, InstantiationType.Eager)
+registerSingleton(IKeybindingService, Keybinding, InstantiationType.Eager);

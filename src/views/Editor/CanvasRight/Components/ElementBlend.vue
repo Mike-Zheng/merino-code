@@ -6,7 +6,12 @@
       </el-col>
       <el-col :span="12">
         <el-select v-model="elementBlend" @change="changeBlendMode">
-          <el-option v-for="item in BlendModes" :key="item.id" :value="item.key" :label="item.name"></el-option>
+          <el-option
+            v-for="item in BlendModes"
+            :key="item.id"
+            :value="item.key"
+            :label="item.name"
+          ></el-option>
         </el-select>
       </el-col>
     </el-row>
@@ -18,21 +23,19 @@ import { computed, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useMainStore } from "@/store";
 import { Image } from "fabric";
-import { BlendModes } from '@/configs/images';
+import { BlendModes } from "@/configs/images";
 import useCanvas from "@/views/Canvas/useCanvas";
-
 
 const { canvasObject } = storeToRefs(useMainStore());
 const handleElement = computed(() => canvasObject.value as Image);
-const imageBlend = computed(() => handleElement.value.globalCompositeOperation)
+const imageBlend = computed(() => handleElement.value.globalCompositeOperation);
 const elementBlend = ref(imageBlend.value);
 
 const changeBlendMode = (globalCompositeOperation: string) => {
-  const [ canvas ] = useCanvas();
-  handleElement.value.set({globalCompositeOperation})
-  canvas.renderAll()
-}
-
+  const [canvas] = useCanvas();
+  handleElement.value.set({ globalCompositeOperation });
+  canvas.renderAll();
+};
 </script>
 
 <style lang="scss" scoped>

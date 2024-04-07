@@ -2,14 +2,18 @@
   <div class="export-pdf-dialog">
     <div class="configs">
       <div class="row">
-        <div class="title">{{ t('message.exportRange') }}：</div>
+        <div class="title">{{ t("message.exportRange") }}：</div>
         <el-radio-group class="config-item" v-model="rangeType">
-          <el-radio-button style="width: 50%;" value="all">{{ t('message.allPages') }}</el-radio-button>
-          <el-radio-button style="width: 50%;" value="current">{{ t('message.currentPage') }}</el-radio-button>
+          <el-radio-button style="width: 50%" value="all">{{
+            t("message.allPages")
+          }}</el-radio-button>
+          <el-radio-button style="width: 50%" value="current">{{
+            t("message.currentPage")
+          }}</el-radio-button>
         </el-radio-group>
       </div>
       <div class="row">
-        <div class="title">{{ t('message.quantityPerPage') }}：</div>
+        <div class="title">{{ t("message.quantityPerPage") }}：</div>
         <el-select class="config-item" v-model:value="count">
           <el-option :value="1">1</el-option>
           <el-option :value="2">2</el-option>
@@ -17,7 +21,7 @@
         </el-select>
       </div>
       <div class="row">
-        <div class="title">{{ t('message.blankEdges') }}：</div>
+        <div class="title">{{ t("message.blankEdges") }}：</div>
         <div class="config-item">
           <el-switch v-model:checked="padding" />
         </div>
@@ -25,36 +29,40 @@
     </div>
 
     <div class="btns">
-      <el-button class="btn export" type="primary" @click="expPDF()">{{ t('message.exportPDF') }}</el-button>
-      <el-button class="btn close" @click="emit('close')">{{ t('message.close') }}</el-button>
+      <el-button class="btn export" type="primary" @click="expPDF()">{{
+        t("message.exportPDF")
+      }}</el-button>
+      <el-button class="btn close" @click="emit('close')">{{
+        t("message.close")
+      }}</el-button>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import useI18n from '@/hooks/useI18n'
-import useCanvasExport from '@/hooks/useCanvasExport'
+import { ref } from "vue";
+import { storeToRefs } from "pinia";
+import useI18n from "@/hooks/useI18n";
+import useCanvasExport from "@/hooks/useCanvasExport";
 // import { useSlidesStore } from '@/store'
 // import { print } from '@/utils/print'
 
 // import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 
-const { exportPDF } = useCanvasExport()
-const { t } = useI18n()
+const { exportPDF } = useCanvasExport();
+const { t } = useI18n();
 const emit = defineEmits<{
-  (event: 'close'): void
-}>()
+  (event: "close"): void;
+}>();
 
 // const { slides, currentSlide, viewportRatio } = storeToRefs(useSlidesStore())
 
-const rangeType = ref<'all' | 'current'>('all')
-const count = ref(1)
-const padding = ref(false)
+const rangeType = ref<"all" | "current">("all");
+const count = ref(1);
+const padding = ref(false);
 
 const expPDF = () => {
-  exportPDF()
+  exportPDF();
   // if (!pdfThumbnailsRef.value) return
   // const pageSize = {
   //   width: 1600,
@@ -62,7 +70,7 @@ const expPDF = () => {
   //   margin: padding.value ? 50 : 0,
   // }
   // print(pdfThumbnailsRef.value, pageSize)
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -79,7 +87,7 @@ const expPDF = () => {
   @include absolute-0();
 
   &::after {
-    content: '';
+    content: "";
     background-color: #fff;
     @include absolute-0();
   }

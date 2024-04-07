@@ -1,31 +1,71 @@
 <template>
   <div>
-    <div class="category-container" ref="categoryRef" @scroll="onCategoryScroll" v-if="typeRef === 'all'">
+    <div
+      class="category-container"
+      ref="categoryRef"
+      @scroll="onCategoryScroll"
+      v-if="typeRef === 'all'"
+    >
       <div v-for="(item, index) in illustrationCategoryData" :key="index">
         <el-row class="col-tip mt-5">
           <el-col :span="5" class="col-name">
             <el-tag>{{ item.name }}</el-tag>
           </el-col>
           <el-col :span="7" class="col-name">
-            <el-button text @click="showTotal(item.type)">{{ $t("message.all") }}<IconRight/></el-button>
+            <el-button text @click="showTotal(item.type)"
+              >{{ $t("message.all") }}<IconRight
+            /></el-button>
           </el-col>
         </el-row>
-        <el-row class="category-box mt-5" v-loading="item.category.length === 0">
-          <el-col :span="8" class="box-image" v-for="(img, index) in item.category" :key="index">
-            <img :src="img.previewURL" :alt="img.tags" @click="createImage(img)"/>
+        <el-row
+          class="category-box mt-5"
+          v-loading="item.category.length === 0"
+        >
+          <el-col
+            :span="8"
+            class="box-image"
+            v-for="(img, index) in item.category"
+            :key="index"
+          >
+            <img
+              :src="img.previewURL"
+              :alt="img.tags"
+              @click="createImage(img)"
+            />
           </el-col>
         </el-row>
       </div>
     </div>
-    <div class="category-container" ref="totalRef" @scroll="onTotalScroll" v-else>
+    <div
+      class="category-container"
+      ref="totalRef"
+      @scroll="onTotalScroll"
+      v-else
+    >
       <el-row class="col-tip mt-5">
         <el-col :span="7" class="col-name">
-          <el-button text @click="hideTotal()"><IconLeft />{{ categoryData.name }}</el-button>
+          <el-button text @click="hideTotal()"
+            ><IconLeft />{{ categoryData.name }}</el-button
+          >
         </el-col>
       </el-row>
-      <el-row class="total-box mt-5" v-loading="categoryData.total.length === 0">
-        <div class="box-image" v-for="(img, index) in categoryData.total" :key="index" :style="{ justifyContent: index % 2 === 0 ? 'flex-start' : 'flex-end'}">
-          <img :src="img.previewURL" :alt="img.tags" @click="createImage(img)"/>
+      <el-row
+        class="total-box mt-5"
+        v-loading="categoryData.total.length === 0"
+      >
+        <div
+          class="box-image"
+          v-for="(img, index) in categoryData.total"
+          :key="index"
+          :style="{
+            justifyContent: index % 2 === 0 ? 'flex-start' : 'flex-end'
+          }"
+        >
+          <img
+            :src="img.previewURL"
+            :alt="img.tags"
+            @click="createImage(img)"
+          />
         </div>
       </el-row>
     </div>
@@ -41,13 +81,14 @@ import { ImageHit } from "@/api/image/types";
 import { useMainStore } from "@/store";
 import { storeToRefs } from "pinia";
 import { util } from "fabric";
-import { GifImage } from '@/extension/object/GifImage'
+import { GifImage } from "@/extension/object/GifImage";
 import useHandleCreate from "@/hooks/useHandleCreate";
 import useCanvas from "@/views/Canvas/useCanvas";
 import { Image } from "fabric";
 import useCenter from "@/views/Canvas/useCenter";
 const mainStore = useMainStore();
-const { illustrationCategoryType, illustrationCategoryData } = storeToRefs(mainStore);
+const { illustrationCategoryType, illustrationCategoryData } =
+  storeToRefs(mainStore);
 const { createImageElement } = useHandleCreate();
 
 const categoryRef = ref<HTMLDivElement>();
@@ -91,7 +132,7 @@ const getContainScroll = () => {
   if (!categoryRef.value)
     return {
       startIndex,
-      endIndex,
+      endIndex
     };
   const scrollTop = categoryRef.value.scrollTop;
   const containerHeight = categoryRef.value.clientHeight;
@@ -100,7 +141,7 @@ const getContainScroll = () => {
   endIndex = Math.ceil((scrollTop + containerHeight) / itemHeight);
   return {
     startIndex,
-    endIndex,
+    endIndex
   };
 };
 
@@ -148,29 +189,33 @@ const hideTotal = () => {
 };
 
 const hideLoading = async (item: ImageHit, loading: Image) => {
-  const [ canvas ] = useCanvas()
-  await util.loadImage(item.largeImageURL)
-  loading.set({visible: false})
-  canvas.renderAll()
-}
+  const [canvas] = useCanvas();
+  await util.loadImage(item.largeImageURL);
+  loading.set({ visible: false });
+  canvas.renderAll();
+};
 
 const createImage = async (item: ImageHit) => {
-  const [ canvas ] = useCanvas()
-  const { centerPoint } = useCenter()
-  let loading = canvas.loading
+  const [canvas] = useCanvas();
+  const { centerPoint } = useCenter();
+  let loading = canvas.loading;
   if (!loading) {
-    loading = await GifImage.fromURL(new URL(`/src/assets/images/loading.gif`, import.meta.url).href)
-    loading.set({left: centerPoint.x - loading.width / 2, top: centerPoint.y - loading.height / 2})
+    loading = await GifImage.fromURL(
+      new URL(`/src/assets/images/loading.gif`, import.meta.url).href
+    );
+    loading.set({
+      left: centerPoint.x - loading.width / 2,
+      top: centerPoint.y - loading.height / 2
+    });
     canvas.add(loading);
-    canvas.renderAll()
-    canvas.loading = loading
+    canvas.renderAll();
+    canvas.loading = loading;
+  } else {
+    loading.set({ visible: true });
+    canvas.bringObjectToFront(loading);
+    canvas.renderAll();
   }
-  else {
-    loading.set({visible: true})
-    canvas.bringObjectToFront(loading)
-    canvas.renderAll()
-  }
-  await hideLoading(item, loading)
+  await hideLoading(item, loading);
   createImageElement(item.largeImageURL);
 };
 

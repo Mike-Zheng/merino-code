@@ -1,88 +1,98 @@
 <template>
-  <el-dialog v-model="dialogVisible" width="35%" class="export-dialog" :before-close="closeExport">
+  <el-dialog
+    v-model="dialogVisible"
+    width="35%"
+    class="export-dialog"
+    :before-close="closeExport"
+  >
     <div class="export-dialog">
       <div class="tabs">
-        <div 
-          class="tab" 
-          :class="{ 'active': tab.key === exportType }"
-          v-for="tab in tabs" 
+        <div
+          class="tab"
+          :class="{ active: tab.key === exportType }"
+          v-for="tab in tabs"
           :key="tab.key"
           @click="setExportType(tab.key)"
-        >{{tab.label}}</div>
+        >
+          {{ tab.label }}
+        </div>
       </div>
       <div class="content">
-        <component :is="currentDialogComponent" @close="closeExport"></component>
+        <component
+          :is="currentDialogComponent"
+          @close="closeExport"
+        ></component>
       </div>
     </div>
   </el-dialog>
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore } from '@/store'
-import { ExportTypes } from '@/types/common'
+import { computed, ref, watch } from "vue";
+import { storeToRefs } from "pinia";
+import { useMainStore } from "@/store";
+import { ExportTypes } from "@/types/common";
 
-import ExportImage from './ExportImage.vue'
-import ExportSVG from './ExportSVG.vue'
-import ExportPDF from './ExportPDF.vue'
-import ExportPSD from './ExportPSD.vue'
-import ExportJSON from './ExportJSON.vue'
+import ExportImage from "./ExportImage.vue";
+import ExportSVG from "./ExportSVG.vue";
+import ExportPDF from "./ExportPDF.vue";
+import ExportPSD from "./ExportPSD.vue";
+import ExportJSON from "./ExportJSON.vue";
 
-const mainStore = useMainStore()
-const { exportType } = storeToRefs(mainStore)
-const dialogVisible = ref(false)
-const setExportType = mainStore.setExportType
-
+const mainStore = useMainStore();
+const { exportType } = storeToRefs(mainStore);
+const dialogVisible = ref(false);
+const setExportType = mainStore.setExportType;
 
 const props = defineProps({
   visible: {
     type: Boolean,
-    required: true,
-  },
-})
+    required: true
+  }
+});
 
 const emit = defineEmits<{
-  (event: 'close'): void
-}>()
+  (event: "close"): void;
+}>();
 
-watch(() => props.visible, (val) => {
-  dialogVisible.value = val
-})
+watch(
+  () => props.visible,
+  (val) => {
+    dialogVisible.value = val;
+  }
+);
 
 interface TabItem {
-  key: ExportTypes
-  label: string
+  key: ExportTypes;
+  label: string;
 }
 
 const tabs: TabItem[] = [
-  { key: 'image', label: '导出图片' },
-  { key: 'svg', label: '导出SVG' },
-  { key: 'pdf', label: '导出PDF' },
+  { key: "image", label: "导出图片" },
+  { key: "svg", label: "导出SVG" },
+  { key: "pdf", label: "导出PDF" },
   // { key: 'psd', label: '导出PSD' },
-  { key: 'json', label: '导出JSON' },
-]
+  { key: "json", label: "导出JSON" }
+];
 
 const currentDialogComponent = computed(() => {
   const dialogMap = {
-    'image': ExportImage,
-    'svg': ExportSVG,
-    'pdf': ExportPDF,
-    'psd': ExportPSD,
-    'json': ExportJSON,
-    '': '',
-  }
-  return dialogMap[exportType.value] || null
-})
+    image: ExportImage,
+    svg: ExportSVG,
+    pdf: ExportPDF,
+    psd: ExportPSD,
+    json: ExportJSON,
+    "": ""
+  };
+  return dialogMap[exportType.value] || null;
+});
 
 const closeExport = () => {
-  emit('close')
-}
-
+  emit("close");
+};
 </script>
 
 <style lang="scss" scoped>
-
 .tabs {
   height: 50px;
   font-size: 12px;

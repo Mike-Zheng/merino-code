@@ -1,43 +1,68 @@
-import { ClipPathType } from '@/configs/images'
-import { addCropImageInteractions, isolateObjectForEdit } from '@/extension/mixins/cropping.mixin'
-import { croppingControlSet, flipXCropControls, flipXYCropControls, flipYCropControls } from '@/extension/controls/cropping/cropping.controls'
-import { Image as OriginImage, Point, Object as FabricObject, util, classRegistry, TPointerEventInfo, TPointerEvent, ImageProps, TClassProperties, ImageSource } from 'fabric'
+import { ClipPathType } from "@/configs/images";
+import {
+  addCropImageInteractions,
+  isolateObjectForEdit
+} from "@/extension/mixins/cropping.mixin";
+import {
+  croppingControlSet,
+  flipXCropControls,
+  flipXYCropControls,
+  flipYCropControls
+} from "@/extension/controls/cropping/cropping.controls";
+import {
+  Image as OriginImage,
+  Point,
+  Object as FabricObject,
+  util,
+  classRegistry,
+  TPointerEventInfo,
+  TPointerEvent,
+  ImageProps,
+  TClassProperties,
+  ImageSource
+} from "fabric";
 
 export class Image extends OriginImage {
-  public isCropping?: false
-  public cropKey?: ClipPathType
-  public cropPath?: string
-  public cropSize?: number
-  
+  public isCropping?: false;
+  public cropKey?: ClipPathType;
+  public cropPath?: string;
+  public cropSize?: number;
+
   constructor(element: ImageSource, options?: FabricObject<ImageProps>) {
     super(element, { filters: [], ...options });
-    this.on('mousedblclick', this.doubleClickHandler.bind(this))
+    this.on("mousedblclick", this.doubleClickHandler.bind(this));
   }
 
   public doubleClickHandler(e: TPointerEventInfo<TPointerEvent>) {
-    if (!this.canvas || !e.target || e.target !== this || (e.target.lockMovementX && e.target.lockMovementY)) return
-    this.set({__isCropping: true, clipPath: undefined})
-    this.canvas.setActiveObject(this)
-    this.canvas.requestRenderAll()
+    if (
+      !this.canvas ||
+      !e.target ||
+      e.target !== this ||
+      (e.target.lockMovementX && e.target.lockMovementY)
+    )
+      return;
+    this.set({ __isCropping: true, clipPath: undefined });
+    this.canvas.setActiveObject(this);
+    this.canvas.requestRenderAll();
   }
 
   public get __isCropping() {
-    return this.isCropping
+    return this.isCropping;
   }
 
   public set __isCropping(value) {
-    this.isCropping = value
+    this.isCropping = value;
     if (this.__isCropping) {
-      this.onMousedbclickEvent()
+      this.onMousedbclickEvent();
     }
   }
 
   public onMousedbclickEvent() {
-    const fabricCanvas = this.canvas
-    if (!fabricCanvas) return
-    fabricCanvas.defaultCursor = 'move';
-    isolateObjectForEdit(this)
-    this.lastEventTop = this.top
+    const fabricCanvas = this.canvas;
+    if (!fabricCanvas) return;
+    fabricCanvas.defaultCursor = "move";
+    isolateObjectForEdit(this);
+    this.lastEventTop = this.top;
     this.lastEventLeft = this.left;
     this.setupDragMatrix();
     this.bindCropModeHandlers();
@@ -52,10 +77,19 @@ export class Image extends OriginImage {
       this.controls = flipXYCropControls;
     }
     if (this.scaleX != this.scaleY) {
-      this.setControlsVisibility({tlS: false, trS: false, blS: false, brS: false});
-    } 
-    else {
-      this.setControlsVisibility({tlS: true, trS: true, blS: true, brS: true});
+      this.setControlsVisibility({
+        tlS: false,
+        trS: false,
+        blS: false,
+        brS: false
+      });
+    } else {
+      this.setControlsVisibility({
+        tlS: true,
+        trS: true,
+        blS: true,
+        brS: true
+      });
     }
     this.setCoords();
     fabricCanvas.centeredKey = null;
@@ -64,47 +98,55 @@ export class Image extends OriginImage {
   }
 
   get _cropKey() {
-    return this.cropKey
+    return this.cropKey;
   }
 
   set _cropKey(key) {
-    this.cropSize = Math.min(this.width, this.height)
+    this.cropSize = Math.min(this.width, this.height);
     if (this.cropKey !== key && key) {
-      this.clipPath = undefined
+      this.clipPath = undefined;
     }
-    this.cropKey = key
-    this.setCropCoords(this.cropSize, this.cropSize)
+    this.cropKey = key;
+    this.setCropCoords(this.cropSize, this.cropSize);
   }
 
   setCropCoords(width: number, height: number) {
     if (!this.clipPath) {
-      const left = this.left + this.getOriginalElementWidth() / 2 - width / 2
-      const top = this.top + this.getOriginalElementHeight() / 2 - height / 2
-      this.cropX = left - this.left
-      this.cropY = top - this.top
-      this.width = width
-      this.height = height
+      const left = this.left + this.getOriginalElementWidth() / 2 - width / 2;
+      const top = this.top + this.getOriginalElementHeight() / 2 - height / 2;
+      this.cropX = left - this.left;
+      this.cropY = top - this.top;
+      this.width = width;
+      this.height = height;
     }
   }
 
   getOriginalElementWidth() {
     // @ts-ignore
-    return this._originalElement ? this._originalElement.naturalWidth || this._originalElement.width : 0;
+    return this._originalElement
+      ? this._originalElement.naturalWidth || this._originalElement.width
+      : 0;
   }
 
   getOriginalElementHeight() {
     // @ts-ignore
-    return this._originalElement ? this._originalElement.naturalHeight || this._originalElement.height : 0;
+    return this._originalElement
+      ? this._originalElement.naturalHeight || this._originalElement.height
+      : 0;
   }
 
   getElementWidth() {
     // @ts-ignore
-    return this._element ? this._element.naturalWidth || this._element.width : 0;
+    return this._element
+      ? this._element.naturalWidth || this._element.width
+      : 0;
   }
 
   getElementHeight() {
     // @ts-ignore
-    return this._element ? this._element.naturalHeight || this._element.height : 0;
+    return this._element
+      ? this._element.naturalHeight || this._element.height
+      : 0;
   }
 
   _getOriginalTransformedDimensions(options: any = {}): Point {
@@ -116,11 +158,12 @@ export class Image extends OriginImage {
       width: this.getOriginalElementWidth(),
       height: this.getOriginalElementHeight(),
       strokeWidth: this.strokeWidth,
-      ...options,
+      ...options
     };
     // stroke is applied before/after transformations are applied according to `strokeUniform`
     const strokeWidth = dimOptions.strokeWidth;
-    let preScalingStrokeValue = strokeWidth, postScalingStrokeValue = 0;
+    let preScalingStrokeValue = strokeWidth,
+      postScalingStrokeValue = 0;
 
     if (this.strokeUniform) {
       preScalingStrokeValue = 0;
@@ -131,9 +174,11 @@ export class Image extends OriginImage {
       noSkew = dimOptions.skewX === 0 && dimOptions.skewY === 0;
     let finalDimensions;
     if (noSkew) {
-      finalDimensions = new Point(dimX * dimOptions.scaleX, dimY * dimOptions.scaleY);
-    } 
-    else {
+      finalDimensions = new Point(
+        dimX * dimOptions.scaleX,
+        dimY * dimOptions.scaleY
+      );
+    } else {
       finalDimensions = util.sizeAfterTransform(dimX, dimY, dimOptions);
     }
 
@@ -156,22 +201,16 @@ export class Image extends OriginImage {
       const elHeight = this.getElementHeight();
       const imageCopyX = -(this.cropX || 0) - width / 2;
       const imageCopyY = -(this.cropY || 0) - height / 2;
-      ctx.drawImage(
-        elementToDraw,
-        imageCopyX,
-        imageCopyY,
-        elWidth,
-        elHeight,
-      );
+      ctx.drawImage(elementToDraw, imageCopyX, imageCopyY, elWidth, elHeight);
       ctx.globalAlpha = 1;
     }
     super._render(ctx);
-    this._drawCroppingLines(ctx)
-    this._drawCroppingPath(ctx)
+    this._drawCroppingLines(ctx);
+    this._drawCroppingPath(ctx);
     ctx.restore();
   }
 
-  drawBorders(ctx:CanvasRenderingContext2D, options:any, styleOverride:any) {
+  drawBorders(ctx: CanvasRenderingContext2D, options: any, styleOverride: any) {
     this._renderCroppingBorders(ctx);
     super.drawBorders(ctx, options, styleOverride);
   }
@@ -188,8 +227,8 @@ export class Image extends OriginImage {
       if (this.flipY) {
         scaling.y *= -1;
       }
-      const elWidth = (this.getElementWidth()) * multX * scaling.x;
-      const elHeight = (this.getElementHeight()) * multY * scaling.y;
+      const elWidth = this.getElementWidth() * multX * scaling.x;
+      const elHeight = this.getElementHeight() * multY * scaling.y;
       const { width, height } = this;
       const imageCopyX = (-this.cropX - width / 2) * multX * scaling.x;
       const imageCopyY = (-this.cropY - height / 2) * multY * scaling.y;
@@ -198,17 +237,20 @@ export class Image extends OriginImage {
       ctx.restore();
     }
   }
-  
+
   static fromURL(url: string, options: any = {}): Promise<Image> {
     return util.loadImage(url, options).then((img) => new this(img, options));
   }
 
-  static fromObject({ filters: f, resizeFilter: rf, src, crossOrigin, ...object }: any, options: { signal: AbortSignal }): Promise<Image> {
+  static fromObject(
+    { filters: f, resizeFilter: rf, src, crossOrigin, ...object }: any,
+    options: { signal: AbortSignal }
+  ): Promise<Image> {
     return Promise.all([
       util.loadImage(src, { ...options, crossOrigin }),
       f && util.enlivenObjects(f, options),
       rf && util.enlivenObjects([rf], options),
-      util.enlivenObjectEnlivables(object, options),
+      util.enlivenObjectEnlivables(object, options)
     ]).then(([el, filters = [], [resizeFilter] = [], hydratedProps = {}]) => {
       return new this(el, {
         ...object,
@@ -216,28 +258,26 @@ export class Image extends OriginImage {
         crossOrigin,
         filters,
         resizeFilter,
-        ...hydratedProps,
+        ...hydratedProps
       });
     });
   }
 }
 
 const imageDefaultValues: Partial<TClassProperties<Image>> = {
-  type: 'Image',
+  type: "Image",
   strokeWidth: 0,
   srcFromAttribute: false,
   minimumScaleTrigger: 0.5,
   cropX: 0,
   cropY: 0,
-  imageSmoothing: true,
+  imageSmoothing: true
 };
 
 Object.assign(Image.prototype, {
-  cacheProperties: [...FabricObject.cacheProperties, 'cropX', 'cropY'],
+  cacheProperties: [...FabricObject.cacheProperties, "cropX", "cropY"],
   ...imageDefaultValues,
   ...addCropImageInteractions()
-})
+});
 
-classRegistry.setClass(Image)
-
-
+classRegistry.setClass(Image);

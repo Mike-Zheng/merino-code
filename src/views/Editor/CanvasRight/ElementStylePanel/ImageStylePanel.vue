@@ -10,7 +10,7 @@
           handleElement.originSrc
             ? handleElement.originSrc
             : handleElement.getSrc()
-        })`,
+        })`
       }"
     ></div>
 
@@ -29,7 +29,12 @@
             <div class="clip">
               <div class="title">{{ $t("style.byShape") }}：</div>
               <div class="shape-clip">
-                <div class="shape-clip-item" v-for="(item, key) in CLIPPATHS" :key="key" @click="presetImageClip(key)">
+                <div
+                  class="shape-clip-item"
+                  v-for="(item, key) in CLIPPATHS"
+                  :key="key"
+                  @click="presetImageClip(key)"
+                >
                   <div class="shape" :style="{ clipPath: item.style }"></div>
                 </div>
               </div>
@@ -37,10 +42,16 @@
               <template v-for="type in ratioClipOptions" :key="type.label">
                 <div class="title" v-if="type.label">按{{ type.label }}：</div>
                 <el-button-group class="row">
-                  <el-button style="flex: 1" v-for="item in type.children" :key="item.key" @click="presetImageClip('rect', item.ratio)">{{ item.key }}</el-button>
+                  <el-button
+                    style="flex: 1"
+                    v-for="item in type.children"
+                    :key="item.key"
+                    @click="presetImageClip('rect', item.ratio)"
+                    >{{ item.key }}</el-button
+                  >
                 </el-button-group>
               </template>
-            </div>    
+            </div>
           </el-popover>
         </el-button-group>
       </el-col>
@@ -63,7 +74,10 @@
     <el-divider />
 
     <el-row>
-      <FileInput class="full-width-btn" @change="(files: FileList) => replaceImage(files)">
+      <FileInput
+        class="full-width-btn"
+        @change="(files: FileList) => replaceImage(files)"
+      >
         <el-button class="full-btn">
           <IconTransform class="btn-icon" />{{ $t("style.replaceimage") }}
         </el-button>
@@ -72,14 +86,22 @@
     <el-row>
       <el-button class="full-width-btn" @click="resetImage()">
         <IconUndo class="btn-icon" /> {{ $t("style.resetStyle") }}
-        </el-button>
+      </el-button>
     </el-row>
     <el-row>
       <el-button class="full-width-btn" @click="setBackgroundImage()">
         <IconTheme class="btn-icon" /> {{ $t("style.setAsBg") }}
       </el-button>
     </el-row>
-    <ImageMatting :visible="dialogVisible" :image="handleElement.originSrc ? handleElement.originSrc : handleElement.getSrc()" @close="closeMatting" />
+    <ImageMatting
+      :visible="dialogVisible"
+      :image="
+        handleElement.originSrc
+          ? handleElement.originSrc
+          : handleElement.getSrc()
+      "
+      @close="closeMatting"
+    />
   </div>
 </template>
 
@@ -115,7 +137,7 @@ const clipImage = () => {
   handleElement.value.set({
     __isCropping: true,
     clipPath: undefined,
-    cropPath: undefined,
+    cropPath: undefined
   });
   canvas.renderAll();
 };
@@ -179,7 +201,9 @@ const resetImage = () => {
   handleElement.value.filters = [];
   handleElement.value.applyFilters();
   // @ts-ignore
-  const props = handleElement.value.toObject(propertiesToInclude) as ImageElement;
+  const props = handleElement.value.toObject(
+    propertiesToInclude
+  ) as ImageElement;
   templatesStore.updateElement({ id: props.id, props });
 };
 

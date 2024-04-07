@@ -352,7 +352,7 @@ const defaultFilters: FilterOption[] = [
     value: 0,
     unit: "px",
     max: 10,
-    step: 1,
+    step: 1
   },
   {
     label: t("style.brightness"),
@@ -361,7 +361,7 @@ const defaultFilters: FilterOption[] = [
     value: 100,
     unit: "%",
     max: 200,
-    step: 5,
+    step: 5
   },
   {
     label: t("style.contrast"),
@@ -370,7 +370,7 @@ const defaultFilters: FilterOption[] = [
     value: 100,
     unit: "%",
     max: 200,
-    step: 5,
+    step: 5
   },
   {
     label: t("style.grayscale"),
@@ -379,7 +379,7 @@ const defaultFilters: FilterOption[] = [
     value: 0,
     unit: "%",
     max: 100,
-    step: 5,
+    step: 5
   },
   {
     label: t("style.saturation"),
@@ -388,7 +388,7 @@ const defaultFilters: FilterOption[] = [
     value: 100,
     unit: "%",
     max: 200,
-    step: 5,
+    step: 5
   },
   {
     label: t("style.hue"),
@@ -397,7 +397,7 @@ const defaultFilters: FilterOption[] = [
     value: 0,
     unit: "deg",
     max: 360,
-    step: 10,
+    step: 10
   },
   {
     label: t("style.opacity"),
@@ -406,8 +406,8 @@ const defaultFilters: FilterOption[] = [
     value: 100,
     unit: "%",
     max: 100,
-    step: 5,
-  },
+    step: 5
+  }
 ];
 
 interface RemoveColorOption {
@@ -502,7 +502,7 @@ const changeGrayscaleMode = (mode: string) => {
   if (elementGrayscale.value) {
     handleElement.value.filters.push(
       new filters.Grayscale({
-        mode: elementGrayscale.value,
+        mode: elementGrayscale.value
       }) as filters.BaseFilter
     );
     elementFilters.value.push(GrayscaleType);
@@ -577,7 +577,7 @@ const updateRemoveColor = (color: string) => {
   if (!handleElement.value.filters) handleElement.value.filters = [];
   const removeColorFilter = new filters.RemoveColor({
     distance: removeColor.value.distance,
-    color: removeColor.value.color,
+    color: removeColor.value.color
   });
   removeColor.value.color = color;
   handleElement.value.filters = handleElement.value.filters.filter(
@@ -593,7 +593,7 @@ const updateRemoveDistance = () => {
   if (!handleElement.value.filters) handleElement.value.filters = [];
   const removeColorFilter = new filters.RemoveColor({
     distance: removeColor.value.distance,
-    color: removeColor.value.color,
+    color: removeColor.value.color
   });
   handleElement.value.filters = handleElement.value.filters.filter(
     (obj) => obj.type !== "RemoveColor"
@@ -614,11 +614,7 @@ const updateGammaColor = (type: string, value: number) => {
     gammaColor.value.blue = value;
   }
   const gammaColorFilter = new filters.Gamma({
-    gamma: [
-      gammaColor.value.red,
-      gammaColor.value.green,
-      gammaColor.value.blue,
-    ],
+    gamma: [gammaColor.value.red, gammaColor.value.green, gammaColor.value.blue]
   });
   handleElement.value.filters = handleElement.value.filters.filter(
     (obj) => obj.type !== "Gamma"
@@ -648,7 +644,7 @@ const changeColorMode = (type: string, value: number) => {
   if (type === "Brightness") {
     brightness.value = value;
     const brightnessFilter = new filters.Brightness({
-      brightness: brightness.value,
+      brightness: brightness.value
     });
     handleElement.value.filters = handleElement.value.filters.filter(
       (obj) => obj.type !== type
@@ -664,7 +660,7 @@ const changeColorMode = (type: string, value: number) => {
   } else if (type === "Saturation") {
     saturation.value = value;
     const saturationFilter = new filters.Saturation({
-      saturation: saturation.value,
+      saturation: saturation.value
     });
     handleElement.value.filters = handleElement.value.filters.filter(
       (obj) => obj.type !== type

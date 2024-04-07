@@ -1,9 +1,9 @@
 <template>
   <el-input-number
     class="swipe-input"
-    v-model="numberValue" 
-    :step="step" 
-    :max="max" 
+    v-model="numberValue"
+    :step="step"
+    :max="max"
     :min="min"
     :controls="false"
     :label="label"
@@ -12,51 +12,60 @@
   </el-input-number>
 </template>
 <script setup lang="ts">
-import { usePointerSwipe, useVModel, isDefined, useMagicKeys } from '@vueuse/core'
-import { useSlots, watch, ref, computed } from 'vue'
-import { toFixed } from '@/utils/common'
+import {
+  usePointerSwipe,
+  useVModel,
+  isDefined,
+  useMagicKeys
+} from "@vueuse/core";
+import { useSlots, watch, ref, computed } from "vue";
+import { toFixed } from "@/utils/common";
 // import { useMainStore } from '@/store';
 // import { storeToRefs } from 'pinia';
 // import { mm2px, px2mm } from '@/utils/image';
-import useHandleActive from '@/hooks/useHandleActive'
+import useHandleActive from "@/hooks/useHandleActive";
 
-const { handleInput } = useHandleActive()
+const { handleInput } = useHandleActive();
 
 const props = withDefaults(
   defineProps<{
-    label?: string
-    modelValue?: number
-    modelEvent?: 'change' | 'input'
-    step?: number
-    max?: number
-    min?: number
+    label?: string;
+    modelValue?: number;
+    modelEvent?: "change" | "input";
+    step?: number;
+    max?: number;
+    min?: number;
   }>(),
   {
-    modelEvent: 'change',
-    step: 1,
-  },
-)
+    modelEvent: "change",
+    step: 1
+  }
+);
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: number | undefined): void
-  (e: 'change', value: number | undefined, ev: Event): void
-  (e: 'swipe', value: number | undefined, ev: Event): void
-}>()
+  (e: "update:modelValue", value: number | undefined): void;
+  (e: "change", value: number | undefined, ev: Event): void;
+  (e: "swipe", value: number | undefined, ev: Event): void;
+}>();
 
-const slots = useSlots()
+const slots = useSlots();
 
-const numberValue = useVModel(props, 'modelValue', emit)
+const numberValue = useVModel(props, "modelValue", emit);
 
-watch(numberValue, (value) => {
-  if (!value) return
-  numberValue.value = toFixed(value)
-}, { immediate: true})
+watch(
+  numberValue,
+  (value) => {
+    if (!value) return;
+    numberValue.value = toFixed(value);
+  },
+  { immediate: true }
+);
 
 const change = (value: number | undefined, ev: Event) => {
-  if (!value) return
-  value = handleInput(value)
-  emit('change', value, ev)
-}
+  if (!value) return;
+  value = handleInput(value);
+  emit("change", value, ev);
+};
 
 // Swipe
 // const { shift, alt } = useMagicKeys()
@@ -94,8 +103,6 @@ const change = (value: number | undefined, ev: Event) => {
 
 // const hasLabel = computed(() => !!props.label || !!slots.label)
 </script>
-
-
 
 <style scoped lang="scss">
 .swipe-input {

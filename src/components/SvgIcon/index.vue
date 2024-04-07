@@ -1,13 +1,17 @@
 <template>
-  <div v-if="isExternalChar" :style="styleExternalIcon" class="svg-external-icon svg-icon" />
+  <div
+    v-if="isExternalChar"
+    :style="styleExternalIcon"
+    class="svg-external-icon svg-icon"
+  />
   <svg v-else :class="svgClass" aria-hidden="true">
     <use :xlink:href="iconName" />
   </svg>
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { isExternal } from '@/utils/common'
+import { computed } from "vue";
+import { isExternal } from "@/utils/common";
 
 const props = defineProps({
   iconClass: {
@@ -16,21 +20,21 @@ const props = defineProps({
   },
   className: {
     type: String,
-    default: ''
-  },
-})
+    default: ""
+  }
+});
 
-const isExternalChar = computed(() => isExternal(props.iconClass))
-const iconName = computed(() => `#icon-${props.iconClass}`)
-const svgClass = computed(() => props.className ? `svg-icon ${props.className}` : `svg-icon`)
+const isExternalChar = computed(() => isExternal(props.iconClass));
+const iconName = computed(() => `#icon-${props.iconClass}`);
+const svgClass = computed(() =>
+  props.className ? `svg-icon ${props.className}` : `svg-icon`
+);
 const styleExternalIcon = computed(() => {
   return {
-    mask: `url(${props.iconClass}) no-repeat 50% 50%`, 
-    '-webkit-mask': `url(${props.iconClass}) no-repeat 50% 50%`
-  }
-})
-
-
+    mask: `url(${props.iconClass}) no-repeat 50% 50%`,
+    "-webkit-mask": `url(${props.iconClass}) no-repeat 50% 50%`
+  };
+});
 </script>
 
 <style scoped>

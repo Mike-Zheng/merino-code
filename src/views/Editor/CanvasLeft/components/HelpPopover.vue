@@ -40,11 +40,11 @@ const hasHotkey = ref(false);
 
 const props = defineProps({
   helpRef: {
-    type: null,
+    type: null
   },
   helpPopoverRef: {
-    type: null,
-  },
+    type: null
+  }
 });
 
 const emit = defineEmits<{

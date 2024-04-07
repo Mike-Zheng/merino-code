@@ -1,15 +1,15 @@
-import tinycolor from 'tinycolor2'
-import { nanoid } from 'nanoid'
-import { Template, CanvasElement } from '@/types/canvas'
-import { ElementNames } from '@/types/elements'
+import tinycolor from "tinycolor2";
+import { nanoid } from "nanoid";
+import { Template, CanvasElement } from "@/types/canvas";
+import { ElementNames } from "@/types/elements";
 // import { PPTElement, PPTLineElement, Slide } from '@/types/slides'
 
 interface RotatedElementData {
-  left: number
-  top: number
-  width: number
-  height: number
-  rotate: number
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+  rotate: number;
 }
 
 /**
@@ -17,35 +17,35 @@ interface RotatedElementData {
  * @param element 元素的位置大小和旋转角度信息
  */
 export const getRectRotatedRange = (element: RotatedElementData) => {
-  const { left, top, width, height, rotate = 0 } = element
+  const { left, top, width, height, rotate = 0 } = element;
 
-  const radius = Math.sqrt( Math.pow(width, 2) + Math.pow(height, 2) ) / 2
-  const auxiliaryAngle = Math.atan(height / width) * 180 / Math.PI
+  const radius = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) / 2;
+  const auxiliaryAngle = (Math.atan(height / width) * 180) / Math.PI;
 
-  const tlbraRadian = (180 - rotate - auxiliaryAngle) * Math.PI / 180
-  const trblaRadian = (auxiliaryAngle - rotate) * Math.PI / 180
+  const tlbraRadian = ((180 - rotate - auxiliaryAngle) * Math.PI) / 180;
+  const trblaRadian = ((auxiliaryAngle - rotate) * Math.PI) / 180;
 
-  const middleLeft = left + width / 2
-  const middleTop = top + height / 2
+  const middleLeft = left + width / 2;
+  const middleTop = top + height / 2;
 
   const xAxis = [
     middleLeft + radius * Math.cos(tlbraRadian),
     middleLeft + radius * Math.cos(trblaRadian),
     middleLeft - radius * Math.cos(tlbraRadian),
-    middleLeft - radius * Math.cos(trblaRadian),
-  ]
+    middleLeft - radius * Math.cos(trblaRadian)
+  ];
   const yAxis = [
     middleTop - radius * Math.sin(tlbraRadian),
     middleTop - radius * Math.sin(trblaRadian),
     middleTop + radius * Math.sin(tlbraRadian),
-    middleTop + radius * Math.sin(trblaRadian),
-  ]
+    middleTop + radius * Math.sin(trblaRadian)
+  ];
 
   return {
     xRange: [Math.min(...xAxis), Math.max(...xAxis)],
-    yRange: [Math.min(...yAxis), Math.max(...yAxis)],
-  }
-}
+    yRange: [Math.min(...yAxis), Math.max(...yAxis)]
+  };
+};
 
 /**
  * 计算元素在画布中的矩形范围旋转后的新位置与旋转之前位置的偏离距离
@@ -57,20 +57,20 @@ export const getRectRotatedOffset = (element: RotatedElementData) => {
     top: element.top,
     width: element.width,
     height: element.height,
-    rotate: 0,
-  })
+    rotate: 0
+  });
   const { xRange: rotatedXRange, yRange: rotatedYRange } = getRectRotatedRange({
     left: element.left,
     top: element.top,
     width: element.width,
     height: element.height,
-    rotate: element.rotate,
-  })
+    rotate: element.rotate
+  });
   return {
     offsetX: rotatedXRange[0] - originXRange[0],
-    offsetY: rotatedYRange[0] - originYRange[0],
-  }
-}
+    offsetY: rotatedYRange[0] - originYRange[0]
+  };
+};
 
 /**
  * 计算元素在画布中的位置范围
@@ -129,8 +129,8 @@ export const getRectRotatedOffset = (element: RotatedElementData) => {
 // }
 
 export interface AlignLine {
-  value: number
-  range: [number, number]
+  value: number;
+  range: [number, number];
 }
 
 /**
@@ -138,21 +138,21 @@ export interface AlignLine {
  * @param lines 一组对齐吸附线信息
  */
 export const uniqAlignLines = (lines: AlignLine[]) => {
-  const uniqLines: AlignLine[] = []
-  lines.forEach(line => {
-    const index = uniqLines.findIndex(_line => _line.value === line.value)
-    if (index === -1) uniqLines.push(line)
+  const uniqLines: AlignLine[] = [];
+  lines.forEach((line) => {
+    const index = uniqLines.findIndex((_line) => _line.value === line.value);
+    if (index === -1) uniqLines.push(line);
     else {
-      const uniqLine = uniqLines[index]
-      const rangeMin = Math.min(uniqLine.range[0], line.range[0])
-      const rangeMax = Math.max(uniqLine.range[1], line.range[1])
-      const range: [number, number] = [rangeMin, rangeMax]
-      const _line = { value: line.value, range }
-      uniqLines[index] = _line
+      const uniqLine = uniqLines[index];
+      const rangeMin = Math.min(uniqLine.range[0], line.range[0]);
+      const rangeMax = Math.max(uniqLine.range[1], line.range[1]);
+      const range: [number, number] = [rangeMin, rangeMax];
+      const _line = { value: line.value, range };
+      uniqLines[index] = _line;
     }
-  })
-  return uniqLines
-}
+  });
+  return uniqLines;
+};
 
 /**
  * 以页面列表为基础，为每一个页面生成新的ID，并关联到旧ID形成一个字典
@@ -161,46 +161,43 @@ export const uniqAlignLines = (lines: AlignLine[]) => {
  */
 
 export const createTemplateIdMap = (templates: Template[]) => {
-  const templateIdMap = {}
+  const templateIdMap = {};
   for (const template of templates) {
-    templateIdMap[template.id] = nanoid(10)
+    templateIdMap[template.id] = nanoid(10);
   }
-  return templateIdMap
-}
+  return templateIdMap;
+};
 
 /**
-   * 以元素列表为基础，为每一个元素生成新的ID，并关联到旧ID形成一个字典
-   * 主要用于复制元素时，维持数据中各处元素ID原有的关系
-   * 例如：原本两个组合的元素拥有相同的groupId，复制后依然会拥有另一个相同的groupId
-   * @param elements 元素列表数据
-   */
+ * 以元素列表为基础，为每一个元素生成新的ID，并关联到旧ID形成一个字典
+ * 主要用于复制元素时，维持数据中各处元素ID原有的关系
+ * 例如：原本两个组合的元素拥有相同的groupId，复制后依然会拥有另一个相同的groupId
+ * @param elements 元素列表数据
+ */
 export const createElementIdMap = (elements: CanvasOption[]) => {
-  const groupIdMap = {}
-  const elIdMap = {}
+  const groupIdMap = {};
+  const elIdMap = {};
   for (const element of elements) {
-    const groupId = element.type === ElementNames.GROUP ? element.id : ''
+    const groupId = element.type === ElementNames.GROUP ? element.id : "";
     if (groupId && !groupIdMap[groupId]) {
-      groupIdMap[groupId] = nanoid(10)
+      groupIdMap[groupId] = nanoid(10);
     }
-    elIdMap[element.id] = nanoid(10)
+    elIdMap[element.id] = nanoid(10);
   }
   return {
     groupIdMap,
-    elIdMap,
-  }
-}
+    elIdMap
+  };
+};
 
 /**
  * 根据表格的主题色，获取对应用于配色的子颜色
  * @param themeColor 主题色
  */
 export const getTableSubThemeColor = (themeColor: string) => {
-  const rgba = tinycolor(themeColor)
-  return [
-    rgba.setAlpha(0.3).toRgbString(),
-    rgba.setAlpha(0.1).toRgbString(),
-  ]
-}
+  const rgba = tinycolor(themeColor);
+  return [rgba.setAlpha(0.3).toRgbString(), rgba.setAlpha(0.1).toRgbString()];
+};
 
 // /**
 //  * 获取线条元素路径字符串

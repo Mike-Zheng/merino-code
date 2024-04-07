@@ -1,6 +1,7 @@
-declare '@/plugins/trianglify/trianglify'
+declare;
+("@/plugins/trianglify/trianglify");
 
-declare module 'beautify-qrcode' {
+declare module "beautify-qrcode" {
   interface CodeOption {
     text: string;
     correctLevel: number; // 1 | 0 | 3 | 2
@@ -8,30 +9,29 @@ declare module 'beautify-qrcode' {
     height: number;
     isSpace: boolean;
   }
-  export const encodeData: (option: CodeOption) => string
-  export const renderer25D: (string) => any
-  export const rendererRect: (string) => any
-  export const rendererRound: (string) => any
-  export const rendererRandRound: (string) => any
-  export const rendererDSJ: (string) => any
-  export const rendererRandRect: (string) => any
-  export const rendererImage: (string) => any
-  export const rendererResImag: (string) => any
-  export const rendererCircle: (string) => any
-  export const rendererLine: (string) => any
-  export const rendererLine2: (string) => any
-  export const rendererFuncA: (string) => any
-  export const rendererFuncB: (string) => any
+  export const encodeData: (option: CodeOption) => string;
+  export const renderer25D: (string) => any;
+  export const rendererRect: (string) => any;
+  export const rendererRound: (string) => any;
+  export const rendererRandRound: (string) => any;
+  export const rendererDSJ: (string) => any;
+  export const rendererRandRect: (string) => any;
+  export const rendererImage: (string) => any;
+  export const rendererResImag: (string) => any;
+  export const rendererCircle: (string) => any;
+  export const rendererLine: (string) => any;
+  export const rendererLine2: (string) => any;
+  export const rendererFuncA: (string) => any;
+  export const rendererFuncB: (string) => any;
 }
 
 // Type definitions for jsClipper.js
 // Project: https://github.com/mathisonian/JsClipper
 // Definitions by: Hou Chunlei <https://github.com/omni360>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-// 
+//
 
-declare module 'clipper-lib' {
-
+declare module "clipper-lib" {
   export var biginteger_used: boolean;
   export function Math_Abs_Int64(a: number): number;
   export function Math_Abs_Int32(a: number): number;
@@ -49,7 +49,7 @@ declare module 'clipper-lib' {
     X: number;
     Y: number;
     constructor(PointXY: IntPoint);
-    constructor(x: number, y: number)
+    constructor(x: number, y: number);
   }
 
   export class IntRect {
@@ -71,16 +71,32 @@ declare module 'clipper-lib' {
     constructor(polys: ArrayLike<ArrayLike<IntPoint>>);
   }
 
-
   export class ExPolygon {
     outer: ArrayLike<IntPoint>;
     holes: ArrayLike<ArrayLike<IntPoint>>;
   }
 
-  export enum ClipType { ctIntersection, ctUnion, ctDifference, ctXor }
-  export enum PolyType { ptSubject, ptClip }
-  export enum PolyFillType { pftEvenOdd, pftNonZero, pftPositive, pftNegative }
-  export enum JoinType { jtSquare, jtRound, jtMiter }
+  export enum ClipType {
+    ctIntersection,
+    ctUnion,
+    ctDifference,
+    ctXor
+  }
+  export enum PolyType {
+    ptSubject,
+    ptClip
+  }
+  export enum PolyFillType {
+    pftEvenOdd,
+    pftNonZero,
+    pftPositive,
+    pftNegative
+  }
+  export enum JoinType {
+    jtSquare,
+    jtRound,
+    jtMiter
+  }
   export enum EndType {
     etOpenSquare,
     etOpenRound,
@@ -88,9 +104,20 @@ declare module 'clipper-lib' {
     etClosedLine,
     etClosedPolygon
   }
-  export enum EdgeSide { esLeft, esRight }
-  export enum Protects { ipNone, ipLeft, ipRight, ipBoth }
-  export enum Direction { dRightToLeft, dLeftToRight }
+  export enum EdgeSide {
+    esLeft,
+    esRight
+  }
+  export enum Protects {
+    ipNone,
+    ipLeft,
+    ipRight,
+    ipBoth
+  }
+  export enum Direction {
+    dRightToLeft,
+    dLeftToRight
+  }
 
   export class TEdge {
     xbot: number;
@@ -116,7 +143,6 @@ declare module 'clipper-lib' {
     prevInAEL: TEdge;
     nextInSEL: TEdge;
     prevInSEL: TEdge;
-
   }
   export class IntersectNode {
     edge1: TEdge;
@@ -141,7 +167,6 @@ declare module 'clipper-lib' {
     AppendLink: OutRec;
     pts: OutPt;
     bottomPt: OutPt;
-
   }
   export class OutPt {
     idx: number;
@@ -172,17 +197,53 @@ declare module 'clipper-lib' {
 
     PointsEqual(pt1: IntPoint, pt2: IntPoint): boolean;
     PointIsVertex(pt: IntPoint, pp: JoinRec): boolean;
-    PointInPolygon(pt: IntPoint, pp: JoinRec, UseFulllongRange: boolean): boolean;
+    PointInPolygon(
+      pt: IntPoint,
+      pp: JoinRec,
+      UseFulllongRange: boolean
+    ): boolean;
     SlopesEqual(e1: TEdge, e2: TEdge, UseFullRange: boolean): boolean;
-    SlopesEqual(pt1: IntPoint, pt2: IntPoint, pt3: IntPoint, UseFullRange: boolean): boolean;
-    SlopesEqual(pt1: IntPoint, pt2: IntPoint, pt3: IntPoint, pt4: IntPoint, UseFullRange: boolean): boolean;
+    SlopesEqual(
+      pt1: IntPoint,
+      pt2: IntPoint,
+      pt3: IntPoint,
+      UseFullRange: boolean
+    ): boolean;
+    SlopesEqual(
+      pt1: IntPoint,
+      pt2: IntPoint,
+      pt3: IntPoint,
+      pt4: IntPoint,
+      UseFullRange: boolean
+    ): boolean;
     clear(): void;
     DisposeLocalMinimaList(): void;
-    AddPolygons(ppg: ArrayLike<ArrayLike<IntPoint>>, polyType: PolyType): boolean | string;
-    AddPolygon(pg: ArrayLike<IntPoint>, polyType: PolyType, multiple: boolean): boolean | string;
-    AddPath(pg: ArrayLike<IntPoint>, polyType: PolyType, Closed: boolean): boolean | string;
-    AddPaths(ppg: ArrayLike<ArrayLike<IntPoint>>, polyType: PolyType, closed: boolean): boolean | string;
-    InitEdge(e: TEdge, eNext: TEdge, ePrev: TEdge, pt: IntPoint, polyType: PolyType): void;
+    AddPolygons(
+      ppg: ArrayLike<ArrayLike<IntPoint>>,
+      polyType: PolyType
+    ): boolean | string;
+    AddPolygon(
+      pg: ArrayLike<IntPoint>,
+      polyType: PolyType,
+      multiple: boolean
+    ): boolean | string;
+    AddPath(
+      pg: ArrayLike<IntPoint>,
+      polyType: PolyType,
+      Closed: boolean
+    ): boolean | string;
+    AddPaths(
+      ppg: ArrayLike<ArrayLike<IntPoint>>,
+      polyType: PolyType,
+      closed: boolean
+    ): boolean | string;
+    InitEdge(
+      e: TEdge,
+      eNext: TEdge,
+      ePrev: TEdge,
+      pt: IntPoint,
+      polyType: PolyType
+    ): void;
     SetDx(e: TEdge): void;
     AddBoundsToLML(e: TEdge): TEdge;
     InsertLocalMinima(newLm: LocalMinima): void;
@@ -190,7 +251,6 @@ declare module 'clipper-lib' {
     SwapX(e: TEdge): void;
     Reset(): void;
     GetBounds(): IntRect;
-
   }
 
   export class Clipper extends ClipperBase {
@@ -214,8 +274,16 @@ declare module 'clipper-lib' {
     get_ReverseSolution(): boolean;
     set_ReverseSolution(value: boolean): void;
     InsertScanbeam(Y: number): void;
-    Execute(clipType: ClipType, solution: ArrayLike<IntPoint> | ExPolygon): boolean;
-    Execute(clipType: ClipType, solution: ArrayLike<IntPoint> | ExPolygon, subjFillType: PolyFillType, clipFillType: PolyFillType): boolean;
+    Execute(
+      clipType: ClipType,
+      solution: ArrayLike<IntPoint> | ExPolygon
+    ): boolean;
+    Execute(
+      clipType: ClipType,
+      solution: ArrayLike<IntPoint> | ExPolygon,
+      subjFillType: PolyFillType,
+      clipFillType: PolyFillType
+    ): boolean;
     PolySort(or1: OutRec, or2: OutRec): number;
     FindAppendLinkEnd(outRec: OutRec): OutRec;
     FixHoleLinkage(outRec: OutRec): void;
@@ -241,7 +309,14 @@ declare module 'clipper-lib' {
     CreateOutRec(): OutRec;
     AddOutPt(e: TEdge, pt: IntPoint): void;
     SwapPoints(pt1: IntPoint, pt2: IntPoint): void;
-    GetOverlapSegment(pt1a: IntPoint, pt1b: IntPoint, pt2a: IntPoint, pt2b: IntPoint, pt1: IntPoint, pt2: IntPoint): boolean;
+    GetOverlapSegment(
+      pt1a: IntPoint,
+      pt1b: IntPoint,
+      pt2a: IntPoint,
+      pt2b: IntPoint,
+      pt1: IntPoint,
+      pt2: IntPoint
+    ): boolean;
     FindSegment(pp: IntPoint, pt1: IntPoint, pt2: IntPoint): boolean;
     Pt3IsBetweenPt1AndPt2(pt1: boolean, pt2: boolean, pt3: boolean): OutPt;
     InsertPolyPtBetween(p1: OutPt, p2: OutPt, pt: OutPt): OutPt;
@@ -277,7 +352,10 @@ declare module 'clipper-lib' {
     Round(a: any): number;
     TopX(edge: TEdge, currentY: number): number;
     AddIntersectNode(e1: TEdge, e2: TEdge, pt: IntPoint): void;
-    ProcessParam1BeforeParam2(node1: IntersectNode, node2: IntersectNode): boolean;
+    ProcessParam1BeforeParam2(
+      node1: IntersectNode,
+      node2: IntersectNode
+    ): boolean;
     SwapIntersectNodes(int1: IntersectNode, int2: IntersectNode): void;
     IntersectPoint(edge1: TEdge, edge2: TEdge, ip: IntPoint): boolean;
     DisposeIntersectNodes(): void;
@@ -297,11 +375,15 @@ declare module 'clipper-lib' {
     Area(outRec: OutRec, UseFull64BitRange: boolean): number;
     BuildArc(pt: IntPoint, a1: IntPoint, a2: IntPoint, r: number): Polygon;
     GetUnitNormal(pt1: IntPoint, pt2: IntPoint): DoublePoint;
-    OffsetPolygons(poly: Polygon, delta: number, jointype: JoinType, MiterLimit: number, AutoFix: boolean): ArrayLike<ArrayLike<IntPoint>>;
+    OffsetPolygons(
+      poly: Polygon,
+      delta: number,
+      jointype: JoinType,
+      MiterLimit: number,
+      AutoFix: boolean
+    ): ArrayLike<ArrayLike<IntPoint>>;
     SimplifyPolygon(poly: Polygon, fillType: PolyFillType): Polygon;
     SimplifyPolygons(polys: Polygons, fillType: PolyFillType): Polygons;
-
-
   }
   export class DoublePoint {
     X: number;
@@ -310,10 +392,18 @@ declare module 'clipper-lib' {
   }
 
   export class ClipperOffset {
-    constructor(miterLimt?: number, arcTolera?: number)
-    AddPath(path: Array<{ X: number, Y: number }>, joinType?: JoinType, endType?: EndType): void;
+    constructor(miterLimt?: number, arcTolera?: number);
+    AddPath(
+      path: Array<{ X: number; Y: number }>,
+      joinType?: JoinType,
+      endType?: EndType
+    ): void;
     Execute(path: any, offset: number): void;
-    AddPaths(path: Array<{ X: number, Y: number }>, joinType?: JoinType, endType?: EndType): void;
+    AddPaths(
+      path: Array<{ X: number; Y: number }>,
+      joinType?: JoinType,
+      endType?: EndType
+    ): void;
   }
 
   export class PolyOffsetBuilder {
@@ -327,7 +417,14 @@ declare module 'clipper-lib' {
     m_k: number;
     botPt: PolyOffsetBuilder;
 
-    constructor(pts: Polygons, solution: { value: Polygons }, delta: number, jointype: JoinType, MiterLimit: number, AutoFix: boolean);
+    constructor(
+      pts: Polygons,
+      solution: { value: Polygons },
+      delta: number,
+      jointype: JoinType,
+      MiterLimit: number,
+      AutoFix: boolean
+    );
     UpdateBotPt(pt: IntPoint): boolean;
     AddPoint(pt: IntPoint): void;
     DoSquare(mul: number): void;
@@ -335,21 +432,26 @@ declare module 'clipper-lib' {
     DoRound(): void;
   }
   export function Error(message: string): void;
-  export function Clone(polygon: ArrayLike<IntPoint> | ArrayLike<ArrayLike<IntPoint>>): ArrayLike<IntPoint> | ArrayLike<ArrayLike<IntPoint>>;
-  export function Clean(polygon: ArrayLike<IntPoint> | ArrayLike<ArrayLike<IntPoint>>, delta: number): ArrayLike<IntPoint> | ArrayLike<ArrayLike<IntPoint>>;
-  export function Lighten(polygon: ArrayLike<IntPoint> | ArrayLike<ArrayLike<IntPoint>>, tolerance: number): ArrayLike<IntPoint> | ArrayLike<ArrayLike<IntPoint>>;
+  export function Clone(
+    polygon: ArrayLike<IntPoint> | ArrayLike<ArrayLike<IntPoint>>
+  ): ArrayLike<IntPoint> | ArrayLike<ArrayLike<IntPoint>>;
+  export function Clean(
+    polygon: ArrayLike<IntPoint> | ArrayLike<ArrayLike<IntPoint>>,
+    delta: number
+  ): ArrayLike<IntPoint> | ArrayLike<ArrayLike<IntPoint>>;
+  export function Lighten(
+    polygon: ArrayLike<IntPoint> | ArrayLike<ArrayLike<IntPoint>>,
+    tolerance: number
+  ): ArrayLike<IntPoint> | ArrayLike<ArrayLike<IntPoint>>;
 
-  export class Paths {
-    
-  }
+  export class Paths {}
   module JS {
     export function ScaleUpPath(path: ArrayLike<any>, scale: any): void;
     export function ScaleUpPaths(path: ArrayLike<any>, scale: any): void;
   }
-
 }
 
-declare module 'changedpi';
+declare module "changedpi";
 
-declare module 'element-plus/dist/locale/zh-cn.mjs';
-declare module 'element-plus/dist/locale/en.mjs'
+declare module "element-plus/dist/locale/zh-cn.mjs";
+declare module "element-plus/dist/locale/en.mjs";

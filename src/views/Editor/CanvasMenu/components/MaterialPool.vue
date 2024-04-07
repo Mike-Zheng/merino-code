@@ -47,7 +47,7 @@ import { PathPoolItem, LinePoolItem, ElementNames } from "@/types/elements";
 import {
   loadSVGFromURL,
   loadSVGFromString,
-  Object as FabricObject,
+  Object as FabricObject
 } from "fabric";
 import { getImageDataURL, getImageText } from "@/utils/image";
 import { useTemplatesStore } from "@/store";

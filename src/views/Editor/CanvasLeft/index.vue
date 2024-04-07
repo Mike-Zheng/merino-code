@@ -8,7 +8,13 @@
     </div>
     <div class="left-bottom-tabs">
       <div class="center-tabs">
-        <div class="center-tab" :class="{ 'left-active': tab.key === poolType }" v-for="tab in topTabs" :key="tab.key" @click="setPoolType(tab.key)">
+        <div
+          class="center-tab"
+          :class="{ 'left-active': tab.key === poolType }"
+          v-for="tab in topTabs"
+          :key="tab.key"
+          @click="setPoolType(tab.key)"
+        >
           <div :id="`left-tabs-${tab.key}`">
             <div><SvgIcon :icon-class="tab.icon" className="svg-size" /></div>
             <div class="left-name">{{ $t(tab.label) }}</div>
@@ -16,13 +22,22 @@
         </div>
       </div>
       <div class="bottom-tabs">
-        <div class="bottom-tab" :class="{ 'left-active': 'layer' === poolType }" @click="setPoolType('layer')">
+        <div
+          class="bottom-tab"
+          :class="{ 'left-active': 'layer' === poolType }"
+          @click="setPoolType('layer')"
+        >
           <div :id="`left-tabs-layer`">
             <div><SvgIcon icon-class="layer" className="svg-size" /></div>
             <div class="left-name">{{ $t("message.layer") }}</div>
           </div>
         </div>
-        <div class="bottom-tab" :class="{ 'left-active': 'help' === poolType }" ref="helpRef" @click="setPoolType('help')">
+        <div
+          class="bottom-tab"
+          :class="{ 'left-active': 'help' === poolType }"
+          ref="helpRef"
+          @click="setPoolType('help')"
+        >
           <div :id="`left-tabs-help`">
             <div><SvgIcon icon-class="help" className="svg-size" /></div>
             <div class="left-name">{{ $t("message.help") }}</div>
@@ -66,7 +81,7 @@ const topTabs: TabItem[] = [
   { key: "material", label: "message.material", icon: `material`, index: 2 },
   { key: "text", label: "message.text", icon: "text", index: 3 },
   { key: "image", label: "message.image", icon: "picture", index: 4 },
-  { key: "toolkit", label: "message.tool", icon: "toolkit", index: 5 },
+  { key: "toolkit", label: "message.tool", icon: "toolkit", index: 5 }
 ];
 
 const setPoolType = (tab: PoolType) => {
@@ -157,7 +172,9 @@ const setPoolType = (tab: PoolType) => {
   background: #fff;
   border-left: 1px solid $borderColor;
   border-right: 1px solid $borderColor;
-  transition: left 0.5s linear, right 0.5s linear;
+  transition:
+    left 0.5s linear,
+    right 0.5s linear;
 }
 .left-close {
   cursor: default;

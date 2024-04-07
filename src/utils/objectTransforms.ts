@@ -1,6 +1,10 @@
-import * as fabric from 'fabric';
+import * as fabric from "fabric";
 
-const getDistanceFromPointToLine = (point: fabric.Point, pointLineA: fabric.Point, pointLineB: fabric.Point) => {
+const getDistanceFromPointToLine = (
+  point: fabric.Point,
+  pointLineA: fabric.Point,
+  pointLineB: fabric.Point
+) => {
   const a = pointLineA.y - pointLineB.y;
   const b = pointLineB.x - pointLineA.x;
   const c = pointLineA.x * pointLineB.y - pointLineB.x * pointLineA.y;
@@ -50,29 +54,29 @@ export const saveObjectTransform = (target: any) => {
       minScale: {
         tlS: {
           scaleX: minTlScaleX,
-          scaleY: minTlScaleY,
+          scaleY: minTlScaleY
         },
         blS: {
           scaleX: minBlScaleX,
-          scaleY: minBlScaleY,
+          scaleY: minBlScaleY
         },
         trS: {
           scaleX: minTrScaleX,
-          scaleY: minTrScaleY,
+          scaleY: minTrScaleY
         },
         brS: {
           scaleX: minBrScaleX,
-          scaleY: minBrScaleY,
+          scaleY: minBrScaleY
         },
         mrS: {
           scaleX: minMrScaleX,
-          scaleY: Infinity,
+          scaleY: Infinity
         },
         mlS: {
           scaleX: minMlScaleX,
-          scaleY: Infinity,
-        },
-      },
+          scaleY: Infinity
+        }
+      }
     };
   }
   return {
@@ -92,7 +96,7 @@ export const saveObjectTransform = (target: any) => {
     clippingPath,
     fontSize: target.fontSize,
     styles: target.styles,
-    width:target.width,
-    height:target.height,
+    width: target.width,
+    height: target.height
   };
-}
+};

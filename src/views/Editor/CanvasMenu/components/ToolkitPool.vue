@@ -51,7 +51,10 @@
       </el-row>
     </el-row>
     <ImageMatting :visible="dialogVisible" @close="closeUpload" />
-    <ImageFillColor :visible="ImageFillColorVisible" @close="closeImageFillColor" />
+    <ImageFillColor
+      :visible="ImageFillColorVisible"
+      @close="closeImageFillColor"
+    />
   </div>
 </template>
 
@@ -74,7 +77,7 @@ import {
   rendererLine2,
   rendererFuncA,
   rendererFuncB,
-  CodeOption,
+  CodeOption
 } from "beautify-qrcode";
 
 import { QRCodeType } from "@/types/canvas";
@@ -101,7 +104,7 @@ const generateQRCodeMap = {
   A_a1: rendererLine,
   A_a2: rendererLine2,
   A_b1: rendererFuncA,
-  A_b2: rendererFuncB,
+  A_b2: rendererFuncB
 };
 
 // 获取qrcode
@@ -111,7 +114,7 @@ const getEncodeData = (width = 118, height = 118) => {
     width,
     height,
     correctLevel: codeError.value,
-    isSpace: codeSpace.value,
+    isSpace: codeSpace.value
   };
   return encodeData(codeOption);
 };
@@ -122,7 +125,7 @@ const createBarElement = () => {
     lineColor: "#0aa",
     width: 4,
     height: 40,
-    displayValue: false,
+    displayValue: false
   };
   JsBarCode("#barcode", "1234", codeOption);
   const barcode = document.getElementById("barcode");
@@ -139,7 +142,7 @@ const createQRElement = (style: QRCodeType) => {
   const codeOption = {
     codeStyle: style,
     codeSpace: codeSpace.value,
-    codeError: codeError.value,
+    codeError: codeError.value
   };
   createQRCodeElement(src, codeOption, codeContent.value);
 };

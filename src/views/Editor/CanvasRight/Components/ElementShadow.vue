@@ -89,8 +89,8 @@ import { CanvasElement } from "@/types/canvas";
 const props = defineProps({
   hasShadow: {
     type: Boolean,
-    required: true,
-  },
+    required: true
+  }
 });
 
 const [canvas] = useCanvas();
@@ -139,7 +139,7 @@ const updateShadowElement = () => {
     color: shadowColor.value,
     offsetX: offsetX.value,
     offsetY: offsetY.value,
-    blur: blur.value,
+    blur: blur.value
   });
   canvas.renderAll();
 };

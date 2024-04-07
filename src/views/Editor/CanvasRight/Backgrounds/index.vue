@@ -24,7 +24,10 @@
             </template>
             <ColorPicker
               :modelValue="background.color"
-              @update:modelValue="(color: string) => updateBackground({color: color, fill: color})"
+              @update:modelValue="
+                (color: string) =>
+                  updateBackground({ color: color, fill: color })
+              "
             />
           </el-popover>
         </el-col>
@@ -181,7 +184,9 @@
             </template>
             <ColorPicker
               :modelValue="item.color"
-              @update:modelValue="(color: string) => updateGradientBackground(index, color)"
+              @update:modelValue="
+                (color: string) => updateGradientBackground(index, color)
+              "
             />
           </el-popover>
         </div>
@@ -467,7 +472,9 @@
             </template>
             <ColorPicker
               :modelValue="color"
-              @update:modelValue="(color: string) => changeShadingIndexColor(index, color)"
+              @update:modelValue="
+                (color: string) => changeShadingIndexColor(index, color)
+              "
             />
           </el-popover>
         </div>
@@ -483,7 +490,7 @@
               item.height,
               item.path,
               item.mode
-            )}&quot;)`,
+            )}&quot;)`
           }"
           @click="changeShadingElement(item)"
         >
@@ -510,14 +517,14 @@ import {
   BackgroundFillMode,
   BackgroundFillImageMode,
   BackgroundFillGridMode,
-  BackgroundFillGradientMode,
+  BackgroundFillGradientMode
 } from "@/configs/background";
 import { GridColorLibs } from "@/configs/colorGrid";
 import { GradientColorLibs } from "@/configs/colorGradient";
 import {
   ShadingLigntColors,
   ShadingColorLibInit,
-  ShadingBackgroudInit,
+  ShadingBackgroudInit
 } from "@/configs/colorShading";
 import { GradientCoords } from "@/types/elements";
 import { ShadingBackground, ShadingColorLib } from "@/types/elements";
@@ -573,14 +580,14 @@ const background = computed(() => {
     return {
       fillType: 0,
       fill: TransparentFill,
-      backgroundColor: "#fff",
+      backgroundColor: "#fff"
     } as WorkSpaceElement;
   }
   if (!currentTemplate.value.workSpace) {
     return {
       fillType: 0,
       fill: TransparentFill,
-      backgroundColor: "#fff",
+      backgroundColor: "#fff"
     } as WorkSpaceElement;
   }
   return currentTemplate.value.workSpace;
@@ -600,7 +607,7 @@ const changeBackgroundType = (type: number) => {
     const templateBackground: WorkSpaceElement = {
       ...background.value,
       fillType: type,
-      fill: background.value.color || "#fff",
+      fill: background.value.color || "#fff"
     };
     removeBackgroundElement();
     updateBackground(templateBackground);
@@ -612,7 +619,7 @@ const changeBackgroundType = (type: number) => {
       fillType: type,
       fill: "#fff",
       imageURL: background.value.imageURL || "",
-      imageSize: background.value.imageSize || "cover",
+      imageSize: background.value.imageSize || "cover"
     };
     removeBackgroundElement();
     updateBackground(templateBackground);
@@ -626,7 +633,7 @@ const changeBackgroundType = (type: number) => {
       ...background.value,
       fillType: type,
       backgroundColor: TransparentFill,
-      gaidImageURL: background.value.gaidImageURL || "",
+      gaidImageURL: background.value.gaidImageURL || ""
     };
     updateBackground(templateBackground);
     generateGridBackground();
@@ -637,7 +644,7 @@ const changeBackgroundType = (type: number) => {
       ...background.value,
       fillType: type,
       backgroundColor: TransparentFill,
-      shadingImageURL: background.value.shadingImageURL || "",
+      shadingImageURL: background.value.shadingImageURL || ""
     };
     removeBackgroundElement();
     updateBackground(templateBackground);
@@ -651,7 +658,7 @@ const changeBackgroundType = (type: number) => {
       gradientType: background.value.gradientType || "linear",
       gradientColor:
         background.value.gradientColor || GradientColorLibs[0].colors,
-      gradientName: background.value.gradientName || GradientColorLibs[0].name,
+      gradientName: background.value.gradientName || GradientColorLibs[0].name
     };
     updateBackground(templateBackground);
     generateGradientBackground();
@@ -666,12 +673,12 @@ const updateBackground = (props: Partial<WorkSpaceElement>) => {
     .filter((item) => item.id === WorkSpaceDrawType)[0];
   if (!workSpaceDraw) return;
   templatesStore.updateWorkSpace({
-    workSpace: { ...background.value, ...props },
+    workSpace: { ...background.value, ...props }
   });
   const workProps = workSpaceDraw.toObject(propertiesToInclude as any[]);
   templatesStore.updateElement({
     id: workSpaceDraw.id,
-    props: { ...workProps, ...props },
+    props: { ...workProps, ...props }
   });
   workSpaceDraw.set({ ...props });
   canvas.renderAll();
@@ -683,7 +690,7 @@ const changeBackgroundImage = async (imageURL: string) => {
     const backgroundImage = await util.loadImage(imageURL);
     const workSpacePattern = new Pattern({
       source: backgroundImage,
-      repeat: "repeat",
+      repeat: "repeat"
     });
     updateBackground({ fill: workSpacePattern, imageURL });
   } else {
@@ -753,7 +760,7 @@ const generateGradientBackground = () => {
       x1: width / 2,
       y1: height / 2,
       x2: width / 2,
-      y2: height / 2,
+      y2: height / 2
     };
   }
   const rotateCos = Math.cos((gradientRotate.value * Math.PI) / 180.0);
@@ -764,7 +771,7 @@ const generateGradientBackground = () => {
     coords: coords,
     offsetX: gradientOffsetX.value * width,
     offsetY: gradientOffsetY.value * height,
-    gradientTransform: [rotateCos, rotateSin, -1 * rotateSin, rotateCos, 0, 0],
+    gradientTransform: [rotateCos, rotateSin, -1 * rotateSin, rotateCos, 0, 0]
   });
   updateBackground({ fill: gradient, opacity: gradientOpacity.value });
 };
@@ -886,7 +893,7 @@ const generateGridBackground = async (status?: string) => {
     colorSpace: "lab",
     colorFunction: getGridColorFunction(),
     strokeWidth: 0,
-    points: null,
+    points: null
   };
   const trianglifier = trianglify(defaultOptions);
   const canvasBackground = trianglifier.toSVG(undefined, undefined);
@@ -902,7 +909,7 @@ const generateGridBackground = async (status?: string) => {
     scaleX: workSpaceDraw.scaleX,
     scaleY: workSpaceDraw.scaleY,
     width: workSpaceDraw.width,
-    height: workSpaceDraw.height,
+    height: workSpaceDraw.height
   });
   canvas.set("backgroundImage", backgroundImage);
   templatesStore.setBackgroundImage(backgroundImage.toObject());
@@ -1051,7 +1058,7 @@ const generateShadingBackground = async () => {
   `;
   const imageURL = `data:image/svg+xml,${svg}`;
   const backgroundImage = await Image.fromURL(imageURL, {
-    crossOrigin: "anonymous",
+    crossOrigin: "anonymous"
   });
   const left = workSpaceDraw.left,
     top = workSpaceDraw.top,
@@ -1065,7 +1072,7 @@ const generateShadingBackground = async () => {
     scaleX,
     scaleY,
     width: imageWidth,
-    height: imageHeight,
+    height: imageHeight
   });
 
   canvas.set("backgroundImage", backgroundImage);
@@ -1378,7 +1385,9 @@ const generateShadingBackgroundRandom = () => {
   display: inline-block;
   cursor: pointer;
   margin: 0 2px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .color-item:hover {

@@ -1,15 +1,15 @@
-import { App } from 'vue'
+import { App } from "vue";
 
-import FileInput from '@/components/FileInput.vue'
-import ColorPicker from '@/components/ColorPicker/index.vue'
-import ColorButton from '@/components/ColorButton.vue'
-import TextColorButton from '@/components/TextColorButton.vue'
-import FullscreenSpin from '@/components/FullscreenSpin.vue'
-import LinePointMarker from '@/components/LinePointMarker.vue'
-import SwipeInput from '@/components/SwipeInput.vue'
-import FileUpload from '@/components/FileUpload/index.vue'
-import ImageMatting from '@/components/ImageMatting/index.vue'
-import ImageFillColor from '@/components/ImageFillColor.vue'
+import FileInput from "@/components/FileInput.vue";
+import ColorPicker from "@/components/ColorPicker/index.vue";
+import ColorButton from "@/components/ColorButton.vue";
+import TextColorButton from "@/components/TextColorButton.vue";
+import FullscreenSpin from "@/components/FullscreenSpin.vue";
+import LinePointMarker from "@/components/LinePointMarker.vue";
+import SwipeInput from "@/components/SwipeInput.vue";
+import FileUpload from "@/components/FileUpload/index.vue";
+import ImageMatting from "@/components/ImageMatting/index.vue";
+import ImageFillColor from "@/components/ImageFillColor.vue";
 
 const components = {
   FileInput,
@@ -21,13 +21,13 @@ const components = {
   SwipeInput,
   FileUpload,
   ImageMatting,
-  ImageFillColor,
-}
+  ImageFillColor
+};
 
 export default {
   install(app: App) {
     for (const key of Object.keys(components)) {
-      app.component(key, components[key as keyof typeof components])
+      app.component(key, components[key as keyof typeof components]);
     }
   }
-}
+};

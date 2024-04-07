@@ -194,18 +194,18 @@ import { useFabricStore, useMainStore, useTemplatesStore } from "@/store";
 import {
   WorkSpaceClipType,
   WorkSpaceDrawType,
-  WorkSpaceMaskType,
+  WorkSpaceMaskType
 } from "@/configs/canvas";
 import {
   DesignUnitMode,
   DesignSizeMode,
   MinSize,
-  MaxSize,
+  MaxSize
 } from "@/configs/background";
 import useCanvas from "@/views/Canvas/useCanvas";
 import Backgrounds from "../Backgrounds/index.vue";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
-import useCanvasScale from '@/hooks/useCanvasScale'
+import useCanvasScale from "@/hooks/useCanvasScale";
 
 const { t } = useI18n();
 
@@ -216,7 +216,7 @@ const { addHistorySnapshot } = useHistorySnapshot();
 const { sizeMode, unitMode } = storeToRefs(mainStore);
 const { currentTemplate } = storeToRefs(templatesStore);
 const { clip, safe, zoom, opacity } = storeToRefs(fabricStore);
-const { setCanvasSize, resetCanvas } = useCanvasScale()
+const { setCanvasSize, resetCanvas } = useCanvasScale();
 
 const templateWidth = computed(() => {
   // const [ canvas ] = useCanvas()
@@ -269,14 +269,14 @@ const changeTemplateWidth = () => {
   if (width / zoom.value < mm2px(MinSize)) {
     ElMessage({
       message: t("style.minimumSizeLimit") + MinSize,
-      type: "warning",
+      type: "warning"
     });
     width = mm2px(MinSize) * zoom.value;
   }
   if (width / zoom.value > mm2px(MaxSize)) {
     ElMessage({
       message: t("style.maximumSizeLimit") + MaxSize,
-      type: "warning",
+      type: "warning"
     });
     width = mm2px(MaxSize) * zoom.value;
   }
@@ -301,14 +301,14 @@ const changeTemplateHeight = () => {
   if (height / zoom.value < mm2px(MinSize)) {
     ElMessage({
       message: t("style.minimumSizeLimit") + MinSize,
-      type: "warning",
+      type: "warning"
     });
     height = mm2px(MinSize) * zoom.value;
   }
   if (height / zoom.value > mm2px(MaxSize)) {
     ElMessage({
       message: t("style.maximumSizeLimit") + MaxSize,
-      type: "warning",
+      type: "warning"
     });
     height = mm2px(MaxSize) * zoom.value;
   }

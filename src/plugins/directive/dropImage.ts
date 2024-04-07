@@ -27,7 +27,10 @@ const removeStyle = (el: HTMLElement, style: Record<string, any>): void => {
   });
 };
 
-const defaultUpload = async (files: FileList, uploadUrl: string): Promise<void> => {
+const defaultUpload = async (
+  files: FileList,
+  uploadUrl: string
+): Promise<void> => {
   const fileAccept = ".pdf,.psd,.cdr,.ai,.svg,.jpg,.jpeg,.png,.webp,.json";
   const { addTemplate } = useHandleTemplate();
   const { createImageElement } = useHandleCreate();
@@ -81,7 +84,9 @@ const defaultUpload = async (files: FileList, uploadUrl: string): Promise<void> 
 
 const dropImageDirective: ObjectDirective<HTMLElement, DropImageOptions> = {
   mounted(el, binding: DirectiveBinding<DropImageOptions>) {
-    const highlightStyle = binding.value.highlightStyle || { backgroundColor: "#f0f0f0" };
+    const highlightStyle = binding.value.highlightStyle || {
+      backgroundColor: "#f0f0f0"
+    };
 
     el.addEventListener("dragover", (event) => event.preventDefault());
     el.addEventListener("dragenter", () => applyStyle(el, highlightStyle));
@@ -90,13 +95,16 @@ const dropImageDirective: ObjectDirective<HTMLElement, DropImageOptions> = {
       event.preventDefault();
       removeStyle(el, highlightStyle);
       const files = event.dataTransfer!.files;
-      if (binding.value.uploadFunction && typeof binding.value.uploadFunction === "function") {
+      if (
+        binding.value.uploadFunction &&
+        typeof binding.value.uploadFunction === "function"
+      ) {
         binding.value.uploadFunction(files);
       } else if (binding.value.url) {
         defaultUpload(files, binding.value.url);
       }
     });
-  },
+  }
 };
 
 export default dropImageDirective;

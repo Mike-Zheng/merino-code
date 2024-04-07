@@ -1,6 +1,6 @@
 <template>
   <div class="shape-style-panel">
-    <ElementPosition/>
+    <ElementPosition />
     <el-divider />
     <ElementFill />
     <el-divider />
@@ -17,23 +17,23 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue'
-import ElementPosition from '../Components/ElementPosition.vue'
-import ElementOpacity from '../Components/ElementOpacity.vue'
-import ElementOutline from '../Components/ElementOutline.vue'
-import ElementShadow from '../Components/ElementShadow.vue'
-import ElementFlip from '../Components/ElementFlip.vue'
-import ElementClip from '../Components/ElementClip.vue'
-import ElementText from '../Components/ElementText.vue'
-import ElementFill from '../Backgrounds/ElementFill.vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore } from '@/store'
-import { Path } from 'fabric'
+import { computed, ref, watch } from "vue";
+import ElementPosition from "../Components/ElementPosition.vue";
+import ElementOpacity from "../Components/ElementOpacity.vue";
+import ElementOutline from "../Components/ElementOutline.vue";
+import ElementShadow from "../Components/ElementShadow.vue";
+import ElementFlip from "../Components/ElementFlip.vue";
+import ElementClip from "../Components/ElementClip.vue";
+import ElementText from "../Components/ElementText.vue";
+import ElementFill from "../Backgrounds/ElementFill.vue";
+import { storeToRefs } from "pinia";
+import { useMainStore } from "@/store";
+import { Path } from "fabric";
 
-const mainStore = useMainStore()
-const { canvasObject } = storeToRefs(mainStore)
-const handleElement = computed(() => canvasObject.value as Path) 
-const hasShadow = computed(() => handleElement.value.shadow ? true : false)
+const mainStore = useMainStore();
+const { canvasObject } = storeToRefs(mainStore);
+const handleElement = computed(() => canvasObject.value as Path);
+const hasShadow = computed(() => (handleElement.value.shadow ? true : false));
 </script>
 
 <style lang="scss" scoped>

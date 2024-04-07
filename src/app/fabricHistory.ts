@@ -1,9 +1,8 @@
-
-import FabricCommand  from './fabricCommand'
+import FabricCommand from "./fabricCommand";
 
 class FabricHistory {
-  public index
-  public commands: FabricCommand[]
+  public index;
+  public commands: FabricCommand[];
   constructor() {
     this.commands = [];
     this.index = 0;

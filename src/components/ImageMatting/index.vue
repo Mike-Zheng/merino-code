@@ -46,7 +46,9 @@
       <div
         v-show="state.originImage"
         v-loading="!state.resultImage"
-        :style="{ width: state.offsetWidth ? state.offsetWidth + 'px' : '100%' }"
+        :style="{
+          width: state.offsetWidth ? state.offsetWidth + 'px' : '100%'
+        }"
         class="scan-effect transparent-background"
       >
         <img
@@ -119,7 +121,7 @@ import {
   genFileId,
   UploadInstance,
   UploadProps,
-  UploadRawFile,
+  UploadRawFile
 } from "element-plus";
 import { uploadImage, uploadURL } from "@/api/matting";
 import { useTemplatesStore } from "@/store";
@@ -130,7 +132,6 @@ import useHandleCreate from "@/hooks/useHandleCreate";
 import useHandleTemplate from "@/hooks/useHandleTemplate";
 import useCanvas from "@/views/Canvas/useCanvas";
 import useI18n from "@/hooks/useI18n";
-
 
 const { t } = useI18n();
 const templatesStore = useTemplatesStore();
@@ -165,7 +166,7 @@ const state = reactive<TImageMattingState>({
   progress: 0,
   progressText: "",
   toolModel: true,
-  loading: false,
+  loading: false
 });
 
 const isRuning = ref(false);
@@ -174,7 +175,7 @@ const uploadRef = ref<UploadInstance>();
 const props = defineProps({
   visible: {
     type: Boolean,
-    required: true,
+    required: true
   },
   imageId: {
     type: String,
@@ -183,8 +184,7 @@ const props = defineProps({
   image: {
     type: String,
     required: false
-  },
-  
+  }
 });
 
 const emit = defineEmits<{
@@ -197,7 +197,7 @@ watch(
     state.dialogVisible = val;
     if (val) {
       uploadRef.value?.clearFiles();
-      updateElement(props.image)
+      updateElement(props.image);
     }
   }
 );
@@ -222,7 +222,7 @@ const uploadHandle = async (option: any) => {
 };
 
 const updateElement = async (image?: string) => {
-  if (!image) return
+  if (!image) return;
   state.originImage = image;
   const res = await uploadURL(image);
   const mattingData = res.data;
@@ -232,16 +232,16 @@ const updateElement = async (image?: string) => {
     // state.offsetWidth = mattingData.size.width
     requestAnimationFrame(run);
   }
-}
+};
 
 const replaceImage = async () => {
-  const [ canvas ] = useCanvas()
-  const activeObject = canvas.getActiveObject() as Image
-  if (!activeObject) return
-  await activeObject.setSrc(state.resultImage)
-  canvas.renderAll()
-  emit('close')
-}
+  const [canvas] = useCanvas();
+  const activeObject = canvas.getActiveObject() as Image;
+  if (!activeObject) return;
+  await activeObject.setSrc(state.resultImage);
+  canvas.renderAll();
+  emit("close");
+};
 
 const handleExceed: UploadProps["onExceed"] = (files: File[]) => {
   uploadRef.value!.clearFiles();
@@ -275,7 +275,8 @@ const download = () => {
 };
 
 const mousemove = (e: MouseEvent) => {
-  !isRuning.value && (state.percent = (e.offsetX / (e.target as any).width) * 100);
+  !isRuning.value &&
+    (state.percent = (e.offsetX / (e.target as any).width) * 100);
 };
 </script>
 

@@ -1,192 +1,192 @@
-import Hammer from 'hammerjs'
-import useCanvas from './useCanvas'
-import { Point, Object as FabricObject, util } from 'fabric'
-import { storeToRefs } from 'pinia'
-import { useFabricStore } from '@/store/modules/fabric'
+import Hammer from "hammerjs";
+import useCanvas from "./useCanvas";
+import { Point, Object as FabricObject, util } from "fabric";
+import { storeToRefs } from "pinia";
+import { useFabricStore } from "@/store/modules/fabric";
 
-const rotateSnaps = [0, 45, 90, 135, 180, 225, 270, 315, 360]
+const rotateSnaps = [0, 45, 90, 135, 180, 225, 270, 315, 360];
 
 export default () => {
-
   const initHammer = () => {
-    let pausePanning = false
+    const pausePanning = false;
 
-    let lastX = null
-    let lastY = null
+    const lastX = null;
+    const lastY = null;
 
-    let adjustDeltaX = 0
-    let adjustDeltaY = 0
-    let adjustScale = 1
-    let adjustScaleX = 1
-    let adjustScaleY = 1
-    let adjustRotation = 0
+    const adjustDeltaX = 0;
+    const adjustDeltaY = 0;
+    const adjustScale = 1;
+    const adjustScaleX = 1;
+    const adjustScaleY = 1;
+    let adjustRotation = 0;
 
-    let currentDeltaX = null
-    let currentDeltaY = null
-    let currentScale = null
-    let currentScaleX = null
-    let currentScaleY = null
-    let currentRotation = null
+    let currentDeltaX = null;
+    let currentDeltaY = null;
+    const currentScale = null;
+    const currentScaleX = null;
+    const currentScaleY = null;
+    const currentRotation = null;
 
-    const [canvas] = useCanvas()
-    const fabricStore = useFabricStore()
-    const { zoom } = storeToRefs(fabricStore)
-    const hammer = new Hammer.Manager(canvas.lowerCanvasEl)
-    const pan = new Hammer.Pan()
-    const rotate = new Hammer.Rotate()
-    const pinch = new Hammer.Pinch()
-    hammer.add([pan, pinch, rotate])
-    hammer.get('pan').set({ enable: true, direction: Hammer.DIRECTION_ALL })
-    hammer.get('rotate').set({ enable: true })
-    hammer.get('pinch').set({ enable: true })
+    const [canvas] = useCanvas();
+    const fabricStore = useFabricStore();
+    const { zoom } = storeToRefs(fabricStore);
+    const hammer = new Hammer.Manager(canvas.lowerCanvasEl);
+    const pan = new Hammer.Pan();
+    const rotate = new Hammer.Rotate();
+    const pinch = new Hammer.Pinch();
+    hammer.add([pan, pinch, rotate]);
+    hammer.get("pan").set({ enable: true, direction: Hammer.DIRECTION_ALL });
+    hammer.get("rotate").set({ enable: true });
+    hammer.get("pinch").set({ enable: true });
 
     hammer.on("panstart pinchstart rotatestart", (e) => {
-      adjustRotation -= e.rotation
-      this.lastX = e.center.x
-      this.lastY = e.center.y
+      adjustRotation -= e.rotation;
+      this.lastX = e.center.x;
+      this.lastY = e.center.y;
       if (canvas.getActiveObject()) {
-        const object = canvas.getActiveObject()
-        if (!object) return
-        this.adjustScaleX = object.scaleX
-        this.adjustScaleY = object.scaleY
+        const object = canvas.getActiveObject();
+        if (!object) return;
+        this.adjustScaleX = object.scaleX;
+        this.adjustScaleY = object.scaleY;
       }
-    })
+    });
 
     hammer.on("panmove", (e) => {
+      if (
+        canvas.getActiveObject() == undefined &&
+        this.pausePanning == false &&
+        canvas.isDrawingMode == 0 &&
+        e.maxPointers == 1
+      ) {
+        currentDeltaX = -(this.lastX - e.center.x);
+        currentDeltaY = -(this.lastY - e.center.y);
+        const delta = new fabric.Point(currentDeltaX, currentDeltaY);
 
-      if (canvas.getActiveObject() == undefined
-        && this.pausePanning == false
-        && canvas.isDrawingMode == 0
-        && e.maxPointers == 1) {
+        canvas.relativePan(delta);
+        canvas.renderAll();
 
-        currentDeltaX = -(this.lastX - e.center.x)
-        currentDeltaY = -(this.lastY - e.center.y)
-        let delta = new fabric.Point(currentDeltaX, currentDeltaY)
-
-        canvas.relativePan(delta)
-        canvas.renderAll()
-
-        this.lastX = e.center.x
-        this.lastY = e.center.y
+        this.lastX = e.center.x;
+        this.lastY = e.center.y;
       }
-    })
+    });
 
     const drawRotateGuidelines = (object: FabricObject, angle: number) => {
-      const ctx = canvas.getSelectionContext()
+      const ctx = canvas.getSelectionContext();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       if (rotateSnaps.includes(Math.abs(Math.ceil(object.angle)))) {
-
-        const scale = object.scaleX
-        let XYstart = util.transformPoint(new Point((object.left - ((object.width * scale) / 2)), (object.top)), canvas.viewportTransform)
-        const centerPoint = object.getCenterPoint()
-        var XYmid = util.transformPoint(new Point((centerPoint.x), (centerPoint.y)), canvas.viewportTransform)
-        var XYend = util.transformPoint(new Point((object.left + ((object.width * scale) / 2)), (object.top)), canvas.viewportTransform)
-        ctx.save()
-        let middlePoint = { x: XYmid.x, y: XYmid.y }
+        const scale = object.scaleX;
+        let XYstart = util.transformPoint(
+          new Point(object.left - (object.width * scale) / 2, object.top),
+          canvas.viewportTransform
+        );
+        const centerPoint = object.getCenterPoint();
+        const XYmid = util.transformPoint(
+          new Point(centerPoint.x, centerPoint.y),
+          canvas.viewportTransform
+        );
+        let XYend = util.transformPoint(
+          new Point(object.left + (object.width * scale) / 2, object.top),
+          canvas.viewportTransform
+        );
+        ctx.save();
+        let middlePoint = { x: XYmid.x, y: XYmid.y };
         ctx.translate(middlePoint.x, middlePoint.y);
-        ctx.rotate((Math.PI / 180) * object.angle)
+        ctx.rotate((Math.PI / 180) * object.angle);
         ctx.translate(-middlePoint.x, -middlePoint.y);
-        ctx.strokeStyle = centerLineColor
-        ctx.lineWidth = centerLineWidth
-        ctx.beginPath()
-        ctx.moveTo(((XYstart.x)), ((XYstart.y)))
-        ctx.lineTo(((XYend.x)), ((XYend.y)))
-        ctx.stroke()
-        ctx.restore()
+        ctx.strokeStyle = centerLineColor;
+        ctx.lineWidth = centerLineWidth;
+        ctx.beginPath();
+        ctx.moveTo(XYstart.x, XYstart.y);
+        ctx.lineTo(XYend.x, XYend.y);
+        ctx.stroke();
+        ctx.restore();
 
+        XYstart = util.transformPoint(
+          new Point(object.left - (object.height * scale) / 2, object.top),
+          canvas.viewportTransform
+        );
+        XYend = util.transformPoint(
+          new Point(object.left + (object.height * scale) / 2, object.top),
+          canvas.viewportTransform
+        );
+        ctx.save();
 
-        XYstart = util.transformPoint(new Point((object.left - ((object.height * scale) / 2)), (object.top)), canvas.viewportTransform)
-        XYend = util.transformPoint(new Point((object.left + ((object.height * scale) / 2)), (object.top)), canvas.viewportTransform)
-        ctx.save()
-
-        middlePoint = { x: XYmid.x, y: XYmid.y }
+        middlePoint = { x: XYmid.x, y: XYmid.y };
         ctx.translate(middlePoint.x, middlePoint.y);
-        ctx.rotate((Math.PI / 180) * (object.angle + 90))
+        ctx.rotate((Math.PI / 180) * (object.angle + 90));
         ctx.translate(-middlePoint.x, -middlePoint.y);
-        ctx.strokeStyle = '#3988ad'
-        ctx.lineWidth = 1
-        ctx.beginPath()
+        ctx.strokeStyle = "#3988ad";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
         //console.log("centerLineColor: " + centerLineColor)
-        ctx.moveTo(
-          ((XYstart.x)),
-          ((XYstart.y))
-        )
+        ctx.moveTo(XYstart.x, XYstart.y);
 
-        ctx.lineTo(
-          ((XYend.x)),
-          ((XYend.y))
-        )
+        ctx.lineTo(XYend.x, XYend.y);
 
+        ctx.stroke();
+        ctx.restore();
 
-        ctx.stroke()
-        ctx.restore()
-
-        canvas.renderAll()
+        canvas.renderAll();
       }
-    }
+    };
 
     const checkRotateSnap = (degree, object) => {
-      var inDegree = degree + adjustRotation
-      var newDegree = null
+      const inDegree = degree + adjustRotation;
+      let newDegree = null;
       if (object.lockRotation == true) {
-        if (between(Math.abs(Math.ceil(inDegree)), Math.abs(object.lockedDegree) - 10, Math.abs(object.lockedDegree) + 10)) {
-
-
-
+        if (
+          between(
+            Math.abs(Math.ceil(inDegree)),
+            Math.abs(object.lockedDegree) - 10,
+            Math.abs(object.lockedDegree) + 10
+          )
+        ) {
           //console.log("111 - maintain snap")
-          object.lockRotation = true
-          newDegree = object.lockedDegree
+          object.lockRotation = true;
+          newDegree = object.lockedDegree;
           //newDegree = degree
 
           // break
         } else {
-
           //console.log("222 - exit snap")
-          object.lockRotation = false
-          object.lockedDegree = null
-          newDegree = degree + adjustRotation
+          object.lockRotation = false;
+          object.lockedDegree = null;
+          newDegree = degree + adjustRotation;
           contextLines.clearRect(0, 0, canvas.width, canvas.height);
-
         }
-
       } else {
-
         if (rotateSnaps.includes(Math.abs(Math.ceil(inDegree)))) {
-          object.lockRotation = true
+          object.lockRotation = true;
 
-          newDegree = Math.ceil(degree + adjustRotation)
+          newDegree = Math.ceil(degree + adjustRotation);
 
-          object.lockedDegree = newDegree
+          object.lockedDegree = newDegree;
         } else {
-
-          object.lockRotation = false
-          object.lockedDegree = null
-          newDegree = degree + adjustRotation
+          object.lockRotation = false;
+          object.lockedDegree = null;
+          newDegree = degree + adjustRotation;
           contextLines.clearRect(0, 0, canvas.width, canvas.height);
         }
       }
-      update_info()
-      return newDegree
+      update_info();
+      return newDegree;
+    };
 
-
-    }
-
-    canvas.on('object:rotating', function (e) {
+    canvas.on("object:rotating", function (e) {
       if (rotateSnaps.includes(Math.abs(Math.ceil(e.target.angle)))) {
-        e.target.lockedDegree = Math.ceil(e.target.angle)
+        e.target.lockedDegree = Math.ceil(e.target.angle);
+      } else {
+        e.target.lockedDegree = null;
       }
-      else {
-        e.target.lockedDegree = null
-      }
-      adjustRotation = e.target.angle
-      const object = canvas.getActiveObject()
-      if (!object) return
-      drawRotateGuidelines(object, e.target.angle)
-    })
-  }
+      adjustRotation = e.target.angle;
+      const object = canvas.getActiveObject();
+      if (!object) return;
+      drawRotateGuidelines(object, e.target.angle);
+    });
+  };
 
   return {
     initHammer
-  }
-}
+  };
+};

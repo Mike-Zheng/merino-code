@@ -4,19 +4,20 @@
       <pre>{{ getJSONData() }}</pre>
     </div>
     <div class="btns">
-      <el-button class="btn export" type="primary" @click="exportJSON()">导出 JSON</el-button>
+      <el-button class="btn export" type="primary" @click="exportJSON()"
+        >导出 JSON</el-button
+      >
       <el-button class="btn close" @click="emit('close')">关闭</el-button>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import useCanvasExport from '@/hooks/useCanvasExport'
+import useCanvasExport from "@/hooks/useCanvasExport";
 
-const emit = defineEmits<{(event: 'close'): void}>()
+const emit = defineEmits<{ (event: "close"): void }>();
 
-const { exportJSON, getJSONData } = useCanvasExport()
-
+const { exportJSON, getJSONData } = useCanvasExport();
 </script>
 
 <style lang="scss" scoped>

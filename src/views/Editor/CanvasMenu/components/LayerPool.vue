@@ -32,23 +32,25 @@ import LayerDraggableSelf from "./LayerComponents/LayerDraggableSelf.vue";
 import useHandleElement from "@/hooks/useHandleElement";
 
 // 搜索关键字
-const keywords = ref('')
+const keywords = ref("");
 
 const templatesStore = useTemplatesStore();
 const { currentTemplate } = storeToRefs(templatesStore);
 const { cancelElement } = useHandleElement();
 const layerObjects = computed(() => {
-  const _keywords = unref(keywords)
-  if(!_keywords) return currentTemplate.value.objects.filter(
-    (item) =>
-      !WorkSpaceThumbType.includes(item.id) &&
-      item.type.toLowerCase() !== ElementNames.REFERENCELINE
-  )
+  const _keywords = unref(keywords);
+  if (!_keywords)
+    return currentTemplate.value.objects.filter(
+      (item) =>
+        !WorkSpaceThumbType.includes(item.id) &&
+        item.type.toLowerCase() !== ElementNames.REFERENCELINE
+    );
   return currentTemplate.value.objects.filter(
     (item) =>
       !WorkSpaceThumbType.includes(item.id) &&
-      item.type.toLowerCase() !== ElementNames.REFERENCELINE && item.type.toLowerCase().includes(_keywords) 
-  )
+      item.type.toLowerCase() !== ElementNames.REFERENCELINE &&
+      item.type.toLowerCase().includes(_keywords)
+  );
 });
 </script>
 

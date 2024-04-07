@@ -1,4 +1,4 @@
-import { util } from 'fabric';
+import { util } from "fabric";
 
 const degreesToRadians = util.degreesToRadians;
 
@@ -16,8 +16,8 @@ function renderCropCorner(ctx, left, top, styleOverride, fabricObject) {
   ctx.rotate(degreesToRadians(this.angle + fabricObject.angle));
   ctx.beginPath();
   ctx.lineWidth = 6;
-  ctx.lineCap = 'round';
-  ctx.strokeStyle = '#dfe2e8';
+  ctx.lineCap = "round";
+  ctx.strokeStyle = "#dfe2e8";
   ctx.moveTo(0, cSize);
   ctx.lineTo(0, 0);
   ctx.lineTo(cSize, 0);
@@ -44,32 +44,26 @@ function renderCropMiddle(ctx, left, top, styleOverride, fabricObject) {
   ctx.rotate(degreesToRadians(this.angle + fabricObject.angle));
   ctx.beginPath();
   ctx.lineWidth = 4;
-  ctx.lineCap = 'round';
-  ctx.strokeStyle = '#dfe2e8';
+  ctx.lineCap = "round";
+  ctx.strokeStyle = "#dfe2e8";
   ctx.moveTo(-cSizeBy2, 0);
   ctx.lineTo(cSizeBy2, 0);
   ctx.stroke();
   ctx.restore();
 }
 
-
 function renderWithShadows(x: number, y: number, fn: Function) {
   // @ts-ignore
   return function (ctx, left, top, styleOverride, fabricObject) {
     ctx.save();
-    ctx.shadowColor = 'rgba(12, 18, 28, 0.38)';
+    ctx.shadowColor = "rgba(12, 18, 28, 0.38)";
     ctx.shadowBlur = 4;
     ctx.shadowOffsetX = x;
-    ctx.shadowOffsetY = y
+    ctx.shadowOffsetY = y;
     // @ts-ignore
     fn.call(this, ctx, left, top, styleOverride, fabricObject);
     ctx.restore();
   };
 }
 
-
-export {
-  renderCropCorner,
-  renderCropMiddle,
-  renderWithShadows
-}
+export { renderCropCorner, renderCropMiddle, renderWithShadows };

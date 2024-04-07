@@ -14,35 +14,41 @@
     <template #item="{ element }">
       <div v-contextmenu="contextMenusThumbnails">
         <LayerDraggableCom :index="props.index" :element="element" />
-        <LayerDraggableSelf v-if="element.type.toLowerCase() === ElementNames.GROUP && element.objects" v-show="element.isShow" :elements="element.objects" :index="props.index + 1"/>
+        <LayerDraggableSelf
+          v-if="
+            element.type.toLowerCase() === ElementNames.GROUP && element.objects
+          "
+          v-show="element.isShow"
+          :elements="element.objects"
+          :index="props.index + 1"
+        />
       </div>
     </template>
   </Draggable>
 </template>
 
 <script lang="ts" setup>
-import { PropType } from 'vue'
-import { Object as FabricObject } from 'fabric'
-import { ElementNames } from '@/types/elements'
-import { contextMenusThumbnails } from '@/configs/contextMenu'
-import Draggable from 'vuedraggable'
-import useHandleElement from '@/hooks/useHandleElement'
-import LayerDraggableSelf from './LayerDraggableSelf.vue'
-import LayerDraggableCom from './LayerDraggableCom.vue'
+import { PropType } from "vue";
+import { Object as FabricObject } from "fabric";
+import { ElementNames } from "@/types/elements";
+import { contextMenusThumbnails } from "@/configs/contextMenu";
+import Draggable from "vuedraggable";
+import useHandleElement from "@/hooks/useHandleElement";
+import LayerDraggableSelf from "./LayerDraggableSelf.vue";
+import LayerDraggableCom from "./LayerDraggableCom.vue";
 
-const { sortElement, layerElement } = useHandleElement()
+const { sortElement, layerElement } = useHandleElement();
 
 const props = defineProps({
   elements: {
     type: Object as PropType<FabricObject[]>,
-    required: true,
+    required: true
   },
   index: {
     type: Number,
-    required: true,
+    required: true
   }
-})
-
+});
 </script>
 
 <style lang="scss" scoped>

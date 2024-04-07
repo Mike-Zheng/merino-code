@@ -1,11 +1,10 @@
-
 import { Object as FabricObject } from "fabric";
 
 class FabricCommand {
-  public receiver: FabricObject
-  public state: any
-  public prevState: any
-  public stateProperties: any
+  public receiver: FabricObject;
+  public state: any;
+  public prevState: any;
+  public stateProperties: any;
   constructor(receiver: FabricObject) {
     this.receiver = receiver;
 
@@ -34,18 +33,18 @@ class FabricCommand {
     this._restore(this.prevState);
   }
   _restore(state: any) {
-    this.stateProperties.forEach(prop => {
+    this.stateProperties.forEach((prop) => {
       this.receiver.set(prop, state[prop]);
     });
   }
   _saveState() {
-    this.stateProperties.forEach(prop => {
+    this.stateProperties.forEach((prop) => {
       this.state[prop] = this.receiver.get(prop);
     });
   }
   _savePrevState() {
     if (this.receiver._stateProperties) {
-      this.stateProperties.forEach(prop => {
+      this.stateProperties.forEach((prop) => {
         this.prevState[prop] = this.receiver._stateProperties[prop];
       });
     }

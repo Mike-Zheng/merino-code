@@ -1,5 +1,5 @@
-import type { Control } from 'fabric'
-import { PiBy180 } from '@/utils/common'
+import type { Control } from "fabric";
+import { PiBy180 } from "@/utils/common";
 
 interface NominalTag<T> {
   nominalTag?: T;
@@ -13,13 +13,14 @@ const enum Radian {}
 export type TDegree = Nominal<number, Degree>;
 export type TRadian = Nominal<number, Radian>;
 
-export type TControlSet = Record<string, Control>
+export type TControlSet = Record<string, Control>;
 
-export type TOriginX = 'center' | 'left' | 'right' | number;
-export type TOriginY = 'center' | 'top' | 'bottom' | number;
+export type TOriginX = "center" | "left" | "right" | number;
+export type TOriginY = "center" | "top" | "bottom" | number;
 
 export type TPointerEvent = MouseEvent | TouchEvent | PointerEvent;
-export const degreesToRadians = (degrees: TDegree): TRadian =>(degrees * PiBy180) as TRadian;
+export const degreesToRadians = (degrees: TDegree): TRadian =>
+  (degrees * PiBy180) as TRadian;
 
 export type TransformAction<T extends Transform = Transform, R = void> = (
   eventData: TPointerEvent,
@@ -28,8 +29,8 @@ export type TransformAction<T extends Transform = Transform, R = void> = (
   y: number
 ) => R;
 
-export type TransformActionHandler<T extends Transform = Transform> = TransformAction<T, boolean>;
-
+export type TransformActionHandler<T extends Transform = Transform> =
+  TransformAction<T, boolean>;
 
 export const saveObjectTransform = (target: any) => ({
   scaleX: target.scaleX,
@@ -40,7 +41,7 @@ export const saveObjectTransform = (target: any) => ({
   left: target.left,
   flipX: target.flipX,
   flipY: target.flipY,
-  top: target.top,
+  top: target.top
 });
 
 export type Transform = {

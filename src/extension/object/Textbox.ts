@@ -1,7 +1,11 @@
-import { Object as FabricObject, Textbox as OriginTextbox, classRegistry, ImageSource } from "fabric"
+import {
+  Object as FabricObject,
+  Textbox as OriginTextbox,
+  classRegistry,
+  ImageSource
+} from "fabric";
 
 export class Textbox extends OriginTextbox {
-
   enlargeSpaces() {
     let diffSpace,
       currentLineWidth,
@@ -11,14 +15,19 @@ export class Textbox extends OriginTextbox {
       charBound,
       spaces;
     for (let i = 0, len = this._textLines.length; i < len; i++) {
-      if (this.textAlign !== 'justify' && (i === len - 1 || this.isEndOfWrapping(i))) {
+      if (
+        this.textAlign !== "justify" &&
+        (i === len - 1 || this.isEndOfWrapping(i))
+      ) {
         continue;
       }
       accumulatedSpace = 0;
       line = this._textLines[i];
       currentLineWidth = this.getLineWidth(i);
-      if (currentLineWidth < this.width && (spaces = this.textLines[i].split(''))) {
-        
+      if (
+        currentLineWidth < this.width &&
+        (spaces = this.textLines[i].split(""))
+      ) {
         numberOfSpaces = spaces.length - 1;
         diffSpace = (this.width - currentLineWidth) / numberOfSpaces;
         for (let j = 0; j <= line.length; j++) {
@@ -33,4 +42,4 @@ export class Textbox extends OriginTextbox {
   }
 }
 
-classRegistry.setClass(Textbox, 'Textbox')
+classRegistry.setClass(Textbox, "Textbox");

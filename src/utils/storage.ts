@@ -18,7 +18,7 @@ export const localStorage = {
   // 移除全部永久缓存
   clear() {
     window.localStorage.clear();
-  },
+  }
 };
 
 /**
@@ -41,5 +41,5 @@ export const sessionStorage = {
   // 移除全部临时缓存
   clear() {
     window.sessionStorage.clear();
-  },
+  }
 };

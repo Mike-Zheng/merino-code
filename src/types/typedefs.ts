@@ -1,5 +1,5 @@
-import { BaseFabricObject } from './EventTypeDefs'
-import type { Gradient, Pattern, Point, ImageFormat } from 'fabric'
+import { BaseFabricObject } from "./EventTypeDefs";
+import type { Gradient, Pattern, Point, ImageFormat } from "fabric";
 
 interface NominalTag<T> {
   nominalTag?: T;
@@ -22,11 +22,11 @@ const enum Radian {}
 export type TDegree = Nominal<number, Degree>;
 export type TRadian = Nominal<number, Radian>;
 
-export type TAxis = 'x' | 'y';
+export type TAxis = "x" | "y";
 
 export type TAxisKey<T extends string> = `${T}${Capitalize<TAxis>}`;
 
-export type TFiller = Gradient<'linear'> | Gradient<'radial'> | Pattern;
+export type TFiller = Gradient<"linear"> | Gradient<"radial"> | Pattern;
 
 export type TSize = {
   width: number;
@@ -40,20 +40,19 @@ export type TBBox = {
 
 export type Percent = `${number}%`;
 
-
 export const enum SVGElementName {
-  linearGradient = 'linearGradient',
-  radialGradient = 'radialGradient',
-  stop = 'stop',
+  linearGradient = "linearGradient",
+  radialGradient = "radialGradient",
+  stop = "stop"
 }
 
 export const enum SupportedSVGUnit {
-  mm = 'mm',
-  cm = 'cm',
-  in = 'in',
-  pt = 'pt',
-  pc = 'pc',
-  em = 'em',
+  mm = "mm",
+  cm = "cm",
+  in = "in",
+  pt = "pt",
+  pc = "pc",
+  em = "em"
 }
 
 export type TMat2D = [number, number, number, number, number, number];
@@ -67,10 +66,10 @@ export type PathData = (string | number)[][];
  * An invalid keyword and an empty string will be handled as the `anonymous` keyword.
  * @see https://developer.mozilla.org/en-US/docs/HTML/CORS_settings_attributes
  */
-export type TCrossOrigin = '' | 'anonymous' | 'use-credentials' | null;
+export type TCrossOrigin = "" | "anonymous" | "use-credentials" | null;
 
-export type TOriginX = 'center' | 'left' | 'right' | number;
-export type TOriginY = 'center' | 'top' | 'bottom' | number;
+export type TOriginX = "center" | "left" | "right" | number;
+export type TOriginY = "center" | "top" | "bottom" | number;
 
 export type TCornerPoint = {
   tl: Point;
@@ -81,7 +80,7 @@ export type TCornerPoint = {
 
 export type TSVGReviver = (markup: string) => string;
 
-export type TValidToObjectMethod = 'toDatalessObject' | 'toObject';
+export type TValidToObjectMethod = "toDatalessObject" | "toObject";
 
 export type TCacheCanvasDimensions = {
   width: number;

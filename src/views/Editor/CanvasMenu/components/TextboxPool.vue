@@ -1,7 +1,10 @@
 <template>
   <div class="layout-pool">
     <el-row class="layout-search">
-      <el-input :prefix-icon="Search" :placeholder="t('message.searchText')"></el-input>
+      <el-input
+        :prefix-icon="Search"
+        :placeholder="t('message.searchText')"
+      ></el-input>
     </el-row>
     <el-row class="layout-text" @click="drawText(80)">
       <div class="large">{{ t("message.addTitle") }}</div>
@@ -24,13 +27,21 @@
         </el-radio-group>
       </el-col>
       <el-col :span="8">
-        <el-checkbox-button v-model="textHollow"><IconText />{{ t("message.hollowOut") }}</el-checkbox-button>
+        <el-checkbox-button v-model="textHollow"
+          ><IconText />{{ t("message.hollowOut") }}</el-checkbox-button
+        >
       </el-col>
     </el-row>
     <el-tabs v-model="activeTemplate" class="layout-tabs">
-      <el-tab-pane :label="t('message.recommendText')" name="data">{{t("message.recommendText")}}</el-tab-pane>
-      <el-tab-pane :label="t('message.myBookmarksText')" name="self">{{t("message.myTemplate")}}</el-tab-pane>
-      <el-tab-pane :label="t('message.myPurchasesText')" name="team">{{t("message.TeamTemplate")}}</el-tab-pane>
+      <el-tab-pane :label="t('message.recommendText')" name="data">{{
+        t("message.recommendText")
+      }}</el-tab-pane>
+      <el-tab-pane :label="t('message.myBookmarksText')" name="self">{{
+        t("message.myTemplate")
+      }}</el-tab-pane>
+      <el-tab-pane :label="t('message.myPurchasesText')" name="team">{{
+        t("message.TeamTemplate")
+      }}</el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -87,9 +98,9 @@ const drawText = (fontSize: number) => {
     font-size: 24px;
     font-weight: bold;
     margin-top: 0px;
-    overflow: hidden; 
+    overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap; 
+    white-space: nowrap;
     &:hover {
       overflow: visible;
     }
