@@ -1,0 +1,30 @@
+{
+  "editor.tabSize": 2,
+  "eslint.enable": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always"
+  },
+  "eslint.validate": [
+    "vue",
+    "html",
+    "javascript",
+    "typescript",
+    "less",
+    "css",
+    "scss",
+    "json"
+  ],
+  "editor.formatOnSave": true,
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.configPath": ".prettierrc",
+  "prettier.requireConfig": true,
+  "i18n-ally.localesPaths": ["src/plugins/i18n/lang"],
+  "i18n-ally.sourceLanguage": "zh",
+  // i18n-ally
+  "i18n-ally.keystyle": "nested",
+  "files.eol": "\n"
+}

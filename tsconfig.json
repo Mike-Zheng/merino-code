@@ -27,7 +27,7 @@
     "tests/**/*.ts",
     "tests/**/*.tsx"
   ],
-  "files": ["node_modules/vite-plugin-pwa/client.d.ts"],
+  // "files": ["node_modules/vite-plugin-pwa/client.d.ts"],
   "exclude": ["node_modules"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
