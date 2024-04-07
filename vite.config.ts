@@ -11,17 +11,17 @@ export default defineConfig({
   plugins: [
     vue(),
     AutoImport({
-      resolvers: [ElementPlusResolver()],
+      resolvers: [ElementPlusResolver()]
     }),
     Components({
-      resolvers: [ElementPlusResolver()],
+      resolvers: [ElementPlusResolver()]
     }),
     createSvgIconsPlugin({
       iconDirs: [path.resolve(process.cwd(), "src/icons/svg")], // icon存放的目录
       symbolId: "icon-[name]", // symbol的id
       inject: "body-last", // 插入的位置
-      customDomId: "__svg__icons__dom__", // svg的id
-    }),
+      customDomId: "__svg__icons__dom__" // svg的id
+    })
   ],
   css: {
     postcss: {
@@ -31,23 +31,23 @@ export default defineConfig({
     },
     preprocessorOptions: {
       scss: {
-        additionalData: `@import "src/assets/style/variable.scss";@import "src/assets/style/mixin.scss";`,
+        additionalData: `@import "src/assets/style/variable.scss";@import "src/assets/style/mixin.scss";`
       },
       less: {
         modifyVars: {
           "primary-color": "#d14424",
           "text-color": "#41464b",
           "font-size-base": "13px",
-          "border-radius-base": "2px",
+          "border-radius-base": "2px"
         },
-        javascriptEnabled: true,
-      },
-    },
+        javascriptEnabled: true
+      }
+    }
   },
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "src"),
+      "@": path.resolve(__dirname, "src")
     },
-    extensions: [".js", ".ts", ".jsx", ".tsx", ".vue", ".json"],
-  },
+    extensions: [".js", ".ts", ".jsx", ".tsx", ".vue", ".json"]
+  }
 });

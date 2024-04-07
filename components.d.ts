@@ -59,6 +59,7 @@ declare module 'vue' {
     IconEcosystem: typeof import('./src/components/icons/IconEcosystem.vue')['default']
     IconSupport: typeof import('./src/components/icons/IconSupport.vue')['default']
     IconTooling: typeof import('./src/components/icons/IconTooling.vue')['default']
+    ImageFillColor: typeof import('./src/components/ImageFillColor.vue')['default']
     ImageMatting: typeof import('./src/components/ImageMatting/index.vue')['default']
     Lang: typeof import('./src/components/Lang/index.vue')['default']
     LinePointMarker: typeof import('./src/components/LinePointMarker.vue')['default']

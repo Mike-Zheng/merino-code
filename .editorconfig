@@ -1,0 +1,15 @@
+# https://editorconfig.org
+
+root = true
+
+[*]   # 表示適用於所有文件
+charset = utf-8     # 設置文件字符為utf-8
+indent_style = space    # 縮進風格（tab | space）
+indent_size = 2     # 縮進大小
+end_of_line = lf    # 控制換行類型（lf | cr | crlf）
+insert_final_newline = true     # 始終在文件末尾插入壹個新行
+trim_trailing_whitespace = true     # 去除行首的任意空白字符
+
+[*.md]  # 表示僅 md 文件適用
+insert_final_newline = false
+trim_trailing_whitespace = false
