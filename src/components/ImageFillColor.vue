@@ -5,6 +5,7 @@
     width="35%"
     class="upload-dialog"
     :before-close="closeUpload"
+    :close-on-click-modal="false"
   >
     <el-upload
       v-if="showUpload"
@@ -28,7 +29,34 @@
         <div class="el-upload__tip">支持图片格式</div>
       </template>
     </el-upload>
-    <canvas v-else id="ImageFillColor"></canvas>
+    <div v-else>
+      <el-popover trigger="click" :width="265">
+        <template #reference>
+          <ColorButton :color="targetColor" />
+        </template>
+        <ColorPicker
+          :modelValue="targetColor"
+          @update:modelValue="(color: string) => updateTargetColor(color)"
+        />
+      </el-popover>
+      <canvas id="ImageFillColor" class="mt-10px"></canvas>
+    </div>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button
+          v-show="!showUpload && dataURL"
+          type="danger"
+          @click="clear"
+          >{{ t("message.clear") }}</el-button
+        >
+        <el-button
+          v-show="!showUpload && dataURL"
+          type="success"
+          @click="download"
+          >{{ t("message.download") }}</el-button
+        >
+      </div>
+    </template>
   </el-dialog>
 </template>
 
@@ -51,6 +79,8 @@ import useHandleCreate from "@/hooks/useHandleCreate";
 import useHandleTemplate from "@/hooks/useHandleTemplate";
 import useCanvas from "@/views/Canvas/useCanvas";
 import useI18n from "@/hooks/useI18n";
+import tinycolor from "tinycolor2";
+import { downloadLinkFile } from "@/utils/download";
 
 const { t } = useI18n();
 const templatesStore = useTemplatesStore();
@@ -70,6 +100,7 @@ const props = defineProps({
 });
 const canvasWidth = ref(400);
 const dataURL: ImageData = ref("");
+const targetColor = ref("#ffffff");
 
 const emit = defineEmits<{
   (event: "close"): void;
@@ -101,6 +132,15 @@ const uploadHandle = async (option: any) => {
       initCanvas();
     });
   }
+};
+
+const clear = () => {
+  dataURL.value = "";
+  showUpload.value = true;
+};
+
+const updateTargetColor = (color: string) => {
+  targetColor.value = tinycolor(color).toHexString();
 };
 
 const handleExceed: UploadProps["onExceed"] = (files: File[]) => {
@@ -141,7 +181,13 @@ const initCanvas = () => {
     // 取出点击位置的像素点颜色
     const imgData = ctx.getImageData(0, 0, cvs.width, cvs.height);
     const clickColor = getColor(x, y, imgData);
-    const greenColor = [0, 255, 0, 255];
+    const targetColorRgba = tinycolor(targetColor.value).toRgb();
+    const targetColorArr = [
+      targetColorRgba.r,
+      targetColorRgba.g,
+      targetColorRgba.b,
+      255
+    ];
 
     const stack = [{ x, y }];
     while (stack.length > 0) {
@@ -154,8 +200,8 @@ const initCanvas = () => {
       const i = point2Index(x, y);
       const color = getColor(x, y, imgData);
 
-      if (diff(color, clickColor) <= 100 && diff(color, greenColor) !== 0) {
-        imgData.data.set(greenColor, i);
+      if (diff(color, clickColor) <= 100 && diff(color, targetColorArr) !== 0) {
+        imgData.data.set(targetColorArr, i);
 
         stack.push({ x: x + 1, y });
         stack.push({ x: x - 1, y });
@@ -187,6 +233,15 @@ const diff = (color1, color2) => {
     Math.abs(color1[2] - color2[2]) +
     Math.abs(color1[3] - color2[3]);
   return res;
+};
+
+const download = () => {
+  if (!dataURL.value) return;
+  const canvas = document.getElementById("ImageFillColor"); // 替换为你的canvas元素的id
+  downloadLinkFile(
+    canvas.toDataURL("image/png"),
+    `yft-design-${Date.now()}-ImageFillColor.png`
+  );
 };
 </script>
 

@@ -56,7 +56,7 @@ export const useMainStore = defineStore("main", {
     illustrationCategoryData: ImageCategoryInfo,
     handleElementId: "", // 正在操作的元素ID
     sizeMode: 0, // 模板样式
-    unitMode: 0, // 单位
+    unitMode: 1, // 单位
     gridColorSelf: [[]], // 自定义颜色
     databaseId, // 标识当前应用的indexedDB数据库ID
     selectedTemplatesIndex: [],
@@ -68,7 +68,7 @@ export const useMainStore = defineStore("main", {
     lastEdit: "editor", // 左边栏
     lastHelp: "editor", // 左边栏
     poolType: "editor", // 左边栏
-    poolShow: true // 显示左边栏
+    poolShow: false // 显示左边栏
   }),
 
   getters: {

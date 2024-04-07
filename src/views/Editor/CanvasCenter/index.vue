@@ -5,7 +5,7 @@
     v-contextmenu="contextMenus"
     v-click-outside="remDrawAreaFocus"
   >
-    <canvas ref="canvasRef"></canvas>
+    <canvas ref="canvasRef" class="background-grid"></canvas>
   </div>
 </template>
 
@@ -58,8 +58,8 @@ const remDrawAreaFocus = () => {
 .background-grid {
   --offsetX: 0px;
   --offsetY: 0px;
-  --size: 16px;
-  --color: #dedcdc;
+  --size: 8px;
+  --color: #f2f2f2;
   background-image: linear-gradient(
       45deg,
       var(--color) 25%,
