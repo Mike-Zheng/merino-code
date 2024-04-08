@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="menu-content" :class="{ 'menu-close': poolShow !== true }">
+    <div class="menu-content">
       <component :is="currentComponent" class="menu-pool"></component>
       <div class="layout-toggle" @click="leftToggle" v-show="currentComponent">
         <IconLeft class="toggle-icon" v-if="poolShow" />
@@ -52,33 +52,20 @@ const leftToggle = () => {
 
 <style lang="scss" scoped>
 .menu-content {
-  position: absolute;
-  width: 300px;
-  left: 50px;
-  top: 42px;
+  width: 245px;
   z-index: 1;
   background: #fff;
   border-left: 1px solid $borderColor;
   border-right: 1px solid $borderColor;
   border-bottom: 1px solid $borderColor;
-  transition:
-    left 0.5s linear,
-    right 0.5s linear;
 }
 .menu-pool {
-  width: 300px;
-  height: 100vh;
+  width: 245px;
+  height: calc(100vh - 41px);
   transition: left 0.3s linear;
   border-bottom: 1px solid $borderColor;
 }
-.menu-close {
-  cursor: default;
-  left: -251px;
-  top: calc(50% + 42px);
-  transform: translateY(-50%);
-  position: absolute;
-  // z-index: 1;
-}
+
 .layout-toggle {
   background: $themeColor;
   cursor: pointer;

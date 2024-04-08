@@ -8,9 +8,15 @@
   >
     <div class="layout-content">
       <CanvasLeft class="layout-content-left" />
-      <CanvasMenu class="layout-content-menu" />
-      <CanvasThumb class="layout-content-thumb" />
-      <div class="layout-content-center">
+      <CanvasMenu
+        class="layout-content-menu"
+        :class="{ 'menu-close': poolShow !== true }"
+      />
+      <!-- <CanvasThumb class="layout-content-thumb" /> -->
+      <div
+        class="layout-content-center"
+        :class="{ 'menu-close': poolShow !== true }"
+      >
         <CanvasHeader class="center-header" />
         <CanvasCenter class="center-body" />
         <CanvasFooter class="center-footer" />
@@ -34,6 +40,11 @@ import CanvasFooter from "./CanvasFooter/index.vue";
 import CanvasAffix from "./CanvasAffix/index.vue";
 import CanvasDom from "./CanvasDom/index.vue";
 import CanvasTour from "./CanvasTour/index.vue";
+import { useMainStore } from "@/store";
+import { storeToRefs } from "pinia";
+
+const mainStore = useMainStore();
+const { poolShow } = storeToRefs(mainStore);
 </script>
 
 <style lang="scss" scoped>
@@ -48,14 +59,29 @@ import CanvasTour from "./CanvasTour/index.vue";
   display: flex;
 }
 .layout-content-left {
-  width: 50px;
+  width: 70px;
   height: 100vh;
   z-index: 10;
   background: #fff;
   border-right: solid 1px $borderColor;
 }
+.layout-content-menu {
+  position: absolute;
+  position: absolute;
+  left: 69px;
+  top: 41px;
+  width: 245px;
+  transition:
+    left 0.2s linear,
+    right 0.2s linear;
+  &.menu-close {
+    position: absolute;
+    left: -176px;
+    top: 41px;
+  }
+}
 .layout-content-thumb {
-  width: 160px;
+  width: 245px;
   height: 100%;
   display: flex;
   flex-shrink: 0;
@@ -64,7 +90,15 @@ import CanvasTour from "./CanvasTour/index.vue";
   user-select: none;
 }
 .layout-content-center {
-  width: calc(100% - 50px - 160px);
+  width: calc(100% - 70px - 245px);
+  margin-left: 245px;
+  transition:
+    margin 0.2s linear,
+    width 0.2s linear;
+  &.menu-close {
+    width: calc(100% - 70px);
+    margin-left: 0;
+  }
 
   .center-header {
     position: relative;
