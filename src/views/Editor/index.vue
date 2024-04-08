@@ -102,17 +102,18 @@ const { poolShow } = storeToRefs(mainStore);
 
   .center-header {
     position: relative;
-    border-left: 1px solid $borderColor;
-    background-color: #fff;
+    border-left: 1px solid #000;
+    background-color: #232323;
     display: flex;
     justify-content: space-between;
     padding: 0 10px;
     font-size: 13px;
     user-select: none;
-    height: 40px;
+    height: 30px;
+    color: #fff;
   }
   .center-body {
-    height: calc(100% - 40px);
+    height: calc(100% - 30px);
     // margin: 100px;
   }
   .center-footer {

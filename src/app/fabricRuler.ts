@@ -91,7 +91,7 @@ export class FabricRuler extends Disposable {
     this.lastCursor = this.canvas.defaultCursor;
     // 合并默认配置
     this.options = Object.assign({
-      ruleSize: 20,
+      ruleSize: 15,
       fontSize: 8,
       enabled: isMobile() ? false : true
     });
@@ -108,8 +108,8 @@ export class FabricRuler extends Disposable {
         ...this.options,
         ...(isDark
           ? {
-              backgroundColor: "#242424",
-              borderColor: "#555",
+              backgroundColor: "#181818",
+              borderColor: "#888",
               highlightColor: "#165dff3b",
               textColor: "#d2d2d2",
               unitName: unitName
@@ -352,11 +352,11 @@ export class FabricRuler extends Disposable {
       width: ruleSize,
       height: ruleSize,
       fill: backgroundColor,
-      stroke: borderColor
+      stroke: backgroundColor
     });
 
     this.darwText(ctx, {
-      text: this.options.unitName,
+      text: "", //this.options.unitName,
       left: ruleSize / 2,
       top: ruleSize / 2,
       align: "center",
@@ -393,7 +393,7 @@ export class FabricRuler extends Disposable {
       width: isHorizontal ? canvasSize.width : ruleSize,
       height: isHorizontal ? ruleSize : canvasSize.height,
       fill: this.options.backgroundColor,
-      stroke: this.options.borderColor
+      stroke: this.options.backgroundColor
     });
 
     // 标尺刻度线显示
