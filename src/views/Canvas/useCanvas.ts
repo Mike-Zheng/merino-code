@@ -17,7 +17,7 @@ import { FabricGuide } from "@/app/fabricGuide";
 import { HoverBorders } from "@/app/hoverBorders";
 import { WheelScroll } from "@/app/wheelScroll";
 import { FabricRuler } from "@/app/fabricRuler";
-
+import { throttle } from "lodash-es";
 import { FabricCanvas } from "@/app/fabricCanvas";
 import { Keybinding } from "@/app/keybinding";
 import { defaultControls, textboxControls } from "@/app/fabricControls";
@@ -156,9 +156,16 @@ export const initEditor = async () => {
   initCanvas();
   initTemplate();
   const { width, height } = useElementBounding(wrapperRef.value);
-  watch([width, height], () => {
-    setCanvasTransform();
-  });
+
+  watch(
+    [width, height],
+    throttle(() => {
+      setCanvasTransform();
+    }, 150),
+    {
+      deep: true
+    }
+  );
 };
 
 export default (): [FabricCanvas] => [canvas as FabricCanvas];

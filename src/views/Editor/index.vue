@@ -72,8 +72,8 @@ const { poolShow } = storeToRefs(mainStore);
   top: 41px;
   width: 245px;
   transition:
-    left 0.2s linear,
-    right 0.2s linear;
+    left 150ms linear,
+    right 150ms linear;
   &.menu-close {
     position: absolute;
     left: -176px;
@@ -93,8 +93,8 @@ const { poolShow } = storeToRefs(mainStore);
   width: calc(100% - 70px - 245px);
   margin-left: 245px;
   transition:
-    margin 0.2s linear,
-    width 0.2s linear;
+    margin 150ms linear,
+    width 150ms linear;
   &.menu-close {
     width: calc(100% - 70px);
     margin-left: 0;
