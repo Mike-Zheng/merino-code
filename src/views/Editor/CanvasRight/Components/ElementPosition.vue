@@ -245,6 +245,15 @@ const changeRotate45 = (command: "+" | "-") => {
 </script>
 
 <style lang="scss" scoped>
+.element-position {
+  background-color: #141516db;
+  color: #fff;
+  border-radius: 5px;
+  padding: 5px;
+  box-shadow:
+    rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
 .align-item {
   height: 30px;
   display: flex;

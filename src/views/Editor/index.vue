@@ -1,11 +1,12 @@
 <template>
   <div
-    class="yft-design"
+    class="editor-main"
     v-drop-image="{
       url: 'YourUploadUrl',
       highlightStyle: { backgroundColor: 'lightblue' }
     }"
   >
+    <CanvasHeader class="layout-header" />
     <div class="layout-content">
       <CanvasLeft class="layout-content-left" />
       <CanvasMenu
@@ -17,7 +18,6 @@
         class="layout-content-center"
         :class="{ 'menu-close': poolShow !== true }"
       >
-        <CanvasHeader class="center-header" />
         <CanvasCenter class="center-body" />
 
         <CanvasAffix class="center-affix" />
@@ -47,15 +47,25 @@ const { poolShow } = storeToRefs(mainStore);
 </script>
 
 <style lang="scss" scoped>
-.yft-design {
+.editor-main {
   height: 100%;
 }
-.layout-header {
-  height: 40px;
-}
+
 .layout-content {
   height: calc(100% - 30px);
   display: flex;
+}
+.layout-header {
+  position: relative;
+  border-left: 1px solid #000;
+  background-color: #232323;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  font-size: 13px;
+  user-select: none;
+  height: 30px;
+  color: #fff;
 }
 .layout-content-left {
   width: 70px;
@@ -99,18 +109,6 @@ const { poolShow } = storeToRefs(mainStore);
     margin-left: 0;
   }
 
-  .center-header {
-    position: relative;
-    border-left: 1px solid #000;
-    background-color: #232323;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 10px;
-    font-size: 13px;
-    user-select: none;
-    height: 30px;
-    color: #fff;
-  }
   .center-body {
     height: 100%;
     // margin: 100px;

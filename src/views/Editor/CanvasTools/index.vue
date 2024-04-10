@@ -11,20 +11,9 @@
           <IconPeoples class="canvas-tools-button" />
         </el-tooltip>
       </div>
+
       <div class="left-handle">
-        <a
-          href="https://github.com/dromara/yft-design"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <el-tooltip
-            placement="top"
-            :hide-after="0"
-            :content="t('message.github')"
-          >
-            <IconGithub class="canvas-tools-button"></IconGithub>
-          </el-tooltip>
-        </a>
+        <Lang />
       </div>
     </div>
     <div class="canvas-tools-right">
@@ -70,6 +59,7 @@
 </template>
 
 <script lang="ts" setup>
+import Lang from "@/components/Lang/index.vue";
 import { ref, watch } from "vue";
 import useCanvas from "@/views/Canvas/useCanvas";
 import useHandleElement from "@/hooks/useHandleElement";

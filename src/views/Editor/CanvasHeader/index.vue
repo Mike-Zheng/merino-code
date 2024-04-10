@@ -101,13 +101,11 @@
         <template #content>{{ t("message.undo") }}</template>
         <IconFullScreen class="handler-item" @click="resetCanvas()" />
       </el-tooltip>
-      <Lang />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import Lang from "@/components/Lang/index.vue";
 import { ref, computed } from "vue";
 import { ElementNames } from "@/types/elements";
 import { storeToRefs } from "pinia";
