@@ -66,6 +66,7 @@ declare module 'vue' {
     Matting: typeof import('./src/components/ImageMatting/matting.vue')['default']
     MenuContent: typeof import('./src/components/Contextmenu/MenuContent.vue')['default']
     Saturation: typeof import('./src/components/ColorPicker/Saturation.vue')['default']
+    ScrubberInput: typeof import('./src/components/ScrubberInput.vue')['default']
     SvgIcon: typeof import('./src/components/SvgIcon/index.vue')['default']
     SwipeInput: typeof import('./src/components/SwipeInput.vue')['default']
     TextColorButton: typeof import('./src/components/TextColorButton.vue')['default']
