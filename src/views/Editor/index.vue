@@ -19,13 +19,13 @@
       >
         <CanvasHeader class="center-header" />
         <CanvasCenter class="center-body" />
-        <CanvasFooter class="center-footer" />
+
         <CanvasAffix class="center-affix" />
       </div>
       <CanvasRight class="layout-content-right" />
       <CanvasDom class="layout-content-dom" />
     </div>
-    <CanvasTour />
+    <CanvasTools class="center-tools" />
   </div>
 </template>
 
@@ -36,10 +36,9 @@ import CanvasThumb from "./CanvasThumb/index.vue";
 import CanvasHeader from "./CanvasHeader/index.vue";
 import CanvasCenter from "./CanvasCenter/index.vue";
 import CanvasRight from "./CanvasRight/index.vue";
-import CanvasFooter from "./CanvasFooter/index.vue";
+import CanvasTools from "./CanvasTools/index.vue";
 import CanvasAffix from "./CanvasAffix/index.vue";
 import CanvasDom from "./CanvasDom/index.vue";
-import CanvasTour from "./CanvasTour/index.vue";
 import { useMainStore } from "@/store";
 import { storeToRefs } from "pinia";
 
@@ -55,7 +54,7 @@ const { poolShow } = storeToRefs(mainStore);
   height: 40px;
 }
 .layout-content {
-  height: calc(100% - 40px);
+  height: calc(100% - 30px);
   display: flex;
 }
 .layout-content-left {
@@ -113,18 +112,20 @@ const { poolShow } = storeToRefs(mainStore);
     color: #fff;
   }
   .center-body {
-    height: calc(100% - 30px);
+    height: 100%;
     // margin: 100px;
   }
-  .center-footer {
-    height: 40px;
-    position: relative;
-    border-top: 1px solid $borderColor;
-    background-color: $lightGray;
-    line-height: 1.5;
-    display: flex;
-    justify-content: space-between;
-  }
+}
+.center-tools {
+  height: 40px;
+  position: absolute;
+  top: 80px;
+  left: 125px;
+  border-top: 1px solid $borderColor;
+  background-color: $lightGray;
+  line-height: 1.5;
+  display: flex;
+  justify-content: space-between;
 }
 .layout-content-right {
   position: absolute;

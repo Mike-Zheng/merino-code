@@ -7,7 +7,7 @@
       <div class="layout-mobile-center">
         <CanvasHeader class="center-header" />
         <CanvasCenter class="center-body" />
-        <CanvasFooter class="center-footer" />
+        <CanvasTools class="center-footer" />
       </div>
       <!-- <CanvasRight class="layout-content-right" /> -->
     </div>
@@ -24,7 +24,7 @@ import MobileThumb from "./CanvasThumb/mobile.vue";
 import CanvasHeader from "./CanvasHeader/index.vue";
 import CanvasCenter from "./CanvasCenter/index.vue";
 import CanvasRight from "./CanvasRight/index.vue";
-import CanvasFooter from "./CanvasFooter/index.vue";
+import CanvasTools from "./CanvasTools/index.vue";
 import CanvasAffix from "./CanvasAffix/index.vue";
 </script>
 

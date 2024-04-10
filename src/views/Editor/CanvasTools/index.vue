@@ -1,14 +1,14 @@
 <template>
   <div>
     <!-- <div class="resize-handler"></div> -->
-    <div class="footer-left">
+    <div class="canvas-tools-left">
       <div class="left-handle">
         <el-tooltip
           placement="top"
           :hide-after="0"
           :content="t('message.inviteCollaboration')"
         >
-          <IconPeoples class="footer-button" />
+          <IconPeoples class="canvas-tools-button" />
         </el-tooltip>
       </div>
       <div class="left-handle">
@@ -22,12 +22,12 @@
             :hide-after="0"
             :content="t('message.github')"
           >
-            <IconGithub class="footer-button"></IconGithub>
+            <IconGithub class="canvas-tools-button"></IconGithub>
           </el-tooltip>
         </a>
       </div>
     </div>
-    <div class="footer-right">
+    <div class="canvas-tools-right">
       <div class="right-handle" v-if="isChecked">
         <FileInput
           :accept="'.json'"
@@ -38,7 +38,7 @@
             :hide-after="0"
             :content="t('message.uploadFiles')"
           >
-            <IconUploadOne class="footer-button" />
+            <IconUploadOne class="canvas-tools-button" />
           </el-tooltip>
         </FileInput>
       </div>
@@ -48,7 +48,7 @@
           :hide-after="0"
           :content="t('message.downloadFiles')"
         >
-          <IconDownloadOne class="footer-button" @click="exportFile()" />
+          <IconDownloadOne class="canvas-tools-button" @click="exportFile()" />
         </el-tooltip>
       </div>
       <div class="right-handle">
@@ -57,7 +57,7 @@
           :hide-after="0"
           :content="t('message.saveTemplate')"
         >
-          <IconSave class="footer-button" @click="exportFile()" />
+          <IconSave class="canvas-tools-button" @click="exportFile()" />
         </el-tooltip>
       </div>
     </div>
@@ -109,10 +109,18 @@ const loadFile = (files: FileList) => {
   };
   reader.readAsText(jsonFile);
 };
+
+// import { localStorage } from "@/utils/storage";
+
+// const open = ref(localStorage.get("YFT_DESIGN_TOUR") ?? true);
+// const closeTour = () => {
+//   open.value = false;
+//   localStorage.set("YFT_DESIGN_TOUR", false);
+// };
 </script>
 
 <style lang="scss" scoped>
-.footer-left {
+.canvas-tools-left {
   display: flex;
   width: 80px;
   cursor: pointer;
@@ -131,12 +139,12 @@ const loadFile = (files: FileList) => {
   }
 }
 
-.footer-right {
+.canvas-tools-right {
   display: flex;
   cursor: pointer;
 }
 
-.footer-button {
+.canvas-tools-button {
   position: absolute;
   top: 50%;
   left: 50%;
