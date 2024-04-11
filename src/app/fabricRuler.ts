@@ -11,7 +11,8 @@ import {
   Object as FabricObject,
   TPointerEventInfo,
   TPointerEvent,
-  Rect
+  Rect,
+  Color
 } from "fabric";
 import { useMainStore, useTemplatesStore } from "@/store";
 import { storeToRefs } from "pinia";
@@ -396,6 +397,142 @@ export class FabricRuler extends Disposable {
       stroke: this.options.backgroundColor
     });
 
+    // 标尺文字显示
+    for (let pos = 0; pos + startOffset <= unitLength; pos += gap) {
+      const position = (startOffset + pos) * zoom;
+      let textValue = (startValue + pos).toString();
+      if (this.options.unitName === "mm") {
+        textValue = px2mm(startValue + pos).toFixed(0);
+      }
+      const [left, top, angle] = isHorizontal
+        ? [position + 6, padding, 0]
+        : [padding, position - 6, -90];
+
+      this.darwText(ctx, {
+        text: textValue,
+        left,
+        top,
+        fill: textColor,
+        angle
+      });
+    }
+
+    // 标尺蓝色遮罩
+    if (this.objectRect) {
+      const axis = isHorizontal ? "x" : "y";
+      this.objectRect[axis].forEach((rect) => {
+        // 跳过指定矩形
+        if (rect.skip === axis) return;
+
+        const [left, top, width, height] = isHorizontal
+          ? [
+              (rect.left - startCalibration) * zoom,
+              0,
+              rect.width * zoom,
+              ruleSize
+            ]
+          : [
+              0,
+              (rect.top - startCalibration) * zoom,
+              ruleSize,
+              rect.height * zoom
+            ];
+
+        //
+        const roundFactor = (x: number) =>
+          Math.round(x / zoom + startCalibration) + "";
+        const leftTextVal = roundFactor(isHorizontal ? left : top);
+        const rightTextVal = roundFactor(
+          isHorizontal ? left + width : top + height
+        );
+        const isSameText = leftTextVal === rightTextVal;
+
+        // 背景遮罩
+        const maskOpt = {
+          isHorizontal,
+          width: isHorizontal ? 80 : this.options.ruleSize - 0,
+          height: isHorizontal ? this.options.ruleSize - 0 : 80,
+          backgroundColor: this.options.backgroundColor // "#181818aa"
+        };
+        this.drawMask(ctx, {
+          ...maskOpt,
+          left: isHorizontal ? left - 40 : 0,
+          top: isHorizontal ? 0 : top - 40
+        });
+        if (!isSameText) {
+          this.drawMask(ctx, {
+            ...maskOpt,
+            left: isHorizontal ? width + left - 40 : 0,
+            top: isHorizontal ? 0 : height + top - 40
+          });
+        }
+
+        // 高亮遮罩
+        // ctx.save()
+        this.darwRect(ctx, {
+          left,
+          top,
+          width,
+          height,
+          fill: highlightColor
+        });
+
+        // 两边的数字
+
+        const pad = this.options.ruleSize / 2 - this.options.fontSize / 2 - 1;
+
+        const textOpt = {
+          fill: "#179DE3",
+          angle: isHorizontal ? 0 : -90
+        };
+
+        this.darwText(ctx, {
+          ...textOpt,
+          text: leftTextVal + "",
+          left: isHorizontal ? left - 0 : pad,
+          top: isHorizontal ? pad : top - 0,
+          align: isSameText ? "center" : isHorizontal ? "right" : "left"
+        });
+
+        if (!isSameText) {
+          this.darwText(ctx, {
+            ...textOpt,
+            text: rightTextVal + "",
+            left: isHorizontal ? left + width + 0 : pad,
+            top: isHorizontal ? pad : top + height + 0,
+            align: isHorizontal ? "left" : "right"
+          });
+        }
+
+        // 两边的线
+        const lineSize = isSameText ? 8 : 14;
+
+        const lineOpt = {
+          width: isHorizontal ? 0 : lineSize,
+          height: isHorizontal ? lineSize : 0,
+          stroke: "#FFF"
+        };
+
+        this.darwLine(ctx, {
+          ...lineOpt,
+          left: isHorizontal ? left : this.options.ruleSize - lineSize,
+          top: isHorizontal ? this.options.ruleSize - lineSize : top
+        });
+
+        if (!isSameText) {
+          this.darwLine(ctx, {
+            ...lineOpt,
+            left: isHorizontal
+              ? left + width
+              : this.options.ruleSize - lineSize,
+            top: isHorizontal ? this.options.ruleSize - lineSize : top + height
+          });
+        }
+
+        // ctx.restore()
+      });
+    }
+
     // 标尺刻度线显示
     for (let pos = 0; pos + startOffset <= unitLength; pos += gap) {
       for (let index = 0; index < 10; index++) {
@@ -443,59 +580,6 @@ export class FabricRuler extends Disposable {
       }
     }
 
-    // 标尺蓝色遮罩
-    if (this.objectRect) {
-      const axis = isHorizontal ? "x" : "y";
-      this.objectRect[axis].forEach((rect) => {
-        // 跳过指定矩形
-        if (rect.skip === axis) return;
-
-        const [left, top, width, height] = isHorizontal
-          ? [
-              (rect.left - startCalibration) * zoom,
-              0,
-              rect.width * zoom,
-              ruleSize
-            ]
-          : [
-              0,
-              (rect.top - startCalibration) * zoom,
-              ruleSize,
-              rect.height * zoom
-            ];
-
-        // 高亮遮罩
-        // ctx.save()
-        this.darwRect(ctx, {
-          left,
-          top,
-          width,
-          height,
-          fill: highlightColor
-        });
-        // ctx.restore()
-      });
-    }
-
-    // 标尺文字显示
-    for (let pos = 0; pos + startOffset <= unitLength; pos += gap) {
-      const position = (startOffset + pos) * zoom;
-      let textValue = (startValue + pos).toString();
-      if (this.options.unitName === "mm") {
-        textValue = px2mm(startValue + pos).toFixed(0);
-      }
-      const [left, top, angle] = isHorizontal
-        ? [position + 6, padding, 0]
-        : [padding, position - 6, -90];
-
-      this.darwText(ctx, {
-        text: textValue,
-        left,
-        top,
-        fill: textColor,
-        angle
-      });
-    }
     // draw end
   }
 
@@ -541,6 +625,39 @@ export class FabricRuler extends Disposable {
       ctx.lineWidth = strokeWidth ?? 1;
       ctx.stroke();
     }
+    ctx.restore();
+  }
+
+  private drawMask(
+    ctx: CanvasRenderingContext2D,
+    options: {
+      isHorizontal: boolean;
+      left: number;
+      top: number;
+      width: number;
+      height: number;
+      backgroundColor: string;
+    }
+  ) {
+    ctx.save();
+    const { isHorizontal, left, top, width, height, backgroundColor } = options;
+    // 创建一个线性渐变对象
+    const gradient = isHorizontal
+      ? ctx.createLinearGradient(left, height / 2, left + width, height / 2)
+      : ctx.createLinearGradient(width / 2, top, width / 2, height + top);
+    const transparentColor = new Color(backgroundColor);
+    transparentColor.setAlpha(0);
+    gradient.addColorStop(0, transparentColor.toRgba());
+    gradient.addColorStop(0.33, backgroundColor);
+    gradient.addColorStop(0.67, backgroundColor);
+    gradient.addColorStop(1, transparentColor.toRgba());
+    this.darwRect(ctx, {
+      left,
+      top,
+      width,
+      height,
+      fill: gradient
+    });
     ctx.restore();
   }
 
