@@ -85,3 +85,7 @@ pre {
   overflow: hidden;
   user-select: none;
 }
+
+.cursor-select {
+  cursor: url("../cursor/select.png"), default;
+}

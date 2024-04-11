@@ -2,10 +2,10 @@
   <div>
     <div class="menu-content">
       <component :is="currentComponent" class="menu-pool"></component>
-      <div class="layout-toggle" @click="leftToggle" v-show="currentComponent">
+      <!-- <div class="layout-toggle" @click="leftToggle" v-show="currentComponent">
         <IconLeft class="toggle-icon" v-if="poolShow" />
         <IconRight class="toggle-icon" v-else />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

@@ -35,7 +35,7 @@ export const LocalStorageDiscardedKey = "YFT_DISCARD_DB";
 export const WorkSpaceEditColor = "rgba(255,255,255,1)";
 
 // 画布蒙版颜色
-export const WorkSpaceMaskColor = "#f3f3f3";
+export const WorkSpaceMaskColor = "#333333";
 
 // 画布背景颜色
 export const CanvasBackground = "rgba(255,255,255,0)";
