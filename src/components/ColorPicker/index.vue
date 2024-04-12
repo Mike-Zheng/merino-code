@@ -35,7 +35,9 @@
         :value="color"
         @colorChange="(value) => changeColor(value)"
       />
-      <div class="straw" @click="openEyeDropper()"><IconNeedle /></div>
+      <div class="straw" @click="openEyeDropper()">
+        <svg-icon icon-class="eyedropper" />
+      </div>
     </div>
 
     <div class="picker-presets">
@@ -266,7 +268,7 @@ const browserEyeDropper = () => {
   });
 
   // eslint-disable-next-line
-  const eyeDropper = new (window as any).EyeDropper()
+  const eyeDropper = new (window as any).EyeDropper();
   eyeDropper
     .open()
     .then((result: { sRGBHex: string }) => {

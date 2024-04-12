@@ -3,7 +3,7 @@
     <div class="color-block">
       <div class="content" :style="{ backgroundColor: color }"></div>
     </div>
-    <IconPlatte class="color-btn-icon" />
+    <svg-icon icon-class="palette-outline" class="color-btn-icon" />
   </div>
 </template>
 
