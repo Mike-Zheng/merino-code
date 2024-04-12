@@ -1,4 +1,4 @@
-export type ExportTypes = "image" | "pdf" | "psd" | "json" | "svg" | "";
+export type ExportTypes = "image" | "json" | "svg" | "";
 export type PoolType =
   | "editor"
   | "template"
