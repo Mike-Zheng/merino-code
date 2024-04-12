@@ -177,7 +177,8 @@ export class FabricRuler extends Disposable {
         pos.left = e.pointer.x;
       }
       this.tempReferenceLine.set({ ...pos, visible: true });
-      this.canvas.renderAll();
+      // this.canvas.renderAll();
+      this.canvas.requestRenderAll();
       const event = this.getCommonEventInfo(e) as any;
       this.canvas.fire("object:moving", event);
       this.tempReferenceLine.fire("moving", event);
@@ -306,6 +307,7 @@ export class FabricRuler extends Disposable {
     this.options.enabled = value;
     if (value) {
       this.canvas.on(this.canvasEvents);
+      this.canvas.on("after:render", this.calcObjectRect.bind(this));
       this.render({ ctx: this.canvas.contextContainer });
     } else {
       this.canvas.off(this.canvasEvents);
@@ -731,10 +733,10 @@ export class FabricRuler extends Disposable {
       this.objectRect = undefined;
       return;
     }
-    if (activeObjects[0].name.toLowerCase() === ElementNames.REFERENCELINE) {
-      this.objectRect = undefined;
-      return;
-    }
+    // if (activeObjects[0].name.toLowerCase() === ElementNames.REFERENCELINE) {
+    //   this.objectRect = undefined;
+    //   return;
+    // }
     const allRect = activeObjects.reduce((rects, obj) => {
       const rect: HighlightRect = obj.getBoundingRect(true);
       rects.push(rect);
