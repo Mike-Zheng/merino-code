@@ -71,8 +71,9 @@ const { poolShow } = storeToRefs(mainStore);
   width: 70px;
   height: 100vh;
   z-index: 10;
-  background: #fff;
-  border-right: solid 1px $borderColor;
+  background: #181818;
+  // border-right: solid 1px $borderColor;
+  color: #fff;
 }
 .layout-content-menu {
   position: absolute;

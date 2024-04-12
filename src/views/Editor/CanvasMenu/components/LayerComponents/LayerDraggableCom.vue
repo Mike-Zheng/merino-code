@@ -17,12 +17,14 @@
             :hide-after="0"
             :content="(element as Group).isShow ? '收回' : '展开'"
           >
-            <IconExpandDownOne
+            <SvgIcon
+              icon-class="expandDownOne"
               v-if="(element as Group).isShow"
               class="common-icon"
               @click.stop="showElement(element.id)"
             />
-            <IconFoldUpOne
+            <SvgIcon
+              icon-class="foldUpOne"
               v-else
               class="common-icon"
               @click.stop="showElement(element.id)"
@@ -30,7 +32,7 @@
           </el-tooltip>
         </div>
         <el-tooltip placement="top" :hide-after="0" content="拖拽" v-else>
-          <IconApplicationMenu class="common-icon" />
+          <SvgIcon icon-class="applicationMenu" class="common-icon" />
         </el-tooltip>
         <div class="element-type">{{ element.type }}</div>
         <div
@@ -53,12 +55,14 @@
           :hide-after="0"
           :content="element.visible ? '隐藏' : '显示'"
         >
-          <IconPreviewOpen
+          <SvgIcon
+            icon-class="previewOpen"
             class="common-icon"
             v-if="element.visible"
             @click.stop="visibleElement(element.id, false)"
           />
-          <IconPreviewClose
+          <SvgIcon
+            icon-class="previewClose"
             class="common-icon"
             v-else
             @click.stop="visibleElement(element.id, true)"
@@ -71,19 +75,22 @@
             element.lockMovementX && element.lockMovementY ? '解锁' : '锁定'
           "
         >
-          <IconLock
+          <SvgIcon
+            icon-class="lock"
             class="common-icon"
             v-if="element.lockMovementX && element.lockMovementY"
             @click.stop="lockElement(element.id, false)"
           />
-          <IconUnlock
+          <SvgIcon
+            icon-class="unlock"
             class="common-icon"
             v-else
             @click.stop="lockElement(element.id, true)"
           />
         </el-tooltip>
         <el-tooltip placement="top" :hide-after="0" content="删除">
-          <IconDelete
+          <SvgIcon
+            icon-class="delete"
             class="common-icon"
             @click.stop="deleteElement(element.id)"
           />
@@ -103,12 +110,14 @@
                 : '不可编辑文字'
             "
           >
-            <IconCheckOne
+            <SvgIcon
+              icon-class="checkOne"
               class="common-icon"
               v-if="(element as TextboxElement).editable"
               @click.stop="checkElement(element.id)"
             />
-            <IconRound
+            <SvgIcon
+              icon-class="round"
               class="common-icon"
               v-else
               @click.stop="checkElement(element.id)"

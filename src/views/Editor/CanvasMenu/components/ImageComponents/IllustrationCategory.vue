@@ -13,7 +13,7 @@
           </el-col>
           <el-col :span="7" class="col-name">
             <el-button text @click="showTotal(item.type)"
-              >{{ $t("message.all") }}<IconRight
+              >{{ $t("message.all") }}<SvgIcon icon-class="right"
             /></el-button>
           </el-col>
         </el-row>
@@ -45,7 +45,7 @@
       <el-row class="col-tip mt-5">
         <el-col :span="7" class="col-name">
           <el-button text @click="hideTotal()"
-            ><IconLeft />{{ categoryData.name }}</el-button
+            ><SvgIcon icon-class="left" />{{ categoryData.name }}</el-button
           >
         </el-col>
       </el-row>

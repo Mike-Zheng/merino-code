@@ -25,7 +25,7 @@
             >
               <template #reference>
                 <el-button class="font-color">
-                  <IconText />
+                  <SvgIcon icon-class="text" />
                 </el-button>
               </template>
               <ColorPicker :modelValue="fontColor" />
@@ -39,7 +39,7 @@
             <el-popover trigger="click" placement="bottom" :width="265">
               <template #reference>
                 <el-button class="high-light">
-                  <IconHighLight />
+                  <SvgIcon icon-class="highLight" />
                 </el-button>
               </template>
               <ColorPicker :modelValue="fontColor" />
@@ -50,11 +50,13 @@
       <el-col :span="12">
         <el-button-group class="full-group">
           <el-tooltip placement="top" content="增大字号">
-            <el-button class="font-size"> <IconFontSize />+ </el-button>
+            <el-button class="font-size">
+              <SvgIcon icon-class="fontSize" />+
+            </el-button>
           </el-tooltip>
 
           <el-tooltip placement="top" content="减小字号">
-            <el-button> <IconFontSize />- </el-button>
+            <el-button> <SvgIcon icon-class="fontSize" />- </el-button>
           </el-tooltip>
         </el-button-group>
       </el-col>
@@ -63,16 +65,16 @@
     <el-row class="mt-10">
       <el-button-group class="full-group">
         <el-tooltip placement="top" content="加粗">
-          <el-button><IconTextBold /></el-button>
+          <el-button><SvgIcon icon-class="text" Bold /></el-button>
         </el-tooltip>
         <el-tooltip placement="top" content="斜体">
-          <el-button><IconTextItalic /></el-button>
+          <el-button><SvgIcon icon-class="text" Italic /></el-button>
         </el-tooltip>
         <el-tooltip placement="top" content="下划线">
-          <el-button><IconTextUnderline /></el-button>
+          <el-button><SvgIcon icon-class="text" Underline /></el-button>
         </el-tooltip>
         <el-tooltip placement="top" content="删除线">
-          <el-button><IconStrikethrough /></el-button>
+          <el-button><SvgIcon icon-class="strikethrough" /></el-button>
         </el-tooltip>
       </el-button-group>
     </el-row>
@@ -80,13 +82,13 @@
     <el-row class="mt-10">
       <el-button-group class="full-group">
         <el-tooltip placement="top" content="清除格式">
-          <el-button><IconFormat /></el-button>
+          <el-button><SvgIcon icon-class="format" /></el-button>
         </el-tooltip>
         <el-tooltip placement="top" content="格式刷">
-          <el-button><IconFormatBrush /></el-button>
+          <el-button><SvgIcon icon-class="format" Brush /></el-button>
         </el-tooltip>
         <el-tooltip placement="top" content="减小缩进">
-          <el-button><IconIndentLeft /></el-button>
+          <el-button><SvgIcon icon-class="indentLeft" /></el-button>
         </el-tooltip>
         <el-tooltip placement="top" content="增大缩进">
           <el-button><IconIndentRight /></el-button>

@@ -9,7 +9,7 @@
     <el-row>
       <el-row class="code-common" @click="createBarElement">
         <el-col :span="4" class="code-icon">
-          <IconPayCodeTwo class="icon-font" />
+          <SvgIcon icon-class="payCodeTwo" class="icon-font" />
         </el-col>
         <el-col :span="20" class="code-text">
           <div class="font-middle">{{ $t("message.barCode") }}</div>
@@ -20,7 +20,7 @@
     <el-row>
       <el-row class="code-common" @click="createQRElement('A1')">
         <el-col :span="4" class="code-icon">
-          <IconTwoDimensionalCodeTwo class="icon-font" />
+          <SvgIcon icon-class="twoDimensionalCodeTwo" class="icon-font" />
         </el-col>
         <el-col :span="20" class="code-text">
           <div class="font-middle">{{ $t("message.QRCode") }}</div>
@@ -31,7 +31,7 @@
     <el-row>
       <el-row class="code-common" @click="openUpload">
         <el-col :span="4" class="code-icon">
-          <IconMagicWand class="icon-font" />
+          <SvgIcon icon-class="magicWand" class="icon-font" />
         </el-col>
         <el-col :span="20" class="code-text">
           <div class="font-middle">{{ $t("message.AICutoutImage") }}</div>
@@ -42,7 +42,7 @@
     <el-row>
       <el-row class="code-common" @click="openImageFillColor">
         <el-col :span="4" class="code-icon">
-          <IconPlatte class="icon-font" />
+          <SvgIcon icon-class="platte" class="icon-font" />
         </el-col>
         <el-col :span="20" class="code-text">
           <div class="font-middle">{{ $t("message.ColorFillImage") }}</div>

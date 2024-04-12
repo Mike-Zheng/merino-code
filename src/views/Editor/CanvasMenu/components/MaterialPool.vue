@@ -9,7 +9,7 @@
             :content="$t('message.searchMat')"
           >
             <el-button type="primary">
-              <IconUpload />
+              <SvgIcon icon-class="upload" />
             </el-button>
           </el-tooltip>
         </FileInput>

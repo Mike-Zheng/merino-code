@@ -1,63 +1,41 @@
 <template>
   <div class="edit-pool">
-    <div class="edit-section pt-20px">
-      <div class="font-bold text-lg mb-6px">文件</div>
-      <el-row :gutter="10" class="mt-10">
-        <el-col :span="8">
-          <el-upload
-            ref="uploadRef"
-            :on-exceed="handleExceed"
-            action="http"
-            :http-request="uploadHandle"
-            :limit="1"
-            :accept="fileAccept"
-            v-loading="uploading"
-            class="edit-upload"
-          >
-            <div class="item-box">
-              <IconUpload class="icon-font" />
-              <div class="mt-5px">上传文件</div>
-            </div>
-          </el-upload>
-        </el-col>
-      </el-row>
-    </div>
     <div class="edit-section">
       <div class="font-bold text-lg mb-6px">文字</div>
       <el-row :gutter="10" class="mt-10">
         <el-col :span="8">
           <div class="item-box" @click="drawText(80)">
-            <IconH1 class="icon-font" />
+            <SvgIcon icon-class="h1" class="icon-font" />
             <div class="mt-5px">标题</div>
           </div>
         </el-col>
         <el-col :span="8" @click="drawText(60)">
           <div class="item-box">
-            <IconH3 class="icon-font" />
+            <SvgIcon icon-class="h3" class="icon-font" />
             <div class="mt-5px">副标题</div>
           </div>
         </el-col>
         <el-col :span="8" @click="drawText(36)">
           <div class="item-box">
-            <IconTextRotationNone class="icon-font" />
+            <SvgIcon icon-class="textRotationNone" class="icon-font" />
             <div class="mt-5px">横排正文</div>
           </div>
         </el-col>
         <el-col :span="8" @click="drawVerticalText(36)">
           <div class="item-box">
-            <IconTextRotationDown class="icon-font" />
+            <SvgIcon icon-class="textRotationDown" class="icon-font" />
             <div class="mt-5px">竖排正文</div>
           </div>
         </el-col>
         <el-col :span="8" @click="drawText(36, undefined, true)">
           <div class="item-box">
-            <IconText class="icon-font" />
+            <SvgIcon icon-class="text" class="icon-font" />
             <div class="mt-5px">镂空正文</div>
           </div>
         </el-col>
         <el-col :span="8" @click="drawArcText">
           <div class="item-box">
-            <IconDistortion class="icon-font" />
+            <SvgIcon icon-class="distortion" class="icon-font" />
             <div class="mt-5px">环形正文</div>
           </div>
         </el-col>
@@ -143,111 +121,26 @@
         </el-col>
       </el-row>
     </div>
-    <div class="edit-section">
-      <div class="font-bold text-lg mb-6px">组件</div>
-      <el-row :gutter="10" class="mt-10">
-        <el-col :span="8">
-          <div class="item-box" @click="createBarElement">
-            <IconPayCodeTwo class="icon-font" />
-            <div class="mt-5px">{{ $t("message.barCode") }}</div>
-          </div>
-        </el-col>
-        <el-col :span="8">
-          <div class="item-box" @click="createQRElement('A1')">
-            <IconTwoDimensionalCodeTwo class="icon-font" />
-            <div class="mt-5px">{{ $t("message.QRCode") }}</div>
-          </div>
-        </el-col>
-        <el-col :span="8">
-          <div class="item-box" @click="openUpload">
-            <IconMagicWand class="icon-font" />
-            <div class="mt-5px">{{ $t("message.AICutoutImage") }}</div>
-          </div>
-        </el-col>
-      </el-row>
-    </div>
-    <ImageMatting :visible="dialogVisible" @close="closeUpload" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
-import { Base64 } from "js-base64";
-import { Search } from "@element-plus/icons-vue";
 import { ShapePathFormulasKeys, PathListItem } from "@/types/elements";
-import {
-  ElMessage,
-  genFileId,
-  UploadInstance,
-  UploadProps,
-  UploadRawFile
-} from "element-plus";
-import {
-  encodeData,
-  renderer25D,
-  rendererRect,
-  rendererRound,
-  rendererRandRound,
-  rendererDSJ,
-  rendererRandRect,
-  rendererImage,
-  rendererCircle,
-  rendererLine,
-  rendererLine2,
-  rendererFuncA,
-  rendererFuncB,
-  CodeOption
-} from "beautify-qrcode";
-import { PathPoolItem } from "@/types/elements";
-import { QRCodeType, Template } from "@/types/canvas";
-import { getImageDataURL, getImageText } from "@/utils/image";
-import { LinePoolItems, LinePoolItem } from "@/configs/lines";
-import { loadSVGFromString } from "fabric";
-import { uploadFile } from "@/api/file";
-import useCanvasScale from "@/hooks/useCanvasScale";
-import useHandleCreate from "@/hooks/useHandleCreate";
-import useHandleTemplate from "@/hooks/useHandleTemplate";
-import JsBarCode from "jsbarcode";
-import useI18n from "@/hooks/useI18n";
-import useCanvas from "@/views/Canvas/useCanvas";
 
-const { t } = useI18n();
-const { addTemplate } = useHandleTemplate();
-const { setCanvasTransform } = useCanvasScale();
+import { PathPoolItem } from "@/types/elements";
+
+import { LinePoolItems, LinePoolItem } from "@/configs/lines";
+
+import useHandleCreate from "@/hooks/useHandleCreate";
+
 const {
-  createQRCodeElement,
-  createBarCodeElement,
-  createImageElement,
   createTextElement,
   createPathElement,
   createLineElement,
   createArcTextElement,
-  createVerticalTextElement,
-  createVideoElement
+  createVerticalTextElement
 } = useHandleCreate();
-const codeContent = ref<string>(window.location.href);
-const codeSpace = ref<boolean>(true);
-const codeError = ref<number>(0);
-const uploadRef = ref<UploadInstance>();
-const dialogVisible = ref(false);
-const generateQRCodeMap = {
-  A1: rendererRect,
-  A2: rendererRound,
-  A3: rendererRandRound,
-  SP1: rendererDSJ,
-  SP2: rendererRandRect,
-  SP3: rendererCircle,
-  B1: renderer25D,
-  C1: rendererImage,
-  A_a1: rendererLine,
-  A_a2: rendererLine2,
-  A_b1: rendererFuncA,
-  A_b2: rendererFuncB
-};
-const fileAccept = ref(
-  ".pdf,.psd,.cdr,.ai,.svg,.jpg,.jpeg,.png,.webp,.json,.mp4"
-);
-const uploading = ref(false);
+
 const PathShapeLibs: PathPoolItem[] = [
   {
     viewBox: [200, 200],
@@ -263,97 +156,6 @@ const PathShapeLibs: PathPoolItem[] = [
     path: "M 100 0 A 50 50 0 1 1 100 200 A 50 50 0 1 1 100 0 Z"
   }
 ];
-
-// 获取qrcode
-const getEncodeData = (width = 118, height = 118) => {
-  const codeOption: CodeOption = {
-    text: codeContent.value,
-    width,
-    height,
-    correctLevel: codeError.value,
-    isSpace: codeSpace.value
-  };
-  return encodeData(codeOption);
-};
-
-const createBarElement = () => {
-  const codeOption: JsBarCode.BaseOptions = {
-    format: "pharmacode",
-    lineColor: "#0aa",
-    width: 4,
-    height: 40,
-    displayValue: false
-  };
-  JsBarCode("#barcode", "1234", codeOption);
-  const barcode = document.getElementById("barcode");
-  if (!barcode) return;
-  const s = new XMLSerializer().serializeToString(barcode);
-  const src = `data:image/svg+xml;base64,` + Base64.encode(s);
-  createBarCodeElement(src, "1234", codeOption);
-};
-
-const createQRElement = (style: QRCodeType) => {
-  const src =
-    `data:image/svg+xml;base64,` +
-    Base64.encode(generateQRCodeMap[style](getEncodeData(118, 118)));
-  const codeOption = {
-    codeStyle: style,
-    codeSpace: codeSpace.value,
-    codeError: codeError.value
-  };
-  createQRCodeElement(src, codeOption, codeContent.value);
-};
-
-const openUpload = () => {
-  dialogVisible.value = true;
-};
-
-const closeUpload = () => {
-  dialogVisible.value = false;
-};
-
-// 上传文件
-const uploadHandle = async (option: any) => {
-  const [canvas] = useCanvas();
-  const filename = option.file.name;
-  const fileSuffix = filename.split(".").pop();
-  if (!fileAccept.value.split(",").includes(`.${fileSuffix}`)) return;
-  if (fileSuffix === "svg") {
-    const dataText = await getImageText(option.file);
-    const content = await loadSVGFromString(dataText);
-    canvas.add(...content.objects);
-    canvas.renderAll();
-  }
-  if (fileSuffix === "json") {
-    const dataText = await getImageText(option.file);
-    const template = JSON.parse(dataText);
-    addTemplate(template);
-  }
-  if (["jpg", "jpeg", "png", "webp"].includes(fileSuffix)) {
-    const dataURL = await getImageDataURL(option.file);
-    createImageElement(dataURL);
-  }
-  if (["mp4"].includes(fileSuffix)) {
-    const dataURL = URL.createObjectURL(option.file);
-    createVideoElement(dataURL);
-  }
-  //   uploading.value = true
-  const res = await uploadFile(option.file, fileSuffix);
-  uploading.value = false;
-  if (res && res.data.code === 200) {
-    const template = res.data.data as Template;
-    if (!template) return;
-    await addTemplate(template);
-    setCanvasTransform();
-  }
-};
-
-const handleExceed: UploadProps["onExceed"] = (files: File[]) => {
-  uploadRef.value!.clearFiles();
-  const file = files[0] as UploadRawFile;
-  file.uid = genFileId();
-  uploadRef.value!.handleStart(file);
-};
 
 // 添加标题文字
 const drawText = (

@@ -37,14 +37,14 @@
             circle
             @click="addColor"
             v-if="gridColorSelf.length < 11"
-            ><IconPlus
+            ><SvgIcon icon-class="plus"
           /></el-button>
           <el-button
             class="ml-5"
             circle
             @click="subColor"
             v-if="gridColorSelf.length > 2"
-            ><IconMinus
+            ><SvgIcon icon-class="minus"
           /></el-button>
         </div>
       </div>

@@ -6,7 +6,7 @@
   >
     <div class="thumb-handle">
       <div class="btn" @click="createTemplate()">
-        <IconPlus class="icon" />{{ t("message.addPage") }}
+        <SvgIcon icon-class="plus" class="icon" />{{ t("message.addPage") }}
       </div>
     </div>
     <Draggable

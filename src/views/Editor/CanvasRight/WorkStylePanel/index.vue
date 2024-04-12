@@ -22,7 +22,11 @@
             :content="t('style.unlockAspectRatio')"
             v-if="isFixed"
           >
-            <IconLock class="icon-btn" @click="changeFixedRatio(false)" />
+            <SvgIcon
+              icon-class="lock"
+              class="icon-btn"
+              @click="changeFixedRatio(false)"
+            />
           </el-tooltip>
           <el-tooltip
             effect="dark"
@@ -30,7 +34,11 @@
             :content="t('style.lockAspectRatio')"
             v-else
           >
-            <IconUnlock class="icon-btn" @click="changeFixedRatio(true)" />
+            <SvgIcon
+              icon-class="unlock"
+              class="icon-btn"
+              @click="changeFixedRatio(true)"
+            />
           </el-tooltip>
         </el-col>
         <el-col :span="11">
@@ -60,7 +68,7 @@
                 :hide-after="0"
                 :content="t('style.bleedingLine')"
               >
-                <IconCuttingOne />
+                <SvgIcon icon-class="cuttingOne" />
               </el-tooltip>
             </template>
           </el-input>
@@ -72,7 +80,11 @@
             :content="t('style.fillet')"
             v-if="isRound"
           >
-            <IconRound class="icon-btn" @click="changeWorkRound(false)" />
+            <SvgIcon
+              icon-class="round"
+              class="icon-btn"
+              @click="changeWorkRound(false)"
+            />
           </el-tooltip>
           <el-tooltip
             effect="dark"
@@ -80,7 +92,12 @@
             :content="t('style.rightAngle')"
             v-else
           >
-            <IconRightAngle class="icon-btn" @click="changeWorkRound(true)" />
+            <SvgIcon
+              icon-class="right"
+              Angle
+              class="icon-btn"
+              @click="changeWorkRound(true)"
+            />
           </el-tooltip>
         </el-col>
         <el-col :span="11">
@@ -96,7 +113,7 @@
                 :hide-after="0"
                 :content="t('style.safetyLine')"
               >
-                <IconShield />
+                <SvgIcon icon-class="shield" />
               </el-tooltip>
             </template>
           </el-input>
@@ -113,7 +130,7 @@
                 :hide-after="0"
                 :content="t('style.unit')"
               >
-                <IconRuler />
+                <SvgIcon icon-class="ruler" />
               </el-tooltip>
             </template>
             <el-option

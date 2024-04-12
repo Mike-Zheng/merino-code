@@ -3,13 +3,7 @@
     <!-- <div class="resize-handler"></div> -->
     <div class="canvas-tools-left">
       <div class="left-handle">
-        <el-tooltip
-          placement="top"
-          :hide-after="0"
-          :content="t('message.inviteCollaboration')"
-        >
-          <IconPeoples class="canvas-tools-button" />
-        </el-tooltip>
+        <SvgIcon icon-class="apps" class="handler-item" ref="menuRef" />
       </div>
 
       <div class="left-handle">
@@ -27,7 +21,7 @@
             :hide-after="0"
             :content="t('message.uploadFiles')"
           >
-            <IconUploadOne class="canvas-tools-button" />
+            <SvgIcon icon-class="upload" One class="canvas-tools-button" />
           </el-tooltip>
         </FileInput>
       </div>
@@ -37,7 +31,12 @@
           :hide-after="0"
           :content="t('message.downloadFiles')"
         >
-          <IconDownloadOne class="canvas-tools-button" @click="exportFile()" />
+          <SvgIcon
+            icon-class="down"
+            loadOne
+            class="canvas-tools-button"
+            @click="exportFile()"
+          />
         </el-tooltip>
       </div>
       <div class="right-handle">
@@ -55,6 +54,8 @@
       @close="exportFileHide"
       @save="exportFileHandle"
     ></ExportFile>
+
+    <HomePopover :menu-ref="menuRef" :menu-popover-ref="menuPopoverRef" />
   </div>
 </template>
 
@@ -67,7 +68,9 @@ import ExportFile from "./components/index.vue";
 import useI18n from "@/hooks/useI18n";
 import { storeToRefs } from "pinia";
 import { useFabricStore, useTemplatesStore } from "@/store";
-
+import HomePopover from "@/views/Editor/CanvasLeft/components/HomePopover.vue";
+const menuRef = ref();
+const menuPopoverRef = ref();
 const fabricStore = useFabricStore();
 const { isChecked } = storeToRefs(fabricStore);
 const { t } = useI18n();

@@ -19,16 +19,18 @@
       <el-col :span="16">
         <el-radio-group class="full-ratio" v-model="textStyle">
           <el-radio-button :label="t('message.transverse')" value="transverse"
-            ><IconTextRotationNone
+            ><SvgIcon icon-class="textRotationNone"
           /></el-radio-button>
           <el-radio-button :label="t('message.direction')" value="direction"
-            ><IconTextRotationDown
+            ><SvgIcon icon-class="textRotationDown"
           /></el-radio-button>
         </el-radio-group>
       </el-col>
       <el-col :span="8">
         <el-checkbox-button v-model="textHollow"
-          ><IconText />{{ t("message.hollowOut") }}</el-checkbox-button
+          ><SvgIcon icon-class="text" />{{
+            t("message.hollowOut")
+          }}</el-checkbox-button
         >
       </el-col>
     </el-row>

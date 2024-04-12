@@ -102,7 +102,7 @@
                 <template #reference>
                   <el-button class="font-color">
                     <TextColorButton :color="fillColor">
-                      <IconText />
+                      <SvgIcon icon-class="text" />
                     </TextColorButton>
                   </el-button>
                 </template>
@@ -121,7 +121,7 @@
                 <template #reference>
                   <el-button class="high-light">
                     <TextColorButton :color="backgroundColor">
-                      <IconHighLight />
+                      <SvgIcon icon-class="highLight" />
                     </TextColorButton>
                   </el-button>
                 </template>
@@ -139,13 +139,13 @@
           <el-button-group class="full-group">
             <el-tooltip placement="top" content="增大字号" :hide-after="0">
               <el-button class="font-size" @click="handleElementFontsize('+')">
-                <IconFontSize />+
+                <SvgIcon icon-class="fontSize" />+
               </el-button>
             </el-tooltip>
 
             <el-tooltip placement="top" content="减小字号" :hide-after="0">
               <el-button @click="handleElementFontsize('-')">
-                <IconFontSize />-
+                <SvgIcon icon-class="fontSize" />-
               </el-button>
             </el-tooltip>
           </el-button-group>

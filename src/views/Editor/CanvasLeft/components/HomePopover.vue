@@ -12,23 +12,23 @@
       virtual-triggering
     >
       <!-- <el-row class="pop-row">
-        <IconHome class="pop-icon"/>
+        <SvgIcon icon-class="home" class="pop-icon"/>
         <span class="pop-text">返回首页</span>
       </el-row>
       <el-row class="pop-row">
-        <IconEdit class="pop-icon"/>
+        <SvgIcon icon-class="edit" class="pop-icon"/>
         <span class="pop-text">未命名</span>
       </el-row> -->
       <el-row class="pop-row">
-        <IconNewlybuild class="pop-icon" />
+        <SvgIcon icon-class="newlybuild" class="pop-icon" />
         <span class="pop-text">{{ t("message.createDesign") }}</span>
       </el-row>
       <el-row class="pop-row" @click="openUpload">
-        <IconUpload class="pop-icon" />
+        <SvgIcon icon-class="upload" class="pop-icon" />
         <span class="pop-text">{{ t("message.uploadFiles") }}</span>
       </el-row>
       <el-row class="pop-row" ref="referenceRef">
-        <IconDividingLine class="pop-icon" />
+        <SvgIcon icon-class="dividingLine" class="pop-icon" />
         <span class="pop-text">{{ t("message.referenceLine") }}</span>
       </el-row>
     </el-popover>

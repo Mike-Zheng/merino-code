@@ -11,23 +11,23 @@
       virtual-triggering
     >
       <el-row class="help-pop-row">
-        <IconGuideBoard class="help-pop-icon" />
+        <SvgIcon icon-class="guideBoard" class="help-pop-icon" />
         <span class="help-pop-text">{{ $t("message.BeginnerGuide") }}</span>
       </el-row>
       <el-row class="help-pop-row">
-        <IconVideoTwo class="help-pop-icon" />
+        <SvgIcon icon-class="videoTwo" class="help-pop-icon" />
         <span class="help-pop-text">{{ $t("message.UserGuide") }}</span>
       </el-row>
       <el-row class="help-pop-row" @click="hasHotkey = true">
-        <IconKeyboardOne class="help-pop-icon" />
+        <SvgIcon icon-class="keyboardOne" class="help-pop-icon" />
         <span class="help-pop-text">{{ $t("message.Shortcuts") }}</span>
       </el-row>
       <el-row class="help-pop-row">
-        <IconEdit class="help-pop-icon" />
+        <SvgIcon icon-class="edit" class="help-pop-icon" />
         <span class="help-pop-text">{{ $t("message.Suggestions") }}</span>
       </el-row>
       <el-row class="help-pop-row">
-        <IconHeadsetOne class="help-pop-icon" />
+        <SvgIcon icon-class="headsetOne" class="help-pop-icon" />
         <span class="help-pop-text">{{ $t("message.OnlineSupport") }}</span>
       </el-row>
     </el-popover>

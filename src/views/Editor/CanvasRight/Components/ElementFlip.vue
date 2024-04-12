@@ -6,10 +6,12 @@
       @change="changeElementFlip"
     >
       <el-checkbox-button value="flipY">
-        <IconFlipVertically />{{ $t("style.flipVertical") }}
+        <SvgIcon icon-class="flipVertically" />{{ $t("style.flipVertical") }}
       </el-checkbox-button>
       <el-checkbox-button value="flipX">
-        <IconFlipHorizontally />{{ $t("style.flipHorizontal") }}
+        <SvgIcon icon-class="flipHorizontally" />{{
+          $t("style.flipHorizontal")
+        }}
       </el-checkbox-button>
     </el-checkbox-group>
   </el-row>

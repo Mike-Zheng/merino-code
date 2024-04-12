@@ -3,8 +3,8 @@
     <div class="menu-content">
       <component :is="currentComponent" class="menu-pool"></component>
       <!-- <div class="layout-toggle" @click="leftToggle" v-show="currentComponent">
-        <IconLeft class="toggle-icon" v-if="poolShow" />
-        <IconRight class="toggle-icon" v-else />
+        <SvgIcon icon-class="left" class="toggle-icon" v-if="poolShow" />
+        <SvgIcon icon-class="right" class="toggle-icon" v-else />
       </div> -->
     </div>
   </div>

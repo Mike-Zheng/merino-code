@@ -3,7 +3,8 @@
     <div class="left-handler">
       <el-tooltip placement="top" :hide-after="0">
         <template #content>{{ t("message.undo") }}</template>
-        <IconBack
+        <SvgIcon
+          icon-class="back"
           class="handler-item"
           :class="{ disable: !canUndo }"
           @click="undo()"
@@ -11,7 +12,8 @@
       </el-tooltip>
       <el-tooltip placement="top" :hide-after="0">
         <template #content>{{ t("message.redo") }}</template>
-        <IconNext
+        <SvgIcon
+          icon-class="next"
           class="handler-item"
           :class="{ disable: !canRedo }"
           @click="redo()"
@@ -19,7 +21,8 @@
       </el-tooltip>
       <el-tooltip placement="top" :hide-after="0">
         <template #content>{{ t("message.group") }}</template>
-        <IconGroup
+        <SvgIcon
+          icon-class="group"
           class="handler-item"
           :class="{ disable: !canGroup }"
           @click="group()"
@@ -27,7 +30,8 @@
       </el-tooltip>
       <el-tooltip placement="top" :hide-after="0">
         <template #content>{{ t("message.ungroup") }}</template>
-        <IconUngroup
+        <SvgIcon
+          icon-class="ungroup"
           class="handler-item"
           :class="{ disable: !canUnGroup }"
           @click="ungroup()"
@@ -44,29 +48,30 @@
         <span class="handler-dropdown">
           <el-tooltip placement="top" :hide-after="0">
             <template #content>{{ t("message.union") }}</template>
-            <IconUnionSelection class="handler-icon" />
+            <SvgIcon icon-class="unionSelection" class="handler-icon" />
           </el-tooltip>
-          <IconDown class="handler-icon icon-down" />
+          <SvgIcon icon-class="down" class="handler-icon icon-down" />
         </span>
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item @click="intersection(0)">
-              <IconUnionSelection class="handler-item" />{{
+              <SvgIcon icon-class="unionSelection" class="handler-item" />{{
                 t("message.union")
               }}
             </el-dropdown-item>
             <el-dropdown-item @click="intersection(1)">
-              <IconSubtractSelectionOne class="handler-item" />{{
-                t("message.difference")
-              }}
+              <SvgIcon
+                icon-class="subtractSelectionOne"
+                class="handler-item"
+              />{{ t("message.difference") }}
             </el-dropdown-item>
             <el-dropdown-item @click="intersection(2)">
-              <IconIntersectSelection class="handler-item" />{{
+              <SvgIcon icon-class="intersectSelection" class="handler-item" />{{
                 t("message.intersection")
               }}
             </el-dropdown-item>
             <el-dropdown-item @click="intersection(3)">
-              <IconExcludeSelection class="handler-item" />{{
+              <SvgIcon icon-class="excludeSelection" class="handler-item" />{{
                 t("message.xor")
               }}
             </el-dropdown-item>
@@ -75,7 +80,11 @@
       </el-dropdown>
     </div>
     <div class="right-handler">
-      <IconMinus class="handler-item" @click="scaleCanvas('-')" />
+      <SvgIcon
+        icon-class="minus"
+        class="handler-item"
+        @click="scaleCanvas('-')"
+      />
       <el-popover
         placement="bottom"
         trigger="click"
@@ -96,10 +105,18 @@
           </div>
         </div>
       </el-popover>
-      <IconPlus class="handler-item" @click="scaleCanvas('+')" />
+      <SvgIcon
+        icon-class="plus"
+        class="handler-item"
+        @click="scaleCanvas('+')"
+      />
       <el-tooltip placement="top">
         <template #content>{{ t("message.undo") }}</template>
-        <IconFullScreen class="handler-item" @click="resetCanvas()" />
+        <SvgIcon
+          icon-class="fullScreen"
+          class="handler-item"
+          @click="resetCanvas()"
+        />
       </el-tooltip>
     </div>
   </div>

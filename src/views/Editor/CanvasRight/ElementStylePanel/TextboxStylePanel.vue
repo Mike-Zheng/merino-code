@@ -57,7 +57,7 @@
               <template #reference>
                 <el-button class="font-color">
                   <TextColorButton :color="handleElement.color">
-                    <IconText />
+                    <SvgIcon icon-class="text" />
                   </TextColorButton>
                 </el-button>
               </template>
@@ -76,7 +76,7 @@
               <template #reference>
                 <el-button class="high-light">
                   <TextColorButton :color="elementBackgrounColor">
-                    <IconHighLight />
+                    <SvgIcon icon-class="highLight" />
                   </TextColorButton>
                 </el-button>
               </template>
@@ -94,13 +94,13 @@
         <el-button-group class="full-group">
           <el-tooltip placement="top" content="增大字号" :hide-after="0">
             <el-button class="font-size" @click="handleElementFontsize('+')">
-              <IconFontSize />+
+              <SvgIcon icon-class="fontSize" />+
             </el-button>
           </el-tooltip>
 
           <el-tooltip placement="top" content="减小字号" :hide-after="0">
             <el-button @click="handleElementFontsize('-')">
-              <IconFontSize />-
+              <SvgIcon icon-class="fontSize" />-
             </el-button>
           </el-tooltip>
         </el-button-group>
@@ -114,7 +114,7 @@
             :value="hasFontWeight"
             @change="handleElementBlod()"
           >
-            <IconTextBold />
+            <SvgIcon icon-class="text" Bold />
           </el-checkbox-button>
         </el-tooltip>
         <el-tooltip placement="top" content="斜体" :hide-after="0">
@@ -122,7 +122,7 @@
             v-model="hasFontStyle"
             @change="handleElementItalic()"
           >
-            <IconTextItalic />
+            <SvgIcon icon-class="text" Italic />
           </el-checkbox-button>
         </el-tooltip>
         <el-tooltip placement="top" content="下划线" :hide-after="0">
@@ -130,7 +130,7 @@
             v-model="hasUnderline"
             @change="handleElementUnderline()"
           >
-            <IconTextUnderline />
+            <SvgIcon icon-class="text" Underline />
           </el-checkbox-button>
         </el-tooltip>
         <el-tooltip placement="top" content="删除线" :hide-after="0">
@@ -138,7 +138,7 @@
             v-model="hasLinethrough"
             @change="handleElementLinethrough()"
           >
-            <IconStrikethrough />
+            <SvgIcon icon-class="strikethrough" />
           </el-checkbox-button>
         </el-tooltip>
       </div>
@@ -151,7 +151,7 @@
             @click="handleElementArrange(false)"
             :type="!elementGrapheme ? 'primary' : ''"
           >
-            <IconTextRotationNone />
+            <SvgIcon icon-class="textRotationNone" />
           </el-button>
         </el-tooltip>
         <el-tooltip placement="top" content="纵向" :hide-after="0">
@@ -159,12 +159,12 @@
             @click="handleElementArrange(true)"
             :type="elementGrapheme ? 'primary' : ''"
           >
-            <IconTextRotationDown />
+            <SvgIcon icon-class="textRotationDown" />
           </el-button>
         </el-tooltip>
         <el-tooltip placement="top" content="减小缩进" :hide-after="0">
           <el-button @click="handleElementCharSpacing('-')">
-            <IconIndentLeft />
+            <SvgIcon icon-class="indentLeft" />
           </el-button>
         </el-tooltip>
         <el-tooltip placement="top" content="增大缩进" :hide-after="0">
@@ -210,7 +210,7 @@
       <el-col :span="12">
         <el-tooltip placement="top" content="转曲" :hide-after="0">
           <el-button class="full-button" @click="handleElementCurve">
-            <IconTextStyleOne />
+            <SvgIcon icon-class="text" StyleOne />
           </el-button>
         </el-tooltip>
       </el-col>
@@ -225,7 +225,7 @@
             "
             @click="handleElementDeformation"
           >
-            <IconDistortion />
+            <SvgIcon icon-class="distortion" />
           </el-button>
         </el-tooltip>
       </el-col>
@@ -248,12 +248,12 @@
             v-if="handleElement.showCurvature"
           >
             <el-radio-button :value="false">
-              <IconPreviewClose />
+              <SvgIcon icon-class="previewClose" />
             </el-radio-button>
           </el-tooltip>
           <el-tooltip placement="top" content="显示弧度" :hide-after="0" v-else>
             <el-radio-button :value="true">
-              <IconPreviewOpen />
+              <SvgIcon icon-class="previewOpen" />
             </el-radio-button>
           </el-tooltip>
         </el-radio-group>

@@ -20,7 +20,7 @@
             value="clip"
             :checked="showClip"
           >
-            <IconCuttingOne />
+            <SvgIcon icon-class="cuttingOne" />
           </el-checkbox-button>
         </el-tooltip>
         <el-tooltip
@@ -29,7 +29,7 @@
           :content="t('message.draggingCanvas')"
         >
           <el-checkbox-button type="primary" value="drag" :checked="isDrag">
-            <IconClickTap />
+            <SvgIcon icon-class="clickTap" />
           </el-checkbox-button>
         </el-tooltip>
         <el-tooltip
@@ -45,7 +45,7 @@
             value="safe"
             :checked="showSafe"
           >
-            <IconShield />
+            <SvgIcon icon-class="shield" />
           </el-checkbox-button>
         </el-tooltip>
       </el-checkbox-group>

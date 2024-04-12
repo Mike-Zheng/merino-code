@@ -8,7 +8,7 @@
   >
     <div class="thumb-handle">
       <div class="btn" @click="createTemplate()">
-        <IconPlus class="icon" />{{ t("message.addPage") }}
+        <SvgIcon icon-class="plus" class="icon" />{{ t("message.addPage") }}
       </div>
     </div>
     <Draggable
@@ -49,8 +49,8 @@
     </div>
 
     <div class="layout-toggle" @click="thumbToggle">
-      <IconLeft v-if="thumbShow" />
-      <IconRight v-else />
+      <SvgIcon icon-class="left" v-if="thumbShow" />
+      <SvgIcon icon-class="right" v-else />
     </div>
   </div>
 </template>

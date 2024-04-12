@@ -24,7 +24,7 @@
           </el-button>
           <el-popover trigger="click" width="284">
             <template #reference>
-              <el-button class="clip-popover"><IconDown /></el-button>
+              <el-button class="clip-popover"><SvgIcon icon-class="down" /></el-button>
             </template>
             <div class="clip">
               <div class="title">{{ $t("style.byShape") }}：</div>
@@ -57,7 +57,7 @@
       </el-col>
       <el-col :span="12">
         <el-button class="matting-button" @click="openMatting">
-          <IconMagicWand class="btn-icon" /> 抠图
+          <SvgIcon icon-class="magicWand" class="btn-icon" /> 抠图
         </el-button>
       </el-col>
     </el-row>

@@ -12,7 +12,7 @@
             class="align-item"
             @click="alignElement(AlignCommand.LEFT)"
           >
-            <IconAlignLeft />
+            <SvgIcon icon-class="alignLeft" />
           </el-col>
         </el-tooltip>
         <el-tooltip
@@ -25,7 +25,7 @@
             class="align-item"
             @click="alignElement(AlignCommand.HORIZONTAL)"
           >
-            <IconAlignVertically />
+            <SvgIcon icon-class="alignVertically" />
           </el-col>
         </el-tooltip>
         <el-tooltip
@@ -38,7 +38,7 @@
             class="align-item"
             @click="alignElement(AlignCommand.RIGHT)"
           >
-            <IconAlignRight />
+            <SvgIcon icon-class="alignRight" />
           </el-col>
         </el-tooltip>
         <el-tooltip
@@ -51,7 +51,7 @@
             class="align-item"
             @click="alignElement(AlignCommand.TOP)"
           >
-            <IconAlignTop />
+            <SvgIcon icon-class="alignTop" />
           </el-col>
         </el-tooltip>
         <el-tooltip
@@ -64,7 +64,7 @@
             class="align-item"
             @click="alignElement(AlignCommand.VERTICAL)"
           >
-            <IconAlignHorizontally />
+            <SvgIcon icon-class="alignHorizontally" />
           </el-col>
         </el-tooltip>
         <el-tooltip
@@ -77,7 +77,7 @@
             class="align-item"
             @click="alignElement(AlignCommand.BOTTOM)"
           >
-            <IconAlignBottom />
+            <SvgIcon icon-class="alignBottom" />
           </el-col>
         </el-tooltip>
       </el-row>
@@ -94,7 +94,11 @@
             :content="$t('style.unlockAspectRatio')"
             v-if="isFixed"
           >
-            <IconLock class="icon-btn" @click="changeFixedRatio(false)" />
+            <SvgIcon
+              icon-class="lock"
+              class="icon-btn"
+              @click="changeFixedRatio(false)"
+            />
           </el-tooltip>
           <el-tooltip
             effect="dark"
@@ -102,7 +106,11 @@
             :content="$t('style.lockAspectRatio')"
             v-else
           >
-            <IconUnlock class="icon-btn" @click="changeFixedRatio(true)" />
+            <SvgIcon
+              icon-class="unlock"
+              class="icon-btn"
+              @click="changeFixedRatio(true)"
+            />
           </el-tooltip>
         </el-col>
         <el-col :span="11" class="position-col">
@@ -122,7 +130,11 @@
             :content="$t('style.unlockAspectRatio')"
             v-if="isFixed"
           >
-            <IconLock class="icon-btn" @click="changeFixedRatio(false)" />
+            <SvgIcon
+              icon-class="lock"
+              class="icon-btn"
+              @click="changeFixedRatio(false)"
+            />
           </el-tooltip>
           <el-tooltip
             effect="dark"
@@ -130,7 +142,11 @@
             :content="$t('style.lockAspectRatio')"
             v-else
           >
-            <IconUnlock class="icon-btn" @click="changeFixedRatio(true)" />
+            <SvgIcon
+              icon-class="unlock"
+              class="icon-btn"
+              @click="changeFixedRatio(true)"
+            />
           </el-tooltip>
         </el-col>
         <el-col :span="11" class="position-col">
@@ -145,12 +161,18 @@
         </el-col>
         <el-col :span="2" class="fixed-ratio"> </el-col>
         <el-col :span="5" class="angle-col">
-          <div @click="changeRotate45('-')"><IconRotate /> -45°</div>
+          <div @click="changeRotate45('-')">
+            <SvgIcon icon-class="rotate" /> -45°
+          </div>
         </el-col>
         <el-col :span="1"></el-col>
         <el-col :span="5" class="angle-col">
           <div @click="changeRotate45('+')">
-            <IconRotate :style="{ transform: 'rotateY(180deg)' }" /> +45°
+            <SvgIcon
+              icon-class="rotate"
+              :style="{ transform: 'rotateY(180deg)' }"
+            />
+            +45°
           </div>
         </el-col>
       </el-row>
@@ -163,7 +185,7 @@
             class="align-item"
             @click="layerElement(LayerCommand.TOP)"
           >
-            <IconSendToBack />
+            <SvgIcon icon-class="sendToBack" />
           </el-col>
         </el-tooltip>
         <el-tooltip
@@ -176,7 +198,7 @@
             class="align-item"
             @click="layerElement(LayerCommand.BOTTOM)"
           >
-            <IconBringToFrontOne />
+            <SvgIcon icon-class="bringToFrontOne" />
           </el-col>
         </el-tooltip>
         <el-tooltip placement="top" :hide-after="0" :content="$t('style.down')">
@@ -185,7 +207,7 @@
             class="align-item"
             @click="layerElement(LayerCommand.DOWN)"
           >
-            <IconSendBackward />
+            <SvgIcon icon-class="sendBackward" />
           </el-col>
         </el-tooltip>
         <el-tooltip placement="top" :hide-after="0" :content="$t('style.up')">
@@ -194,7 +216,7 @@
             class="align-item"
             @click="layerElement(LayerCommand.UP)"
           >
-            <IconBringForward />
+            <SvgIcon icon-class="bringForward" />
           </el-col>
         </el-tooltip>
       </el-row>

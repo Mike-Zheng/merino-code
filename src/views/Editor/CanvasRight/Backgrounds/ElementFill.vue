@@ -87,7 +87,7 @@
             class="content"
             :style="{ backgroundImage: `url(${background.imageURL})` }"
           >
-            <IconPlus />
+            <SvgIcon icon-class="plus" />
           </div>
         </div>
       </FileInput>
@@ -248,10 +248,10 @@
           v-if="isGridLibData"
           @click="generateGridBackgroundRandColor"
         >
-          <IconShuffleOne />
+          <SvgIcon icon-class="shuffleOne" />
         </el-button>
         <el-button class="full-row" v-else @click="showGridColorSelf">
-          <IconPlus />
+          <SvgIcon icon-class="plus" />
         </el-button>
       </el-row>
       <div class="mt-10" v-if="isGridLibData">
@@ -1011,8 +1011,8 @@ const generateShadingBackground = async () => {
   const svg = `
     <svg id='patternId' width='${imageWidth}' height='${imageHeight}' xmlns='http://www.w3.org/2000/svg'>
       <defs>
-        <pattern id='a' patternUnits='userSpaceOnUse' 
-          width='${svgWidth}' 
+        <pattern id='a' patternUnits='userSpaceOnUse'
+          width='${svgWidth}'
           height='${svgHeight}'
           patternTransform='scale(${shadingBackground.value.scale}) rotate(${shadingBackground.value.angle})'
         >
