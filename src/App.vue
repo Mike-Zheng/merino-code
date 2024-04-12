@@ -10,6 +10,7 @@
   <el-config-provider :locale="elLocale.el">
     <Editor v-if="!isMobile()" />
     <Mobile v-else />
+    <!-- <Icons></Icons> -->
   </el-config-provider>
 </template>
 
@@ -22,6 +23,7 @@ import { isMobile } from "@/utils/common";
 import { LocalStorageDiscardedKey } from "@/configs/canvas";
 import Editor from "@/views/Editor/index.vue";
 import Mobile from "./views/Editor/mobile.vue";
+import Icons from "@/views/Icons/index.vue";
 import useI18n from "@/hooks/useI18n";
 
 const { messages } = useI18n();
