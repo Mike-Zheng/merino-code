@@ -21,6 +21,7 @@
         <CanvasCenter class="center-body" />
 
         <CanvasAffix class="center-affix" />
+        <ZoomTools class="zoom-tools" />
       </div>
       <CanvasRight class="layout-content-right" />
       <CanvasDom class="layout-content-dom" />
@@ -39,6 +40,7 @@ import CanvasRight from "./CanvasRight/index.vue";
 import CanvasTools from "./CanvasTools/index.vue";
 import CanvasAffix from "./CanvasAffix/index.vue";
 import CanvasDom from "./CanvasDom/index.vue";
+import ZoomTools from "./ZoomTools/index.vue";
 import { useMainStore } from "@/store";
 import { storeToRefs } from "pinia";
 
@@ -114,6 +116,16 @@ const { poolShow } = storeToRefs(mainStore);
     height: 100%;
     // margin: 100px;
   }
+}
+.zoom-tools {
+  position: absolute;
+  bottom: 15px;
+  width: 380px;
+  transform: translateX(-50%);
+  z-index: 50;
+  height: 40px;
+  left: 50%;
+  color: #fff;
 }
 .center-tools {
   height: 40px;
