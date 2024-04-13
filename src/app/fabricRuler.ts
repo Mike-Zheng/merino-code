@@ -502,10 +502,10 @@ export class FabricRuler extends Disposable {
         // 高亮遮罩
         // ctx.save()
         this.darwRect(ctx, {
-          left: isHorizontal ? rect.left : this.options.ruleSize - 8,
-          top: isHorizontal ? this.options.ruleSize - 8 : rect.top,
-          width: isHorizontal ? rect.width : 8,
-          height: isHorizontal ? 8 : rect.height,
+          left: isHorizontal ? rect.left : this.options.ruleSize - 15,
+          top: isHorizontal ? this.options.ruleSize - 15 : rect.top,
+          width: isHorizontal ? rect.width : 15,
+          height: isHorizontal ? 15 : rect.height,
           fill: highlightColor
         });
 
