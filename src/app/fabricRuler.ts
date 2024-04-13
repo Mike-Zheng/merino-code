@@ -13,6 +13,7 @@ import {
   Canvas,
   util
 } from "fabric";
+import { ElementNames, LinePoint } from "@/types/elements";
 import { throttle } from "lodash-es";
 import { useMainStore, useTemplatesStore } from "@/store";
 import { storeToRefs } from "pinia";
@@ -101,28 +102,18 @@ export class FabricRuler extends Disposable {
   /**
    * 事件句柄缓存
    */
-  // private eventHandler: Record<string, (...args: any) => void> = {
-  //   // calcCalibration: this.calcCalibration.bind(this),
-  //   calcObjectRect: throttle(this.calcObjectRect.bind(this), 15),
-  //   clearStatus: this.clearStatus.bind(this),
-  //   mouseDown: this.mouseDown.bind(this),
-  //   mouseMove: throttle(this.mouseMove.bind(this), 15),
-  //   mouseUp: this.mouseUp.bind(this),
-  //   render: (e: any) => {
-  //     // 避免多次渲染
-  //     if (!e.ctx) return;
-  //     this.render();
-  //   }
-  // };
-
   private eventHandler: Record<string, (...args: any) => void> = {
     // calcCalibration: this.calcCalibration.bind(this),
-    calcObjectRect: this.calcObjectRect.bind(this),
+    calcObjectRect: throttle(this.calcObjectRect.bind(this), 15),
     clearStatus: this.clearStatus.bind(this),
     mouseDown: this.mouseDown.bind(this),
-    mouseMove: this.mouseMove.bind(this),
+    mouseMove: throttle(this.mouseMove.bind(this), 15),
     mouseUp: this.mouseUp.bind(this),
-    render: this.render.bind(this)
+    render: (e: any) => {
+      // 避免多次渲染
+      if (!e.ctx) return;
+      this.render();
+    }
   };
 
   constructor(private readonly canvas: FabricCanvas) {
