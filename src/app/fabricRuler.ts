@@ -334,15 +334,12 @@ export class FabricRuler extends Disposable {
       this.canvas.on("after:render", this.calcObjectRect.bind(this));
       this.render();
     } else {
-      this.options.canvas.off("after:render", this.eventHandler.calcObjectRect);
-      this.options.canvas.off("after:render", this.eventHandler.render);
-      this.options.canvas.off("mouse:down", this.eventHandler.mouseDown);
-      this.options.canvas.off("mouse:move", this.eventHandler.mouseMove);
-      this.options.canvas.off("mouse:up", this.eventHandler.mouseUp);
-      this.options.canvas.off(
-        "selection:cleared",
-        this.eventHandler.clearStatus
-      );
+      this.canvas.off("after:render", this.eventHandler.calcObjectRect);
+      this.canvas.off("after:render", this.eventHandler.render);
+      this.canvas.off("mouse:down", this.eventHandler.mouseDown);
+      this.canvas.off("mouse:move", this.eventHandler.mouseMove);
+      this.canvas.off("mouse:up", this.eventHandler.mouseUp);
+      this.canvas.off("selection:cleared", this.eventHandler.clearStatus);
 
       // this.canvas.off(this.canvasEvents);
       this.canvas.requestRenderAll();
