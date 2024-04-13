@@ -1,8 +1,6 @@
 import { Keybinding } from "./keybinding";
 import { Disposable } from "@/utils/lifecycle";
 import { computed, watchEffect } from "vue";
-// import { useThemes } from '@/hooks/useThemes'
-import { DesignUnitMode } from "@/configs/background";
 import { PiBy180, isMobile } from "@/utils/common";
 import {
   TAxis,
@@ -11,23 +9,25 @@ import {
   Object as FabricObject,
   TPointerEventInfo,
   TPointerEvent,
-  Rect,
-  Color
+  Color,
+  Canvas,
+  util
 } from "fabric";
+import { throttle } from "lodash-es";
 import { useMainStore, useTemplatesStore } from "@/store";
 import { storeToRefs } from "pinia";
-import { px2mm } from "@/utils/image";
-import { ElementNames } from "@/types/elements";
 import { FabricCanvas } from "./fabricCanvas";
 import { ReferenceLine } from "@/extension/object/ReferenceLine";
 import { WorkSpaceDrawType } from "@/configs/canvas";
-
-type Rect = { left: number; top: number; width: number; height: number };
 
 /**
  * 配置
  */
 export interface RulerOptions {
+  /**
+   * Canvas
+   */
+  canvas: Canvas;
   /**
    * 标尺宽高
    * @default 10
@@ -65,27 +65,65 @@ export interface RulerOptions {
    * 高亮颜色
    */
   highlightColor?: string;
-  /**
-   * 高亮颜色
-   */
-  unitName: string;
 }
 
-export type HighlightRect = { skip?: TAxis } & Rect;
+export type Rect = { left: number; top: number; width: number; height: number };
+
+export type HighlightRect = {
+  skip?: "x" | "y";
+} & Rect;
 
 export class FabricRuler extends Disposable {
-  private canvasEvents;
+  protected ctx: CanvasRenderingContext2D;
+  // private canvasEvents;
   public lastCursor: string;
   public workSpaceDraw?: fabricRect;
+
+  /**
+   * 配置
+   */
   public options: Required<RulerOptions>;
+
   public tempReferenceLine?: ReferenceLine;
-  private activeOn: string = "up";
+
+  private activeOn: "down" | "up" = "up";
+
+  /**
+   * 选取对象矩形坐标
+   */
   private objectRect:
     | undefined
     | {
         x: HighlightRect[];
         y: HighlightRect[];
       };
+
+  /**
+   * 事件句柄缓存
+   */
+  // private eventHandler: Record<string, (...args: any) => void> = {
+  //   // calcCalibration: this.calcCalibration.bind(this),
+  //   calcObjectRect: throttle(this.calcObjectRect.bind(this), 15),
+  //   clearStatus: this.clearStatus.bind(this),
+  //   mouseDown: this.mouseDown.bind(this),
+  //   mouseMove: throttle(this.mouseMove.bind(this), 15),
+  //   mouseUp: this.mouseUp.bind(this),
+  //   render: (e: any) => {
+  //     // 避免多次渲染
+  //     if (!e.ctx) return;
+  //     this.render();
+  //   }
+  // };
+
+  private eventHandler: Record<string, (...args: any) => void> = {
+    // calcCalibration: this.calcCalibration.bind(this),
+    calcObjectRect: this.calcObjectRect.bind(this),
+    clearStatus: this.clearStatus.bind(this),
+    mouseDown: this.mouseDown.bind(this),
+    mouseMove: this.mouseMove.bind(this),
+    mouseUp: this.mouseUp.bind(this),
+    render: this.render.bind(this)
+  };
 
   constructor(private readonly canvas: FabricCanvas) {
     super();
@@ -94,52 +132,30 @@ export class FabricRuler extends Disposable {
     this.options = Object.assign({
       ruleSize: 15,
       fontSize: 8,
-      enabled: isMobile() ? false : true
+      enabled: isMobile() ? false : true,
+      backgroundColor: "#181818",
+      borderColor: "#888",
+      highlightColor: "#165dff3b",
+      textColor: "#d2d2d2"
     });
 
-    // const { isDark } = useThemes()
-    const isDark = true;
+    this.ctx = this.canvas.getContext();
 
-    const { unitMode } = storeToRefs(useMainStore());
-    watchEffect(() => {
-      const unitName = DesignUnitMode.filter(
-        (ele) => ele.id === unitMode.value
-      )[0].name;
-      this.options = {
-        ...this.options,
-        ...(isDark
-          ? {
-              backgroundColor: "#181818",
-              borderColor: "#888",
-              highlightColor: "#165dff3b",
-              textColor: "#d2d2d2",
-              unitName: unitName
-            }
-          : {
-              backgroundColor: "#fff",
-              borderColor: "#ccc",
-              highlightColor: "#165dff3b",
-              textColor: "#444",
-              unitName: unitName
-            })
-      };
-      this.render({ ctx: this.canvas.contextContainer });
-    });
-    // computed(() => {
-    //   this.options.unit = unitName
-    //   this.render({ ctx: this.canvas.contextContainer })
-    // })
-
-    this.canvasEvents = {
-      "after:render": this.render.bind(this),
-      "mouse:move": this.mouseMove.bind(this),
-      "mouse:down": this.mouseDown.bind(this),
-      "mouse:up": this.mouseUp.bind(this),
-      "referenceline:moving": this.referenceLineMoving.bind(this),
-      "referenceline:mouseup": this.referenceLineMouseup.bind(this)
-    };
+    // this.canvasEvents = {
+    //   "after:render": this.render.bind(this),
+    //   "mouse:move": this.mouseMove.bind(this),
+    //   "mouse:down": this.mouseDown.bind(this),
+    //   "mouse:up": this.mouseUp.bind(this),
+    //   "referenceline:moving": this.referenceLineMoving.bind(this),
+    //   "referenceline:mouseup": this.referenceLineMouseup.bind(this)
+    // };
     this.enabled = this.options.enabled;
     canvas.ruler = this;
+  }
+
+  // 销毁
+  public destroy() {
+    this.enabled = false;
   }
 
   public getPointHover(point: Point): "vertical" | "horizontal" | "" {
@@ -306,13 +322,39 @@ export class FabricRuler extends Disposable {
   public set enabled(value) {
     this.options.enabled = value;
     if (value) {
-      this.canvas.on(this.canvasEvents);
+      // this.canvas.on(this.canvasEvents);
+      // 绑定事件
+      this.canvas.on("after:render", this.eventHandler.calcObjectRect);
+      this.canvas.on("after:render", this.eventHandler.render);
+      this.canvas.on("mouse:down", this.eventHandler.mouseDown);
+      this.canvas.on("mouse:move", this.eventHandler.mouseMove);
+      this.canvas.on("mouse:up", this.eventHandler.mouseUp);
+      this.canvas.on("selection:cleared", this.eventHandler.clearStatus);
+
       this.canvas.on("after:render", this.calcObjectRect.bind(this));
-      this.render({ ctx: this.canvas.contextContainer });
+      this.render();
     } else {
-      this.canvas.off(this.canvasEvents);
+      this.options.canvas.off("after:render", this.eventHandler.calcObjectRect);
+      this.options.canvas.off("after:render", this.eventHandler.render);
+      this.options.canvas.off("mouse:down", this.eventHandler.mouseDown);
+      this.options.canvas.off("mouse:move", this.eventHandler.mouseMove);
+      this.options.canvas.off("mouse:up", this.eventHandler.mouseUp);
+      this.options.canvas.off(
+        "selection:cleared",
+        this.eventHandler.clearStatus
+      );
+
+      // this.canvas.off(this.canvasEvents);
       this.canvas.requestRenderAll();
     }
+  }
+
+  /**
+   * 清除起始点和矩形坐标
+   */
+  private clearStatus() {
+    // this.startCalibration = undefined;
+    this.objectRect = undefined;
   }
 
   /**
@@ -325,23 +367,22 @@ export class FabricRuler extends Disposable {
     };
   }
 
-  private render({ ctx }: { ctx: CanvasRenderingContext2D }) {
-    if (ctx !== this.canvas.contextContainer) return;
-
+  private render() {
     const { viewportTransform: vpt } = this.canvas;
+    if (!vpt) return;
 
     // 计算元素矩形
     this.calcObjectRect();
 
     // 绘制尺子
     this.draw({
-      ctx,
+      ctx: this.ctx,
       isHorizontal: true,
       rulerLength: this.getSize().width,
       startCalibration: -(vpt[4] / vpt[0])
     });
     this.draw({
-      ctx,
+      ctx: this.ctx,
       isHorizontal: false,
       rulerLength: this.getSize().height,
       startCalibration: -(vpt[5] / vpt[3])
@@ -349,7 +390,7 @@ export class FabricRuler extends Disposable {
 
     const { borderColor, backgroundColor, ruleSize, textColor } = this.options;
 
-    this.darwRect(ctx, {
+    this.darwRect(this.ctx, {
       left: 0,
       top: 0,
       width: ruleSize,
@@ -358,8 +399,8 @@ export class FabricRuler extends Disposable {
       stroke: backgroundColor
     });
 
-    this.darwText(ctx, {
-      text: "", //this.options.unitName,
+    this.darwText(this.ctx, {
+      text: "",
       left: ruleSize / 2,
       top: ruleSize / 2,
       align: "center",
@@ -390,7 +431,7 @@ export class FabricRuler extends Disposable {
     const padding = 2.5;
 
     // 背景
-    this.darwRect(ctx, {
+    this.darwRect(this.ctx, {
       left: 0,
       top: 0,
       width: isHorizontal ? canvasSize.width : ruleSize,
@@ -402,15 +443,13 @@ export class FabricRuler extends Disposable {
     // 标尺文字显示
     for (let pos = 0; pos + startOffset <= unitLength; pos += gap) {
       const position = (startOffset + pos) * zoom;
-      let textValue = (startValue + pos).toString();
-      if (this.options.unitName === "mm") {
-        textValue = px2mm(startValue + pos).toFixed(0);
-      }
+      const textValue = (startValue + pos).toString();
+
       const [left, top, angle] = isHorizontal
         ? [position + 6, padding, 0]
         : [padding, position - 6, -90];
 
-      this.darwText(ctx, {
+      this.darwText(this.ctx, {
         text: textValue,
         left,
         top,
@@ -420,33 +459,24 @@ export class FabricRuler extends Disposable {
     }
 
     // 标尺蓝色遮罩
+    console.log(this.objectRect);
     if (this.objectRect) {
       const axis = isHorizontal ? "x" : "y";
       this.objectRect[axis].forEach((rect) => {
         // 跳过指定矩形
-        if (rect.skip === axis) return;
+        if (rect.skip === axis) {
+          console.log("skip", rect);
+          return;
+        }
 
-        const [left, top, width, height] = isHorizontal
-          ? [
-              (rect.left - startCalibration) * zoom,
-              0,
-              rect.width * zoom,
-              ruleSize
-            ]
-          : [
-              0,
-              (rect.top - startCalibration) * zoom,
-              ruleSize,
-              rect.height * zoom
-            ];
-
-        //
+        // 获取数字的值
         const roundFactor = (x: number) =>
           Math.round(x / zoom + startCalibration) + "";
-        const leftTextVal = roundFactor(isHorizontal ? left : top);
+        const leftTextVal = roundFactor(isHorizontal ? rect.left : rect.top);
         const rightTextVal = roundFactor(
-          isHorizontal ? left + width : top + height
+          isHorizontal ? rect.left + rect.width : rect.top + rect.height
         );
+
         const isSameText = leftTextVal === rightTextVal;
 
         // 背景遮罩
@@ -458,24 +488,24 @@ export class FabricRuler extends Disposable {
         };
         this.drawMask(ctx, {
           ...maskOpt,
-          left: isHorizontal ? left - 40 : 0,
-          top: isHorizontal ? 0 : top - 40
+          left: isHorizontal ? rect.left - 40 : 0,
+          top: isHorizontal ? 0 : rect.top - 40
         });
         if (!isSameText) {
           this.drawMask(ctx, {
             ...maskOpt,
-            left: isHorizontal ? width + left - 40 : 0,
-            top: isHorizontal ? 0 : height + top - 40
+            left: isHorizontal ? rect.width + rect.left - 40 : 0,
+            top: isHorizontal ? 0 : rect.height + rect.top - 40
           });
         }
 
         // 高亮遮罩
         // ctx.save()
         this.darwRect(ctx, {
-          left,
-          top,
-          width,
-          height,
+          left: isHorizontal ? rect.left : this.options.ruleSize - 8,
+          top: isHorizontal ? this.options.ruleSize - 8 : rect.top,
+          width: isHorizontal ? rect.width : 8,
+          height: isHorizontal ? 8 : rect.height,
           fill: highlightColor
         });
 
@@ -487,21 +517,21 @@ export class FabricRuler extends Disposable {
           fill: "#179DE3",
           angle: isHorizontal ? 0 : -90
         };
-
+        console.log("leftTextVal", leftTextVal);
         this.darwText(ctx, {
           ...textOpt,
-          text: leftTextVal + "",
-          left: isHorizontal ? left - 0 : pad,
-          top: isHorizontal ? pad : top - 0,
+          text: leftTextVal,
+          left: isHorizontal ? rect.left - 2 : pad,
+          top: isHorizontal ? pad : rect.top - 2,
           align: isSameText ? "center" : isHorizontal ? "right" : "left"
         });
 
         if (!isSameText) {
           this.darwText(ctx, {
             ...textOpt,
-            text: rightTextVal + "",
-            left: isHorizontal ? left + width + 0 : pad,
-            top: isHorizontal ? pad : top + height + 0,
+            text: rightTextVal,
+            left: isHorizontal ? rect.left + rect.width + 2 : pad,
+            top: isHorizontal ? pad : rect.top + rect.height + 2,
             align: isHorizontal ? "left" : "right"
           });
         }
@@ -517,17 +547,19 @@ export class FabricRuler extends Disposable {
 
         this.darwLine(ctx, {
           ...lineOpt,
-          left: isHorizontal ? left : this.options.ruleSize - lineSize,
-          top: isHorizontal ? this.options.ruleSize - lineSize : top
+          left: isHorizontal ? rect.left : this.options.ruleSize - lineSize,
+          top: isHorizontal ? this.options.ruleSize - lineSize : rect.top
         });
 
         if (!isSameText) {
           this.darwLine(ctx, {
             ...lineOpt,
             left: isHorizontal
-              ? left + width
+              ? rect.left + rect.width
               : this.options.ruleSize - lineSize,
-            top: isHorizontal ? this.options.ruleSize - lineSize : top + height
+            top: isHorizontal
+              ? this.options.ruleSize - lineSize
+              : rect.top + rect.height
           });
         }
 
@@ -738,7 +770,35 @@ export class FabricRuler extends Disposable {
     //   return;
     // }
     const allRect = activeObjects.reduce((rects, obj) => {
-      const rect: HighlightRect = obj.getBoundingRect(true);
+      const rect: HighlightRect = obj.getBoundingRect(false, true);
+      // 如果是分组单独计算坐标
+      if (obj.group) {
+        const group = {
+          top: 0,
+          left: 0,
+          width: 0,
+          height: 0,
+          scaleX: 1,
+          scaleY: 1,
+          ...obj.group
+        };
+        // 计算矩形坐标
+        rect.width *= group.scaleX;
+        rect.height *= group.scaleY;
+        const groupCenterX = group.width / 2 + group.left;
+        const objectOffsetFromCenterX =
+          (group.width / 2 + (obj.left ?? 0)) * (1 - group.scaleX);
+        rect.left +=
+          (groupCenterX - objectOffsetFromCenterX) * this.canvas.getZoom();
+        const groupCenterY = group.height / 2 + group.top;
+        const objectOffsetFromCenterY =
+          (group.height / 2 + (obj.top ?? 0)) * (1 - group.scaleY);
+        rect.top +=
+          (groupCenterY - objectOffsetFromCenterY) * this.canvas.getZoom();
+      }
+      // if (obj instanceof fabric.GuideLine) {
+      //   rect.skip = obj.isHorizontal() ? "x" : "y";
+      // }
       rects.push(rect);
       return rects;
     }, [] as HighlightRect[]);
