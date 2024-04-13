@@ -170,7 +170,7 @@ export default () => {
   const moveElement = (command: string, step = 2) => {
     const [canvas] = useCanvas();
     const activeObject = canvas.getActiveObject() as FabricObject;
-    if (!activeObject || !activeObject.left || !activeObject.top) return;
+    if (!activeObject) return;
     const activeElement = useActiveElement();
     if (activeElement.value) {
       const tagName = activeElement.value.tagName;

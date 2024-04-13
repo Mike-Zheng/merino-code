@@ -456,13 +456,11 @@ export class FabricRuler extends Disposable {
     }
 
     // 标尺蓝色遮罩
-    console.log(this.objectRect);
     if (this.objectRect) {
       const axis = isHorizontal ? "x" : "y";
       this.objectRect[axis].forEach((rect) => {
         // 跳过指定矩形
         if (rect.skip === axis) {
-          console.log("skip", rect);
           return;
         }
 
@@ -514,7 +512,6 @@ export class FabricRuler extends Disposable {
           fill: "#179DE3",
           angle: isHorizontal ? 0 : -90
         };
-        console.log("leftTextVal", leftTextVal);
         this.darwText(ctx, {
           ...textOpt,
           text: leftTextVal,
@@ -793,9 +790,9 @@ export class FabricRuler extends Disposable {
         rect.top +=
           (groupCenterY - objectOffsetFromCenterY) * this.canvas.getZoom();
       }
-      // if (obj instanceof fabric.GuideLine) {
-      //   rect.skip = obj.isHorizontal() ? "x" : "y";
-      // }
+      if (obj instanceof ReferenceLine) {
+        rect.skip = obj.isHorizontal() ? "x" : "y";
+      }
       rects.push(rect);
       return rects;
     }, [] as HighlightRect[]);
