@@ -363,7 +363,8 @@ export const defaultControls = (): TControlSet => ({
       // 背景
       //@ts-ignore
       ctx.roundRect(-width / 2, -height / 2, width, height, 4);
-      ctx.fillStyle = "#0066ff";
+      // 物件選取後下方顯示size的區塊
+      ctx.fillStyle = "#179DE3";
       ctx.fill();
 
       // 文字

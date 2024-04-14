@@ -30,9 +30,10 @@ let canvas: null | FabricCanvas = null;
 // 初始化配置
 const initConf = () => {
   FabricObject.ownDefaults.objectCaching = false;
-  FabricObject.ownDefaults.borderColor = "blue";
+  FabricObject.ownDefaults.borderSize = 4;
+  FabricObject.ownDefaults.borderColor = "#179DE3";
   FabricObject.ownDefaults.cornerColor = "white";
-  FabricObject.ownDefaults.cornerStrokeColor = "#c0c0c0";
+  FabricObject.ownDefaults.cornerStrokeColor = "#27A3E5";
   FabricObject.ownDefaults.borderOpacityWhenMoving = 1;
   FabricObject.ownDefaults.borderScaleFactor = 1;
   FabricObject.ownDefaults.cornerSize = 8;

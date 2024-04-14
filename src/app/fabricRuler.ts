@@ -126,7 +126,7 @@ export class FabricRuler extends Disposable {
       enabled: isMobile() ? false : true,
       backgroundColor: "#181818",
       borderColor: "#888",
-      highlightColor: "#165dff3b",
+      highlightColor: "#5586e73b",
       textColor: "#d2d2d2"
     });
 
@@ -500,7 +500,7 @@ export class FabricRuler extends Disposable {
         const pad = this.options.ruleSize / 2 - this.options.fontSize / 2 - 1;
 
         const textOpt = {
-          fill: "#179DE3",
+          fill: "#5586e7",
           angle: isHorizontal ? 0 : -90
         };
         this.darwText(ctx, {

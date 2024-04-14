@@ -12,6 +12,7 @@ import { addDisposableListener } from "@/utils/dom";
 import { useMainStore } from "@/store";
 import { storeToRefs } from "pinia";
 import { computed, watch } from "vue";
+const borderColor = "#179DE3";
 
 /**
  * 对象获得焦点后在外围显示一个边框
@@ -19,7 +20,7 @@ import { computed, watch } from "vue";
 export class HoverBorders extends Disposable {
   private canvasEvents;
 
-  private lineWidth = 2;
+  private lineWidth = 1.5;
   private hoveredTarget: FabricObject | undefined;
 
   constructor(private readonly canvas: Canvas) {
@@ -99,7 +100,7 @@ export class HoverBorders extends Disposable {
     // 文字特殊处理，显示下划线
     if (object instanceof Textbox) {
       object.underline = true;
-      object.fill = "rgb(60,126,255)";
+      object.fill = borderColor;
       object._renderTextDecoration(ctx, "underline");
       object._drawClipPath(ctx, object.clipPath);
       ctx.restore();
@@ -132,7 +133,7 @@ export class HoverBorders extends Disposable {
     object.set({
       width,
       height,
-      stroke: "rgb(60,126,255)",
+      stroke: borderColor,
       strokeWidth: lineWidth,
       strokeDashArray: null,
       strokeDashOffset: 0,

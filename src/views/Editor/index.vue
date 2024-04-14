@@ -102,6 +102,7 @@ const { poolShow } = storeToRefs(mainStore);
   user-select: none;
 }
 .layout-content-center {
+  position: relative;
   width: calc(100% - 70px - 245px);
   margin-left: 245px;
   transition:
