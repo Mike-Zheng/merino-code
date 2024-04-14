@@ -20,7 +20,7 @@
           <svg-icon icon-class="minus" />
         </div>
         <div class="scale-slider">
-          <el-slider v-model="canvasZoom" :step="25" :min="10" :max="256" />
+          <el-slider v-model="canvasZoom" :step="5" :min="10" :max="255" />
         </div>
         <div
           class="scale-slider-button"
