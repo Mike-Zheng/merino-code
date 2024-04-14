@@ -7,12 +7,12 @@
           :title="$t('Link_tools.Full_Screen')"
           @click="resetCanvas"
         >
-          <svg-icon icon-class="fullscreen" />
+          <svg-icon icon-class="fit-to-screen-outline" />
         </div>
         <div
           class="scale-slider-button"
           :class="{
-            'scale-slider-button__disabled': +canvasZoom <= 0.5
+            'scale-slider-button__disabled': +canvasZoom <= 10
           }"
           :title="$t('Link_tools.Zoom_Out')"
           @click="scaleCanvas('-')"
@@ -20,12 +20,12 @@
           <svg-icon icon-class="minus" />
         </div>
         <div class="scale-slider">
-          <el-slider v-model="canvasZoom" :step="0.25" :min="0.5" :max="3.0" />
+          <el-slider v-model="canvasZoom" :step="25" :min="10" :max="256" />
         </div>
         <div
           class="scale-slider-button"
           :class="{
-            'scale-slider-button__disabled': +canvasZoom >= 1.5
+            'scale-slider-button__disabled': +canvasZoom >= 500
           }"
           :title="$t('Link_tools.Zoom_In')"
           @click="scaleCanvas('+')"
@@ -90,62 +90,10 @@ const { zoom } = storeToRefs(fabricStore);
 const { canvasObject } = storeToRefs(mainStore);
 
 const scaleRef = ref();
-const canvasZoom = computed(() => Math.round(zoom.value * 100) + "%");
+// const canvasZoom = computed(() => Math.round(zoom.value * 100));
 const canvasZoomPresets = [200, 150, 100, 80, 50];
 
-const { canUndo, canRedo } = storeToRefs(useSnapshotStore());
-
-const { redo, undo } = useHistorySnapshot();
-
 const handleElement = computed(() => canvasObject.value as FabricObject);
-
-const canGroup = computed(() => {
-  if (!handleElement.value) return false;
-  return handleElement.value.type === ElementNames.ACTIVE;
-});
-const canUnGroup = computed(() => {
-  if (!handleElement.value) return false;
-  return handleElement.value.type === ElementNames.GROUP;
-});
-
-const canIntersection = computed(() => {
-  const [canvas] = useCanvas();
-  if (!handleElement.value) return false;
-  if (handleElement.value.type === ElementNames.GROUP) {
-    const groupObject = handleElement.value as Group;
-    const sonObjects = groupObject._objects.filter(
-      (ele) => ele.type === ElementNames.PATH
-    );
-    if (
-      groupObject._objects.length === 2 &&
-      sonObjects &&
-      sonObjects.length === 2
-    )
-      return true;
-    return false;
-  }
-  if (handleElement.value.type !== ElementNames.ACTIVE) return false;
-
-  const activeObjects = canvas.getActiveObjects();
-  return (
-    activeObjects.length === 2 &&
-    activeObjects.filter((ele) => ele.type === ElementNames.PATH).length === 2
-  );
-});
-
-// 组合
-const group = () => {
-  if (!handleElement.value || handleElement.value.type !== ElementNames.ACTIVE)
-    return;
-  combineElements();
-};
-
-// 解除组合
-const ungroup = () => {
-  if (!handleElement.value || handleElement.value.type !== ElementNames.GROUP)
-    return;
-  uncombineElements();
-};
 
 // 标尺显示隐藏
 const changeRuler = () => {
@@ -154,10 +102,18 @@ const changeRuler = () => {
   canvas.ruler.enabled = !canvas.ruler.enabled;
 };
 
-const intersection = (val: number) => {
-  if (!handleElement.value) return;
-  intersectElements(val);
-};
+const canvasZoom = computed({
+  // getter
+  get() {
+    return Math.round(zoom.value * 100);
+  },
+  // setter
+  set(newValue) {
+    // Note: we are using destructuring assignment syntax here.
+    // [firstName.value, lastName.value] = newValue.split(" ");
+    setCanvasScalePercentage(newValue);
+  }
+});
 
 const applyCanvasPresetScale = (value: number) => {
   setCanvasScalePercentage(value);

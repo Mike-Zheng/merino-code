@@ -49,7 +49,7 @@ export class WheelScroll extends Disposable {
 
         console.log("zoomVal: ", zoomVal);
 
-        if (zoomVal < 0.02) zoomVal = 0.02;
+        if (zoomVal < 0.1) zoomVal = 0.1;
         if (zoomVal > 256.0) zoomVal = 256.0;
         zoom.value = zoomVal;
         this.canvas.zoomToPoint(new Point(offsetX, offsetY), zoomVal);
