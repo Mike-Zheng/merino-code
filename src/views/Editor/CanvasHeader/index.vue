@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="left-handler">
+      <img class="app-logo" :src="logoUrl" style="height: 20px" />
       <el-tooltip placement="top" :hide-after="0">
         <template #content>{{ t("message.undo") }}</template>
         <SvgIcon
@@ -139,6 +140,8 @@ import useHandleTool from "@/hooks/useHandleTool";
 import useCanvasScale from "@/hooks/useCanvasScale";
 import useHandleElement from "@/hooks/useHandleElement";
 import useHistorySnapshot from "@/hooks/useHistorySnapshot";
+
+const logoUrl = new URL(`@/assets/logo2.png`, import.meta.url).href;
 
 const fabricStore = useFabricStore();
 const mainStore = useMainStore();

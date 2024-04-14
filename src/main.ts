@@ -8,8 +8,8 @@ import "@/extension/index";
 // import "@icon-park/vue-next/styles/index.css";
 import "@/assets/style/global.scss";
 import "@/assets/style/font.scss";
-import "@/assets/style/element-plus.scss";
-
+// import "@/assets/style/element-plus.scss";
+import "element-plus/theme-chalk/dark/css-vars.css";
 import SvgIcon from "@/icons";
 // import Icon from "@/plugins/icon";
 import Component from "@/plugins/component";

@@ -12,7 +12,7 @@
             class="align-item"
             @click="alignElement(AlignCommand.LEFT)"
           >
-            <SvgIcon icon-class="alignLeft" />
+            <SvgIcon icon-class="align-horizontal-left" />
           </el-col>
         </el-tooltip>
         <el-tooltip
@@ -25,7 +25,7 @@
             class="align-item"
             @click="alignElement(AlignCommand.HORIZONTAL)"
           >
-            <SvgIcon icon-class="alignVertically" />
+            <SvgIcon icon-class="align-horizontal-center" />
           </el-col>
         </el-tooltip>
         <el-tooltip
@@ -38,7 +38,7 @@
             class="align-item"
             @click="alignElement(AlignCommand.RIGHT)"
           >
-            <SvgIcon icon-class="alignRight" />
+            <SvgIcon icon-class="align-horizontal-right" />
           </el-col>
         </el-tooltip>
         <el-tooltip
@@ -51,7 +51,7 @@
             class="align-item"
             @click="alignElement(AlignCommand.TOP)"
           >
-            <SvgIcon icon-class="alignTop" />
+            <SvgIcon icon-class="align-vertical-top" />
           </el-col>
         </el-tooltip>
         <el-tooltip
@@ -64,7 +64,7 @@
             class="align-item"
             @click="alignElement(AlignCommand.VERTICAL)"
           >
-            <SvgIcon icon-class="alignHorizontally" />
+            <SvgIcon icon-class="align-vertical-center" />
           </el-col>
         </el-tooltip>
         <el-tooltip
@@ -77,7 +77,7 @@
             class="align-item"
             @click="alignElement(AlignCommand.BOTTOM)"
           >
-            <SvgIcon icon-class="alignBottom" />
+            <SvgIcon icon-class="align-vertical-bottom" />
           </el-col>
         </el-tooltip>
       </el-row>
