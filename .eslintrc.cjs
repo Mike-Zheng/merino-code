@@ -1,46 +1,54 @@
 module.exports = {
-  root: true,
   env: {
-    node: true,
-    'vue/setup-compiler-macros': true
+    browser: true,
+    es2021: true,
+    node: true
   },
   extends: [
     "eslint:recommended",
-    "@vue/typescript/recommended",
     "plugin:vue/vue3-essential",
-    'plugin:prettier/recommended'
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "./.eslintrc-auto-import.json"
   ],
+  parser: "vue-eslint-parser",
   parserOptions: {
-    parser: '@typescript-eslint/parser',
-    ecmaVersion: 2020,
+    ecmaVersion: "latest",
+    parser: "@typescript-eslint/parser",
+    sourceType: "module"
   },
+  plugins: ["vue", "@typescript-eslint"],
   rules: {
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
-    "@typescript-eslint/no-explicit-any": ["off"],
-    // "vue/multi-word-component-names": ["error", {ignores: ["index"]},],
-    'vue/multi-word-component-names': 'off',
-    "@typescript-eslint/ban-ts-comment": "off",
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/ban-types': ['error', {
-      'extendDefaults': true,
-      'types': {
-        '{}': false,
-      },
-    }],
-    '@typescript-eslint/no-unused-vars': 'off',
-    '@typescript-eslint/no-non-null-assertion': 'off',
-    'vue/comment-directive': 'off'
+    "no-plusplus": "off",
+    "@typescript-eslint/no-this-alias": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "import/no-unresolved": "off",
+    "vuejs-accessibility/form-control-has-label": "off",
+    "consistent-return": "off", // 强制统一返回值
+    "no-param-reassign": "off", // 参数重新分配
+    "no-underscore-dangle": "off", // 使用下划线命名
+    "comma-spacing": "off",
+    "vuejs-accessibility/click-events-have-key-events": "off",
+    "max-len": "off",
+    "no-unused-expressions": "off", // 17
+    "linebreak-style": "off",
+    "vue/multi-word-component-names": "off", // 开启组件需要多单词
+    "vue/no-setup-props-destructure": "off",
+    "vuejs-accessibility/anchor-has-content": "off",
+    "@typescript-eslint/no-non-null-assertion": "off"
   },
   overrides: [
     {
       files: [
-        '**/__tests__/*.{j,t}s?(x)',
-        '**/tests/unit/**/*.spec.{j,t}s?(x)'
+        "**/__tests__/*.{j,t}s?(x)",
+        "**/tests/unit/**/*.spec.{j,t}s?(x)"
       ],
       env: {
-        jest: true,
-      },
-    },
-  ],
+        jest: true
+      }
+    }
+  ]
 };

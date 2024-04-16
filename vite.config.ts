@@ -1,27 +1,34 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
-import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
+// import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
+// import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import AutoImport from "unplugin-auto-import/vite";
-import Components from "unplugin-vue-components/vite";
+// import Components from "unplugin-vue-components/vite";
+// import { createHtmlPlugin } from 'vite-plugin-html';
 import path from "path";
-
+import vueJsx from "@vitejs/plugin-vue-jsx";
+import { resolve } from "path";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
     AutoImport({
-      resolvers: [ElementPlusResolver()]
+      imports: ["vue"]
+      // resolvers: [ElementPlusResolver()]
     }),
-    Components({
-      resolvers: [ElementPlusResolver()]
-    }),
-    createSvgIconsPlugin({
-      iconDirs: [path.resolve(process.cwd(), "src/icons/svg")], // icon存放的目录
-      symbolId: "icon-[name]", // symbol的id
-      inject: "body-last", // 插入的位置
-      customDomId: "__svg__icons__dom__" // svg的id
+    vueJsx({
+      // options are passed on to @vue/babel-plugin-jsx
     })
+    // vueSetupExtend(),
+    // Components({
+    //   resolvers: [ElementPlusResolver()]
+    // }),
+    // createSvgIconsPlugin({
+    //   iconDirs: [path.resolve(process.cwd(), "src/icons/svg")], // icon存放的目录
+    //   symbolId: "icon-[name]", // symbol的id
+    //   inject: "body-last", // 插入的位置
+    //   customDomId: "__svg__icons__dom__" // svg的id
+    // })
   ],
   css: {
     postcss: {
@@ -31,7 +38,14 @@ export default defineConfig({
     },
     preprocessorOptions: {
       scss: {
-        additionalData: `@import "src/assets/style/variable.scss";@import "src/assets/style/mixin.scss";`
+        // additionalData: `@import "src/assets/style/variable.scss";@import "src/assets/style/mixin.scss";`
+        less: {
+          javascriptEnabled: true,
+          additionalData: `@import '${resolve(
+            __dirname,
+            "src/styles/variable.less"
+          )}';`
+        }
       },
       less: {
         modifyVars: {

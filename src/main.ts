@@ -1,33 +1,20 @@
 import { createApp } from "vue";
-import { createPinia } from "pinia";
-import App from "./App.vue";
-import { setupI18n } from "@/plugins/i18n";
+import App from "./App";
+import router from "./router";
+import ViewUiPlus from "view-ui-plus";
+import "view-ui-plus/dist/styles/viewuiplus.css";
+import "./styles/index.less";
+import VueLazyLoad from "vue3-lazyload";
+// import { registerSW } from 'virtual:pwa-register';
+// 自定义字体文件
+import "@/assets/fonts/font.css";
+// import axios from 'axios';
 
-import "@/extension/index";
+import i18n from "./language/index";
+// if ('serviceWorker' in navigator) {
+//   registerSW();
+// }
+const app = createApp(App);
+// app.config.globalProperties.$http = axios;
 
-// import "@icon-park/vue-next/styles/index.css";
-import "@/assets/style/global.scss";
-import "@/assets/style/font.scss";
-// import "@/assets/style/element-plus.scss";
-import "element-plus/theme-chalk/dark/css-vars.css";
-import SvgIcon from "@/icons";
-// import Icon from "@/plugins/icon";
-import Component from "@/plugins/component";
-import Directive from "@/plugins/directive";
-
-import "virtual:svg-icons-register";
-// import { useRegisterSW } from 'virtual:pwa-register/vue'
-// useRegisterSW()
-
-async function start() {
-  const app = createApp(App);
-  await setupI18n(app);
-  app.use(createPinia());
-  // app.use(Icon);
-  app.use(SvgIcon);
-  app.use(Component);
-  app.use(Directive);
-  app.mount("#app");
-}
-
-start();
+app.use(router).use(i18n).use(VueLazyLoad, {}).use(ViewUiPlus).mount("#app");
