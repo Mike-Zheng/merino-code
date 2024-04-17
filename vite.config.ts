@@ -9,6 +9,8 @@ import path from "path";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import { resolve } from "path";
 // https://vitejs.dev/config/
+
+const envPrefix = "APP_";
 export default defineConfig({
   plugins: [
     vue(),
@@ -30,6 +32,7 @@ export default defineConfig({
     //   customDomId: "__svg__icons__dom__" // svg的id
     // })
   ],
+  envPrefix,
   css: {
     postcss: {
       plugins: [

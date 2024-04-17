@@ -26,8 +26,8 @@ class MaterialPlugin {
     this.editor = editor;
 
     this.apiMapUrl = {
-      template: config.repoSrc + "/template/type.json",
-      svg: config.repoSrc + "/svg/type.json"
+      template: config.repoSrc + "/resource/template.json",
+      svg: config.repoSrc + "/resource/svg.json"
     };
   }
 

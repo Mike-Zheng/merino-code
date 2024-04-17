@@ -39,28 +39,28 @@ const { t } = useI18n();
 const list = [
   {
     label: "字体",
-    tempUrl: `${repoSrc}font-tmpl/1.json`,
-    src: `${repoSrc}font-tmpl/1.png`
+    tempUrl: `${repoSrc}/resource/font-tmpl-1.json`,
+    src: `${repoSrc}/resource/font-tmpl-1.png`
   },
   {
     label: "字体",
-    tempUrl: `${repoSrc}font-tmpl/2.json`,
-    src: `${repoSrc}font-tmpl/2.png`
+    tempUrl: `${repoSrc}/resource/font-tmpl-2.json`,
+    src: `${repoSrc}/resource/font-tmpl-2.png`
   },
   {
     label: "字体",
-    tempUrl: `${repoSrc}font-tmpl/3.json`,
-    src: `${repoSrc}font-tmpl/3.png`
+    tempUrl: `${repoSrc}/resource/font-tmpl-3.json`,
+    src: `${repoSrc}/resource/font-tmpl-3.png`
   },
   {
     label: "字体",
-    tempUrl: `${repoSrc}font-tmpl/4.json`,
-    src: `${repoSrc}font-tmpl/4.png`
+    tempUrl: `${repoSrc}/resource/font-tmpl-4.json`,
+    src: `${repoSrc}/resource/font-tmpl-4.png`
   },
   {
     label: "字体",
-    tempUrl: `${repoSrc}font-tmpl/5.json`,
-    src: `${repoSrc}font-tmpl/5.png`
+    tempUrl: `${repoSrc}/resource/font-tmpl-5.json`,
+    src: `${repoSrc}/resource/font-tmpl-5.png`
   }
 ];
 

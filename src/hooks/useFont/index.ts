@@ -17,7 +17,7 @@ const _fontList = ref<any[]>([]);
 export function useFont() {
   const initFont = () => {
     if (unref(_fontList).length > 0) return;
-    axios.get(`${repoSrc}/font/free-font.json`).then((res) => {
+    axios.get(`${repoSrc}/resource/free-font.json`).then((res) => {
       _fontList.value = [...Object.entries(res.data).map(([, value]) => value)];
     });
   };

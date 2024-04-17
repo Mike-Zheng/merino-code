@@ -181,6 +181,9 @@ import history from "@/components/history.vue";
 import layer from "@/components/layer.vue";
 import attribute from "@/components/attribute.vue";
 
+// template
+import templateData from "@/assets/template.js";
+
 // 功能组件
 // import { downFile } from '@/utils/utils';
 import { fabric } from "fabric";
@@ -259,6 +262,10 @@ onMounted(() => {
   if (state.ruler) {
     canvasEditor.rulerEnable();
   }
+
+  canvasEditor.insertSvgFile(templateData, () => {
+    console.log("插入成功");
+  });
 });
 
 // 获取字体数据 新增字体样式使用
