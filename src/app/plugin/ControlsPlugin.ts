@@ -8,7 +8,7 @@
 
 import Editor from "../Editor";
 type IEditor = Editor;
-
+import NP from "number-precision";
 import { fabric } from "fabric";
 import verticalImg from "../assets/middlecontrol.svg";
 // import verticalImg from './middlecontrol.svg';
@@ -220,6 +220,84 @@ function rotationControl() {
   });
 }
 
+// x y 座標
+function positionControl(canvas: fabric.Canvas) {
+  const toFixed = (v: number, digits = 2): number => NP.round(v, digits);
+  const getWidthHeight = (fabricObject: fabric.Object) => {
+    const objScale = fabricObject.getObjectScaling();
+    console.log("objScale", objScale);
+
+    const point = fabricObject._getTransformedDimensions(
+      +objScale.scaleX,
+      +objScale.scaleY
+    );
+
+    return {
+      x: toFixed(point.x),
+      y: toFixed(point.y)
+    };
+  };
+  function renderPositionXY(
+    ctx: CanvasRenderingContext2D,
+    left: number,
+    top: number,
+    styleOverride: any,
+    fabricObject: fabric.Object
+  ) {
+    const PiBy180 = Math.PI / 180;
+
+    ctx.save();
+    ctx.translate(left, top);
+
+    const calcRotate = () => {
+      const objectAngle = fabricObject.angle || 0;
+      const angleInRadians = objectAngle * PiBy180;
+      const x = Math.sin(angleInRadians);
+      const y = Math.cos(angleInRadians);
+      const angle =
+        Math.abs(x) > Math.abs(y) ? Math.sign(x) * 90 : Math.sign(y) * 90 - 90;
+      return (objectAngle - angle) * PiBy180;
+    };
+
+    ctx.rotate(calcRotate());
+
+    const fontSize = 12;
+    ctx.font = `${fontSize}px Tahoma`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    const { x, y } = getWidthHeight(fabricObject);
+
+    const text = `${x} × ${y}`;
+    const width = ctx.measureText(text).width + 8;
+    const height = fontSize + 6;
+
+    // 背景
+    ctx.roundRect(-width / 2, -height / 2, width, height, 4);
+    // 物件選取後下方顯示size的區塊
+    ctx.fillStyle = "#179DE3";
+    ctx.fill();
+
+    // 文字
+    ctx.fillStyle = "#fff";
+    ctx.fillText(text, 0, 1);
+    ctx.restore();
+  }
+
+  // xy 位置图标
+  fabric.Object.prototype.controls.xy = new fabric.Control({
+    x: 0,
+    y: 0.5,
+    cursorStyleHandler: () => "",
+    offsetY: 20,
+    sizeX: 0.0001,
+    sizeY: 0.0001,
+    touchSizeX: 0.0001,
+    touchSizeY: 0.0001,
+    render: renderPositionXY
+  });
+}
+
 class ControlsPlugin {
   public canvas: fabric.Canvas;
   public editor: IEditor;
@@ -238,6 +316,8 @@ class ControlsPlugin {
     intervalControl();
     // 旋转图标
     rotationControl();
+    // // 物件選取後下方顯示size的區塊
+    positionControl();
 
     // 选中样式
     fabric.Object.prototype.set({
