@@ -124,13 +124,20 @@ class CanvasRuler {
     // 合并默认配置
     this.options = Object.assign(
       {
-        ruleSize: 20,
-        fontSize: 10,
-        enabled: false,
-        backgroundColor: "#fff",
-        borderColor: "#ddd",
-        highlightColor: "#007fff",
-        textColor: "#888"
+        // ruleSize: 20,
+        // fontSize: 10,
+        // enabled: false,
+        // backgroundColor: "#fff",
+        // borderColor: "#ddd",
+        // highlightColor: "#007fff",
+        // textColor: "#888"
+        ruleSize: 15,
+        fontSize: 8,
+        enabled: true,
+        backgroundColor: "#181818",
+        borderColor: "#888",
+        highlightColor: "#5586e7",
+        textColor: "#d2d2d2"
       },
       _options
     );
@@ -249,22 +256,14 @@ class CanvasRuler {
         ? this.startCalibration.y
         : -(vpt[5] / vpt[3])
     });
-    // 绘制左上角的遮罩
-    drawMask(this.ctx, {
-      isHorizontal: true,
-      left: -10,
-      top: -10,
-      width: this.options.ruleSize * 2 + 10,
-      height: this.options.ruleSize + 10,
-      backgroundColor: this.options.backgroundColor
-    });
-    drawMask(this.ctx, {
-      isHorizontal: false,
-      left: -10,
-      top: -10,
-      width: this.options.ruleSize + 10,
-      height: this.options.ruleSize * 2 + 10,
-      backgroundColor: this.options.backgroundColor
+    // 绘制左上角的小方框
+    darwRect(this.ctx, {
+      left: 0,
+      top: 0,
+      width: this.options.ruleSize,
+      height: this.options.ruleSize,
+      fill: this.options.backgroundColor,
+      stroke: this.options.backgroundColor
     });
   }
 
@@ -305,7 +304,7 @@ class CanvasRuler {
       width: isHorizontal ? canvasSize.width : this.options.ruleSize,
       height: isHorizontal ? this.options.ruleSize : canvasSize.height,
       fill: this.options.backgroundColor,
-      stroke: this.options.borderColor
+      stroke: this.options.backgroundColor
     });
 
     // 颜色
@@ -316,33 +315,17 @@ class CanvasRuler {
       const textValue = startValue + i + "";
       const textLength = (10 * textValue.length) / 4;
       const textX = isHorizontal
-        ? position - textLength - 1
-        : this.options.ruleSize / 2 - this.options.fontSize / 2 - 4;
+        ? position + 5
+        : this.options.ruleSize / 2 - this.options.fontSize / 2 - 2;
       const textY = isHorizontal
-        ? this.options.ruleSize / 2 - this.options.fontSize / 2 - 4
-        : position + textLength;
+        ? this.options.ruleSize / 2 - this.options.fontSize / 2 - 2
+        : position - 4;
       darwText(this.ctx, {
         text: textValue,
         left: textX,
         top: textY,
         fill: textColor.toRgb(),
         angle: isHorizontal ? 0 : -90
-      });
-    }
-
-    // 标尺刻度线显示
-    for (let j = 0; j + startOffset <= Math.ceil(unitLength); j += gap) {
-      const position = Math.round((startOffset + j) * zoom);
-      const left = isHorizontal ? position : this.options.ruleSize - 8;
-      const top = isHorizontal ? this.options.ruleSize - 8 : position;
-      const width = isHorizontal ? 0 : 8;
-      const height = isHorizontal ? 8 : 0;
-      darwLine(this.ctx, {
-        left,
-        top,
-        width,
-        height,
-        stroke: textColor.toRgb()
       });
     }
 
@@ -368,20 +351,20 @@ class CanvasRuler {
         // 背景遮罩
         const maskOpt = {
           isHorizontal,
-          width: isHorizontal ? 160 : this.options.ruleSize - 8,
-          height: isHorizontal ? this.options.ruleSize - 8 : 160,
+          width: isHorizontal ? 80 : this.options.ruleSize - 0,
+          height: isHorizontal ? this.options.ruleSize - 0 : 80,
           backgroundColor: this.options.backgroundColor
         };
         drawMask(this.ctx, {
           ...maskOpt,
-          left: isHorizontal ? rect.left - 80 : 0,
-          top: isHorizontal ? 0 : rect.top - 80
+          left: isHorizontal ? rect.left - 40 : 0,
+          top: isHorizontal ? 0 : rect.top - 40
         });
         if (!isSameText) {
           drawMask(this.ctx, {
             ...maskOpt,
-            left: isHorizontal ? rect.width + rect.left - 80 : 0,
-            top: isHorizontal ? 0 : rect.height + rect.top - 80
+            left: isHorizontal ? rect.width + rect.left - 40 : 0,
+            top: isHorizontal ? 0 : rect.height + rect.top - 40
           });
         }
 
@@ -389,28 +372,28 @@ class CanvasRuler {
         const highlightColor = new fabric.Color(this.options.highlightColor);
 
         // 高亮遮罩
-        highlightColor.setAlpha(0.5);
+        highlightColor.setAlpha(0.4);
         darwRect(this.ctx, {
-          left: isHorizontal ? rect.left : this.options.ruleSize - 8,
-          top: isHorizontal ? this.options.ruleSize - 8 : rect.top,
-          width: isHorizontal ? rect.width : 8,
-          height: isHorizontal ? 8 : rect.height,
+          left: isHorizontal ? rect.left : this.options.ruleSize - 15,
+          top: isHorizontal ? this.options.ruleSize - 15 : rect.top,
+          width: isHorizontal ? rect.width : 15,
+          height: isHorizontal ? 15 : rect.height,
           fill: highlightColor.toRgba()
         });
 
         // 两边的数字
-        const pad = this.options.ruleSize / 2 - this.options.fontSize / 2 - 4;
+        const pad = this.options.ruleSize / 2 - this.options.fontSize / 2 - 1;
 
         const textOpt = {
-          fill: highlightColor.toRgba(),
+          fill: highlightColor.toRgb(), //"#5586e7",
           angle: isHorizontal ? 0 : -90
         };
 
         darwText(this.ctx, {
           ...textOpt,
           text: leftTextVal,
-          left: isHorizontal ? rect.left - 2 : pad,
-          top: isHorizontal ? pad : rect.top - 2,
+          left: isHorizontal ? rect.left - 2 : pad - 1,
+          top: isHorizontal ? pad - 1 : rect.top - 2,
           align: isSameText ? "center" : isHorizontal ? "right" : "left"
         });
 
@@ -418,8 +401,8 @@ class CanvasRuler {
           darwText(this.ctx, {
             ...textOpt,
             text: rightTextVal,
-            left: isHorizontal ? rect.left + rect.width + 2 : pad,
-            top: isHorizontal ? pad : rect.top + rect.height + 2,
+            left: isHorizontal ? rect.left + rect.width + 2 : pad - 1,
+            top: isHorizontal ? pad - 1 : rect.top + rect.height + 2,
             align: isHorizontal ? "left" : "right"
           });
         }
@@ -453,6 +436,53 @@ class CanvasRuler {
           });
         }
       });
+    }
+
+    // 标尺刻度线显示
+    for (let pos = 0; pos + startOffset <= unitLength; pos += gap) {
+      for (let index = 0; index < 10; index++) {
+        const position = Math.round(
+          (startOffset + pos + (gap * index) / 10) * zoom
+        );
+        const isMajorLine = index === 0;
+        const isMetaLine = index === 5;
+        //
+        let left, top, width, height;
+        if (isHorizontal) {
+          if (isMajorLine) {
+            top = 3;
+          } else if (isMetaLine) {
+            top = this.options.ruleSize - 8;
+          } else {
+            top = this.options.ruleSize - 6;
+          }
+
+          left = position;
+          width = 0;
+          height = this.options.ruleSize - top;
+        } else {
+          top = position;
+
+          if (isMajorLine) {
+            left = 3;
+          } else if (isMetaLine) {
+            left = this.options.ruleSize - 8;
+          } else {
+            left = this.options.ruleSize - 6;
+          }
+
+          width = this.options.ruleSize - left;
+          height = 0;
+        }
+
+        darwLine(this.ctx, {
+          left,
+          top,
+          width,
+          height,
+          stroke: this.options.borderColor
+        });
+      }
     }
     // draw end
   }
@@ -522,7 +552,7 @@ class CanvasRuler {
 
   /**
     判断鼠标是否在标尺上
-   * @param point 
+   * @param point
    * @returns "vertical" | "horizontal" | false
    */
   public isPointOnRuler(point: Point) {

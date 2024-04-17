@@ -401,10 +401,10 @@ provide("canvasEditor", canvasEditor);
 }
 
 :deep(.ivu-layout-header) {
-  --height: 45px;
+  --height: 30px;
   padding: 0 10px;
-  border-bottom: 1px solid #eef2f8;
-  background: #fff;
+  // border-bottom: 1px solid #eef2f8;
+  background: #232323;
   height: var(--height);
   line-height: var(--height);
 }
