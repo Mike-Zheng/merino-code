@@ -6,9 +6,9 @@
  * @LastEditTime: 2024-04-15 17:30:50
 -->
 <template>
-  <Button type="text" @click="addWaterMark">
+  <v-btn type="text" @click="addWaterMark">
     {{ $t("waterMark.text") }}
-  </Button>
+  </v-btn>
 
   <Modal
     v-model="showWaterMadal"

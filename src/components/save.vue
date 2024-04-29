@@ -10,29 +10,32 @@
 
 <template>
   <div class="save-box">
-    <Button style="margin-left: 10px" type="text" @click="beforeClear">
+    <v-btn style="margin-left: 10px" type="text" @click="beforeClear">
       {{ $t("empty") }}
-    </Button>
-    <Dropdown style="margin-left: 10px" @on-click="saveWith">
-      <Button type="primary">
+    </v-btn>
+    <v-dropdown style="margin-left: 10px" @on-click="saveWith">
+      <v-btn type="primary">
         {{ $t("keep") }}
-        <Icon type="ios-arrow-down"></Icon>
-      </Button>
+        <!-- <Icon type="ios-arrow-down"></Icon> -->
+        icon down
+      </v-btn>
       <template #list>
-        <DropdownMenu>
-          <DropdownItem name="clipboard">{{
+        <v-dropdownMenu>
+          <v-dropdownItem name="clipboard">{{
             $t("copy_to_clipboard")
-          }}</DropdownItem>
-          <DropdownItem name="saveImg">{{
+          }}</v-dropdownItem>
+          <v-dropdownItem name="saveImg">{{
             $t("save_as_picture")
-          }}</DropdownItem>
-          <DropdownItem name="saveSvg">{{ $t("save_as_svg") }}</DropdownItem>
-          <DropdownItem name="saveJson" divided>{{
+          }}</v-dropdownItem>
+          <v-dropdownItem name="saveSvg">{{
+            $t("save_as_svg")
+          }}</v-dropdownItem>
+          <v-dropdownItem name="saveJson" divided>{{
             $t("save_as_json")
-          }}</DropdownItem>
-        </DropdownMenu>
+          }}</v-dropdownItem>
+        </v-dropdownMenu>
       </template>
-    </Dropdown>
+    </v-dropdown>
   </div>
 </template>
 

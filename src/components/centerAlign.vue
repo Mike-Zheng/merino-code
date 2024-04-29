@@ -9,8 +9,8 @@
 <template>
   <div v-if="mixinState.mSelectMode" class="box attr-item">
     <!-- 水平集中 -->
-    <Tooltip :content="$t('center_align.centerX')">
-      <Button
+    <v-tooltip :content="$t('center_align.centerX')">
+      <v-btn
         :disabled="!mixinState.mSelectMode"
         @click="position('centerH')"
         type="text"
@@ -30,11 +30,11 @@
             p-id="3788"
           ></path>
         </svg>
-      </Button>
-    </Tooltip>
+      </v-btn>
+    </v-tooltip>
     <!-- 水平垂直居中 -->
-    <Tooltip :content="$t('center_align.center')">
-      <Button
+    <v-tooltip :content="$t('center_align.center')">
+      <v-btn
         :disabled="!mixinState.mSelectMode"
         @click="position('center')"
         type="text"
@@ -60,11 +60,11 @@
             p-id="2353"
           ></path>
         </svg>
-      </Button>
-    </Tooltip>
+      </v-btn>
+    </v-tooltip>
     <!-- 垂直居中 -->
-    <Tooltip :content="$t('center_align.centerY')">
-      <Button
+    <v-tooltip :content="$t('center_align.centerY')">
+      <v-btn
         :disabled="!mixinState.mSelectMode"
         @click="position('centerV')"
         type="text"
@@ -84,8 +84,8 @@
             p-id="3413"
           ></path>
         </svg>
-      </Button>
-    </Tooltip>
+      </v-btn>
+    </v-tooltip>
   </div>
 </template>
 

@@ -26,7 +26,7 @@ class WorkspacePlugin {
     this.workspace = null;
     this.init({
       width: 900,
-      height: 2000
+      height: 900
     });
   }
 
@@ -76,6 +76,8 @@ class WorkspacePlugin {
   // 初始化画布
   _initWorkspace() {
     const { width, height } = this.option;
+
+    console.log("this.option", this.option);
     const workspace = new fabric.Rect({
       fill: "rgba(255,255,255,1)",
       width,
@@ -136,6 +138,12 @@ class WorkspacePlugin {
     this.workspace = this.canvas
       .getObjects()
       .find((item) => item.id === "workspace") as fabric.Rect;
+
+    console.log(
+      "-------------------this.canvas.getObjects()",
+      this.canvas.getObjects()
+    );
+
     this.workspace.set("width", width);
     this.workspace.set("height", height);
     this.editor.emit("sizeChange", this.workspace.width, this.workspace.height);
@@ -144,21 +152,35 @@ class WorkspacePlugin {
 
   setZoomAuto(scale: number, cb?: (left?: number, top?: number) => void) {
     const { workspaceEl } = this;
+    console.log(
+      "setZoomAuto workspaceEl",
+      workspaceEl.offsetWidth,
+      workspaceEl.offsetHeight
+    );
     const width = workspaceEl.offsetWidth;
     const height = workspaceEl.offsetHeight;
+    console.log(
+      "setZoomAuto  this.canvas",
+      this.canvas,
+      this.canvas.getCenter()
+    );
     this.canvas.setWidth(width);
     this.canvas.setHeight(height);
     const center = this.canvas.getCenter();
     this.canvas.setViewportTransform(fabric.iMatrix.concat());
     this.canvas.zoomToPoint(new fabric.Point(center.left, center.top), scale);
+
     if (!this.workspace) return;
+
     this.setCenterFromObject(this.workspace);
 
     // 超出画布不展示
-    this.workspace.clone((cloned: fabric.Rect) => {
-      this.canvas.clipPath = cloned;
-      this.canvas.requestRenderAll();
-    });
+
+    console.log("this.workspace", this.workspace);
+    // this.workspace.clone((cloned: fabric.Rect) => {
+    //   this.canvas.clipPath = cloned;
+    //   this.canvas.requestRenderAll();
+    // });
     if (cb) cb(this.workspace.left, this.workspace.top);
   }
 

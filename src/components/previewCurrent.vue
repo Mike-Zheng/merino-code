@@ -7,9 +7,9 @@
  * @Description: 预览组件
 -->
 <template>
-  <Button type="text" @click="preview">
+  <v-btn type="text" @click="preview">
     {{ $t("preview") }}
-  </Button>
+  </v-btn>
 </template>
 
 <script lang="ts" setup>

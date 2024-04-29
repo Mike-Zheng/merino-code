@@ -1,153 +1,145 @@
 <template>
-  <div class="home">
-    <Layout>
-      <!-- 头部区域 -->
-      <Header v-if="state.show">
-        <!-- logo -->
-        <span class="logo">
-          <a
-            href="https://github.com/nihaojob/vue-fabric-editor"
-            target="_blank"
-          >
-            <Icon type="logo-github" :size="30" />
-          </a>
-        </span>
+  <div class="app-editor">
+    <!-- 头部区域 -->
 
-        <!-- 导入 -->
-        <import-Json></import-Json>
-        <Divider type="vertical" />
-        <import-file></import-file>
-        <Divider type="vertical" />
-        <!-- 标尺开关 -->
-        <Tooltip :content="$t('grid')">
-          <iSwitch
-            v-model="state.ruler"
-            @on-change="rulerSwitch"
-            size="small"
-            class="switch"
-          ></iSwitch>
-        </Tooltip>
-        <Divider type="vertical" />
-        <history></history>
+    <div v-if="state.show" class="app-header">
+      <!-- logo -->
 
-        <div style="float: right">
-          <!-- 预览 -->
-          <previewCurrent />
-          <waterMark />
-          <save></save>
-          <lang></lang>
+      <!-- 导入 -->
+      <import-Json></import-Json>
+      <v-divider type="vertical" />
+      <import-file></import-file>
+      <v-divider type="vertical" />
+      <!-- 标尺开关 -->
+      <v-tooltip :content="$t('grid')">
+        <v-switch
+          v-model="state.ruler"
+          @on-change="rulerSwitch"
+          size="small"
+          class="switch"
+        ></v-switch>
+      </v-tooltip>
+      <v-divider type="vertical" />
+      <history></history>
+
+      <div style="float: right">
+        <!-- 预览 -->
+        <previewCurrent />
+        <waterMark />
+        <save></save>
+        <lang></lang>
+      </div>
+    </div>
+
+    <!-- 左侧区域 -->
+    <div
+      v-if="state.show"
+      :class="`left-bar ${state.toolsBarShow && 'show-tools-bar'}`"
+    >
+      <v-menu
+        :active-name="state.menuActive"
+        accordion
+        @on-select="showToolsBar"
+        width="65px"
+      >
+        <v-menu-item :name="1" class="menu-item">
+          <!-- <Icon type="md-book" size="24" /> -->
+          icon book
+          <div>{{ $t("templates") }}</div>
+        </v-menu-item>
+        <v-menu-item :name="2" class="menu-item">
+          <!-- <Icon type="md-images" size="24" /> -->
+          icon images
+          <div>{{ $t("elements") }}</div>
+        </v-menu-item>
+        <v-menu-item :name="3" class="menu-item">
+          <!-- <Icon type="ios-leaf-outline" size="24" /> -->
+          icon outline
+          <div>{{ $t("material.cartoon") }}</div>
+        </v-menu-item>
+        <v-menu-item :name="4" class="menu-item">
+          <!-- <Icon type="md-reorder" size="24" /> -->
+          icon reorder
+          <div>{{ $t("layers") }}</div>
+        </v-menu-item>
+      </v-menu>
+
+      <div class="content" v-show="state.toolsBarShow">
+        <!-- 生成模板 -->
+        <div v-show="state.menuActive === 1" class="left-panel">
+          <import-tmpl></import-tmpl>
         </div>
-      </Header>
-      <Content style="display: flex; height: calc(100vh - 64px)">
-        <!-- 左侧区域 -->
-        <div
-          v-if="state.show"
-          :class="`left-bar ${state.toolsBarShow && 'show-tools-bar'}`"
-        >
-          <Menu
-            :active-name="state.menuActive"
-            accordion
-            @on-select="showToolsBar"
-            width="65px"
-          >
-            <MenuItem :name="1" class="menu-item">
-              <Icon type="md-book" size="24" />
-              <div>{{ $t("templates") }}</div>
-            </MenuItem>
-            <MenuItem :name="2" class="menu-item">
-              <Icon type="md-images" size="24" />
-              <div>{{ $t("elements") }}</div>
-            </MenuItem>
-            <MenuItem :name="3" class="menu-item">
-              <Icon type="ios-leaf-outline" size="24" />
-              <div>{{ $t("material.cartoon") }}</div>
-            </MenuItem>
-            <MenuItem :name="4" class="menu-item">
-              <Icon type="md-reorder" size="24" />
-              <div>{{ $t("layers") }}</div>
-            </MenuItem>
-          </Menu>
-
-          <div class="content" v-show="state.toolsBarShow">
-            <!-- 生成模板 -->
-            <div v-show="state.menuActive === 1" class="left-panel">
-              <import-tmpl></import-tmpl>
-            </div>
-            <!-- 常用元素 -->
-            <div v-show="state.menuActive === 2" class="left-panel">
-              <tools></tools>
-              <fontTmpl></fontTmpl>
-            </div>
-            <!-- 卡通素材 -->
-            <div v-show="state.menuActive === 3" class="left-panel">
-              <importSvgEl></importSvgEl>
-            </div>
-            <!-- 图层设置 -->
-            <div v-show="state.menuActive === 4" class="left-panel">
-              <layer></layer>
-            </div>
-          </div>
-
-          <!-- 关闭按钮 -->
-          <div
-            :class="`close-btn left-btn ${
-              state.toolsBarShow && 'left-btn-open'
-            }`"
-            @click="hideToolsBar"
-          ></div>
+        <!-- 常用元素 -->
+        <div v-show="state.menuActive === 2" class="left-panel">
+          <tools></tools>
+          <fontTmpl></fontTmpl>
         </div>
-
-        <!-- 画布区域 -->
-        <div id="workspace">
-          <div class="canvas-box">
-            <div class="inside-shadow"></div>
-            <canvas
-              id="canvas"
-              :class="state.ruler ? 'design-stage-grid' : ''"
-            ></canvas>
-            <dragMode v-if="state.show"></dragMode>
-            <zoom></zoom>
-            <!-- <mouseMenu></mouseMenu> -->
-          </div>
+        <!-- 卡通素材 -->
+        <div v-show="state.menuActive === 3" class="left-panel">
+          <importSvgEl></importSvgEl>
         </div>
-
-        <!-- 属性区域 380-->
-        <div class="right-bar" v-show="state.attrBarShow">
-          <div v-if="state.show" style="padding-top: 10px">
-            <!-- 新增字体样式使用 -->
-            <!-- <Button @click="getFontJson" size="small">获取字体数据</Button> -->
-            <set-size></set-size>
-            <bg-bar></bg-bar>
-            <group></group>
-            <replaceImg></replaceImg>
-            <filters></filters>
-            <div class="attr-item">
-              <lock></lock>
-              <dele></dele>
-              <clone></clone>
-            </div>
-            <!-- 组对齐方式 -->
-            <align></align>
-            <!-- 居中对齐 -->
-            <center-align></center-align>
-            <!-- 翻转 -->
-            <flip></flip>
-          </div>
-          <attribute v-if="state.show"></attribute>
+        <!-- 图层设置 -->
+        <div v-show="state.menuActive === 4" class="left-panel">
+          <layer></layer>
         </div>
-        <!-- 右侧关闭按钮 -->
-        <div
-          :class="`close-btn right-btn ${
-            state.attrBarShow && 'right-btn-open'
-          }`"
-          @click="switchAttrBar"
-        ></div>
-      </Content>
-    </Layout>
+      </div>
+
+      <!-- 关闭按钮 -->
+      <div
+        :class="`close-btn left-btn ${state.toolsBarShow && 'left-btn-open'}`"
+        @click="hideToolsBar"
+      ></div>
+    </div>
+
+    <!-- 属性区域 380-->
+    <div class="right-bar" v-show="state.attrBarShow">
+      <div v-if="state.show" style="padding-top: 10px">
+        <!-- 新增字体样式使用 -->
+        <!-- <v-btn @click="getFontJson" size="small">获取字体数据</v-btn> -->
+        <set-size></set-size>
+        <bg-bar></bg-bar>
+        <group></group>
+        <replaceImg></replaceImg>
+        <filters></filters>
+        <div class="attr-item">
+          <lock></lock>
+          <dele></dele>
+          <clone></clone>
+        </div>
+        <!-- 组对齐方式 -->
+        <align></align>
+        <!-- 居中对齐 -->
+        <center-align></center-align>
+        <!-- 翻转 -->
+        <flip></flip>
+      </div>
+      <attribute v-if="state.show"></attribute>
+    </div>
+    <!-- 右侧关闭按钮 -->
+    <!-- <div
+      :class="`close-btn right-btn ${state.attrBarShow && 'right-btn-open'}`"
+      @click="switchAttrBar"
+    ></div> -->
+
+    <div style="display: flex; height: 100vh">
+      <!-- 画布区域 -->
+      <div id="workspace">
+        <div class="canvas-box">
+          <div class="inside-shadow"></div>
+          <canvas
+            id="canvas"
+            :class="state.ruler ? 'design-stage-grid' : ''"
+          ></canvas>
+          <dragMode v-if="state.show"></dragMode>
+          <zoom></zoom>
+          <!-- <mouseMenu></mouseMenu> -->
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
-<script name="Home" setup>
+<script name="Editor" setup>
 // 导入元素
 import importJson from "@/components/importJSON.vue";
 import importFile from "@/components/importFile.vue";
@@ -311,33 +303,50 @@ provide("fabric", fabric);
 // provide('event', event);
 provide("canvasEditor", canvasEditor);
 </script>
-<style lang="less" scoped>
-.logo {
-  width: 30px;
-  height: 30px;
-  display: inline-block;
-  margin-right: 10px;
-  text-align: center;
-  vertical-align: middle;
-  .ivu-icon {
-    vertical-align: super;
-  }
+<style lang="scss" scoped>
+.app-editor {
+  position: relative;
 }
+.app-header {
+  position: absolute;
+  background-color: #191919;
+  border-radius: 5px;
+  padding: 10px;
+  top: 20px;
+  left: 20px;
+  z-index: 20;
+}
+
 // 左侧容器
 .left-bar {
+  border-radius: 5px;
+  padding: 10px;
   width: 65px;
   height: 100%;
-  background: #fff;
-  display: flex;
-  position: relative;
 
+  display: flex;
+
+  position: absolute;
+  background-color: #191919;
+  z-index: 20;
+  display: none;
   &.show-tools-bar {
     width: 380px;
   }
 }
 // 右侧容器
 .right-bar {
-  width: 304px; height: 100%; padding: 10px; overflow-y: auto; background: #fff
+  position: absolute;
+  background-color: #191919;
+  border-radius: 5px;
+  padding: 10px;
+  width: 304px;
+
+  overflow-y: auto;
+
+  z-index: 20;
+  right: 20px;
+  top: 35px;
   // width: 240px;
   // height: 100%;
   // padding: 10px;
@@ -429,6 +438,7 @@ provide("canvasEditor", canvasEditor);
 
 .canvas-box {
   position: relative;
+  background-color: #333333;
 }
 // 画布内阴影
 .inside-shadow {
@@ -448,7 +458,9 @@ provide("canvasEditor", canvasEditor);
 
 #workspace {
   flex: 1;
-  width: 100%; position: relative; background: #f1f1f1;
+  width: 100%;
+  position: relative;
+  background: #f1f1f1;
   overflow: hidden;
 }
 
@@ -481,7 +493,13 @@ provide("canvasEditor", canvasEditor);
       transparent 75%,
       var(--color) 0
     ),
-    linear-gradient(45deg, var(--color) 25%, transparent 0, transparent 75%, var(--color) 0);
+    linear-gradient(
+      45deg,
+      var(--color) 25%,
+      transparent 0,
+      transparent 75%,
+      var(--color) 0
+    );
   background-position: var(--offsetX) var(--offsetY),
     calc(var(--size) + var(--offsetX)) calc(var(--size) + var(--offsetY));
   background-size: calc(var(--size) * 2) calc(var(--size) * 2);

@@ -8,8 +8,8 @@
 
 <template>
   <div style="display: inline-block">
-    <Divider plain orientation="left">{{ $t("title_template") }}</Divider>
-    <Tooltip
+    <v-divider plain orientation="left">{{ $t("title_template") }}</v-divider>
+    <v-tooltip
       :content="item.label"
       v-for="(item, i) in list"
       :key="`${i}-bai1-button`"
@@ -21,7 +21,7 @@
         v-lazy="item.src"
         @click="getTempData(item.tempUrl)"
       />
-    </Tooltip>
+    </v-tooltip>
   </div>
 </template>
 

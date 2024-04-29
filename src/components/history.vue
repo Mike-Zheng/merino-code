@@ -9,18 +9,20 @@
 <template>
   <div style="display: inline-block">
     <!-- 后退 -->
-    <Tooltip :content="$t('history.revocation') + `(${canUndo})`">
-      <Button @click="undo" type="text" size="small" :disabled="!canUndo">
-        <Icon type="ios-undo" size="20" />
-      </Button>
-    </Tooltip>
+    <v-tooltip :content="$t('history.revocation') + `(${canUndo})`">
+      <v-btn @click="undo" type="text" size="small" :disabled="!canUndo">
+        <!-- <Icon type="ios-undo" size="20" /> -->
+        icon undo
+      </v-btn>
+    </v-tooltip>
 
     <!-- 重做 -->
-    <Tooltip :content="$t('history.redo') + `(${canRedo})`">
-      <Button @click="redo" type="text" size="small" :disabled="!canRedo">
-        <Icon type="ios-redo" size="20" />
-      </Button>
-    </Tooltip>
+    <v-tooltip :content="$t('history.redo') + `(${canRedo})`">
+      <v-btn @click="redo" type="text" size="small" :disabled="!canRedo">
+        <!-- <Icon type="ios-redo" size="20" /> -->
+        icon redo
+      </v-btn>
+    </v-tooltip>
     <!-- <span class="time" v-if="history.length">
       {{ useDateFormat(history[0].timestamp, 'HH:mm:ss').value }}
     </span> -->

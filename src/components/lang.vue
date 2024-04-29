@@ -7,23 +7,24 @@
  * @LastEditTime: 2023-07-29 22:24:03
 -->
 <template>
-  <Dropdown @on-click="setLang">
-    <Button type="text">
+  <v-dropdown @on-click="setLang">
+    <v-btn type="text">
       {{ lang }}
-      <Icon type="ios-arrow-down"></Icon>
-    </Button>
+      <!-- <Icon type="ios-arrow-down"></Icon> -->
+      icon down
+    </v-btn>
     <template #list>
-      <DropdownMenu>
-        <DropdownItem
+      <v-dropdownMenu>
+        <v-dropdownItem
           v-for="lang in langList"
           :key="lang.langType"
           :name="lang.langType"
         >
           {{ lang.langName }}
-        </DropdownItem>
-      </DropdownMenu>
+        </v-dropdownItem>
+      </v-dropdownMenu>
     </template>
-  </Dropdown>
+  </v-dropdown>
 </template>
 
 <script setup name="saveBar">

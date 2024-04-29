@@ -8,9 +8,9 @@
 
 <template>
   <div style="display: inline-block">
-    <Button @click="insert" type="text" size="small">{{
+    <v-btn @click="insert" type="text" size="small">{{
       $t("import_files")
-    }}</Button>
+    }}</v-btn>
   </div>
 </template>
 

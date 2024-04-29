@@ -2,7 +2,9 @@
   <div class="box" v-if="mixinState.mSelectMode === 'one'">
     <!-- 字体属性 -->
     <div v-show="textType.includes(mixinState.mSelectOneType)">
-      <Divider plain orientation="left">{{ $t("attributes.font") }}</Divider>
+      <v-divider plain orientation="left">{{
+        $t("attributes.font")
+      }}</v-divider>
       <div class="flex-view">
         <div class="flex-item">
           <div class="left font-selector">
@@ -55,26 +57,24 @@
 
       <div class="flex-view">
         <div class="flex-item">
-          <ButtonGroup class="button-group">
-            <Button
-              @click="changeFontWeight('fontWeight', fontAttr.fontWeight)"
-            >
+          <v-btnGroup class="button-group">
+            <v-btn @click="changeFontWeight('fontWeight', fontAttr.fontWeight)">
               <svg viewBox="0 0 1024 1024" width="14" height="14">
                 <path
                   d="M793.99865 476a244 244 0 0 0 54-130.42C862.75865 192.98 743.01865 64 593.85865 64H195.01865a32 32 0 0 0-32 32v96a32 32 0 0 0 32 32h63.74v576H195.01865a32 32 0 0 0-32 32v96a32 32 0 0 0 32 32h418.64c141.6 0 268.28-103.5 282-244.8 9.48-96.9-32.78-184.12-101.66-239.2zM418.33865 224h175.52a96 96 0 0 1 0 192h-175.52z m175.52 576h-175.52V576h175.52a112 112 0 0 1 0 224z"
                   :fill="fontAttr.fontWeight === 'bold' ? '#305ef4' : '#666'"
                 ></path>
               </svg>
-            </Button>
-            <Button @click="changeFontStyle('fontStyle', fontAttr.fontStyle)">
+            </v-btn>
+            <v-btn @click="changeFontStyle('fontStyle', fontAttr.fontStyle)">
               <svg viewBox="0 0 1024 1024" width="14" height="14">
                 <path
                   d="M832 96v64a32 32 0 0 1-32 32h-125.52l-160 640H608a32 32 0 0 1 32 32v64a32 32 0 0 1-32 32H224a32 32 0 0 1-32-32v-64a32 32 0 0 1 32-32h125.52l160-640H416a32 32 0 0 1-32-32V96a32 32 0 0 1 32-32h384a32 32 0 0 1 32 32z"
                   :fill="fontAttr.fontStyle === 'italic' ? '#305ef4' : '#666'"
                 ></path>
               </svg>
-            </Button>
-            <Button
+            </v-btn>
+            <v-btn
               @click="changeLineThrough('linethrough', fontAttr.linethrough)"
             >
               <svg viewBox="0 0 1024 1024" width="14" height="14">
@@ -83,42 +83,42 @@
                   :fill="fontAttr.linethrough ? '#305ef4' : '#666'"
                 ></path>
               </svg>
-            </Button>
-            <Button @click="changeUnderline('underline', fontAttr.underline)">
+            </v-btn>
+            <v-btn @click="changeUnderline('underline', fontAttr.underline)">
               <svg viewBox="0 0 1024 1024" width="14" height="14">
                 <path
                   d="M703.232 67.008h127.488v413.248c0 158.016-142.656 286.016-318.72 286.016-176 0-318.72-128-318.72-286.016V67.008h127.488v413.248c0 39.872 18.176 78.144 51.136 107.776 36.8 32.96 86.528 51.072 140.096 51.072s103.36-18.112 140.032-51.136c33.024-29.632 51.2-67.968 51.2-107.776V67.008zM193.28 871.616h637.44v85.376H193.28v-85.376z"
                   :fill="fontAttr.underline ? '#305ef4' : '#666'"
                 ></path>
               </svg>
-            </Button>
-          </ButtonGroup>
+            </v-btn>
+          </v-btnGroup>
         </div>
       </div>
 
-      <Row :gutter="12">
-        <Col flex="1">
+      <v-row :gutter="12">
+        <v-col flex="1">
           <InputNumber
             v-model="fontAttr.lineHeight"
             @on-change="(value) => changeCommon('lineHeight', value)"
             :step="0.1"
             :append="$t('attributes.line_height')"
           ></InputNumber>
-        </Col>
-        <Col flex="1">
+        </v-col>
+        <v-col flex="1">
           <InputNumber
             v-model="fontAttr.charSpacing"
             @on-change="(value) => changeCommon('charSpacing', value)"
             :append="$t('attributes.char_spacing')"
           ></InputNumber>
-        </Col>
-      </Row>
+        </v-col>
+      </v-row>
 
       <div class="flex-view">
         <div class="flex-item">
           <span class="label">{{ $t("background") }}</span>
           <div class="content">
-            <ColorPicker
+            <v-colorPicker
               v-model="fontAttr.textBackgroundColor"
               @on-change="(value) => changeCommon('textBackgroundColor', value)"
               alpha
@@ -130,12 +130,12 @@
 
     <!-- 通用属性 -->
     <div v-show="baseType.includes(mixinState.mSelectOneType)">
-      <Divider plain orientation="left">{{
+      <v-divider plain orientation="left">{{
         $t("attributes.exterior")
-      }}</Divider>
+      }}</v-divider>
       <!-- 多边形边数 -->
-      <Row v-if="mixinState.mSelectOneType === 'polygon'" :gutter="12">
-        <Col flex="0.5">
+      <v-row v-if="mixinState.mSelectOneType === 'polygon'" :gutter="12">
+        <v-col flex="0.5">
           <InputNumber
             v-model="baseAttr.points.length"
             :min="3"
@@ -143,29 +143,29 @@
             @on-change="changeEdge"
             append="边数"
           ></InputNumber>
-        </Col>
-      </Row>
+        </v-col>
+      </v-row>
       <!-- 颜色 -->
       <colorSelector
         :color="baseAttr.fill"
         @change="(value) => changeCommon('fill', value)"
       ></colorSelector>
-      <Row :gutter="12">
-        <Col flex="1">
+      <v-row :gutter="12">
+        <v-col flex="1">
           <InputNumber
             v-model="baseAttr.left"
             @on-change="(value) => changeCommon('left', value)"
             :append="$t('attributes.left')"
           ></InputNumber>
-        </Col>
-        <Col flex="1">
+        </v-col>
+        <v-col flex="1">
           <InputNumber
             v-model="baseAttr.top"
             @on-change="(value) => changeCommon('top', value)"
             :append="$t('attributes.top')"
           ></InputNumber>
-        </Col>
-      </Row>
+        </v-col>
+      </v-row>
       <div class="flex-view">
         <div class="flex-item">
           <span class="label">{{ $t("attributes.angle") }}</span>
@@ -190,33 +190,35 @@
         </div>
       </div>
       <!-- 边框 -->
-      <Divider plain orientation="left">{{ $t("attributes.stroke") }}</Divider>
+      <v-divider plain orientation="left">{{
+        $t("attributes.stroke")
+      }}</v-divider>
 
-      <Row :gutter="12">
-        <Col flex="1">
+      <v-row :gutter="12">
+        <v-col flex="1">
           <div class="ivu-col__box">
             <span class="label">{{ $t("color") }}</span>
             <div class="content">
-              <ColorPicker
+              <v-colorPicker
                 v-model="baseAttr.stroke"
                 @on-change="(value) => changeCommon('stroke', value)"
                 alpha
               />
             </div>
           </div>
-        </Col>
-        <Col flex="1">
+        </v-col>
+        <v-col flex="1">
           <InputNumber
             v-model="baseAttr.strokeWidth"
             @on-change="(value) => changeCommon('strokeWidth', value)"
             :append="$t('width')"
             :min="0"
           ></InputNumber>
-        </Col>
-      </Row>
+        </v-col>
+      </v-row>
 
-      <Row :gutter="12">
-        <Col flex="1">
+      <v-row :gutter="12">
+        <v-col flex="1">
           <div class="ivu-col__box">
             <span class="label">{{ $t("attributes.stroke") }}</span>
             <div class="content">
@@ -231,26 +233,28 @@
               </Select>
             </div>
           </div>
-        </Col>
-      </Row>
+        </v-col>
+      </v-row>
 
       <!-- 阴影 -->
-      <Divider plain orientation="left">{{ $t("attributes.shadow") }}</Divider>
+      <v-divider plain orientation="left">{{
+        $t("attributes.shadow")
+      }}</v-divider>
 
-      <Row :gutter="12">
-        <Col flex="1">
+      <v-row :gutter="12">
+        <v-col flex="1">
           <div class="ivu-col__box">
             <span class="label">{{ $t("color") }}</span>
             <div class="content">
-              <ColorPicker
+              <v-colorPicker
                 v-model="baseAttr.shadow.color"
                 @on-change="(value) => changeCommon('color', value)"
                 alpha
               />
             </div>
           </div>
-        </Col>
-        <Col flex="1">
+        </v-col>
+        <v-col flex="1">
           <InputNumber
             v-model="baseAttr.shadow.blur"
             :defaultValue="0"
@@ -258,32 +262,32 @@
             :append="$t('attributes.blur')"
             :min="0"
           ></InputNumber>
-        </Col>
-      </Row>
+        </v-col>
+      </v-row>
 
-      <Row :gutter="12">
-        <Col flex="1">
+      <v-row :gutter="12">
+        <v-col flex="1">
           <InputNumber
             v-model="baseAttr.shadow.offsetX"
             :defaultValue="0"
             @on-change="(value) => changeShadow('offsetX', value)"
             :append="$t('attributes.offset_x')"
           ></InputNumber>
-        </Col>
-        <Col flex="1">
+        </v-col>
+        <v-col flex="1">
           <InputNumber
             v-model="baseAttr.shadow.offsetY"
             :defaultValue="0"
             @on-change="(value) => changeShadow('offsetY', value)"
             :append="$t('attributes.offset_y')"
           ></InputNumber>
-        </Col>
-      </Row>
+        </v-col>
+      </v-row>
     </div>
 
     <!-- ID属性 -->
     <div>
-      <Divider plain orientation="left">{{ $t("attributes.id") }}</Divider>
+      <v-divider plain orientation="left">{{ $t("attributes.id") }}</v-divider>
       <div class="flex-view">
         <div class="flex-item">
           <span class="label">{{ $t("attributes.id") }}</span>

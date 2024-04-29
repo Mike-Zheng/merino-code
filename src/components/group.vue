@@ -8,14 +8,9 @@
 
 <template>
   <div class="attr-item box" v-if="isMultiple || isGroup">
-    <!-- <ButtonGroup size="small" v-if="isMultiple || isGroup"> -->
+    <!-- <v-btnGroup size="small" v-if="isMultiple || isGroup"> -->
     <!-- 组合按钮 多选时不可用 -->
-    <Button
-      v-if="isMultiple"
-      :disabled="!isMultiple"
-      @click="group"
-      type="text"
-    >
+    <v-btn v-if="isMultiple" :disabled="!isMultiple" @click="group" type="text">
       <svg
         t="1650848913991"
         class="icon"
@@ -32,9 +27,9 @@
         ></path>
       </svg>
       组合
-    </Button>
+    </v-btn>
     <!-- 拆分组合按钮，为单选且组元素时可用 -->
-    <Button v-if="isGroup" :disabled="!isGroup" @click="unGroup" type="text">
+    <v-btn v-if="isGroup" :disabled="!isGroup" @click="unGroup" type="text">
       <svg
         t="1650848938557"
         class="icon"
@@ -51,7 +46,7 @@
         ></path>
       </svg>
       拆分组合
-    </Button>
+    </v-btn>
   </div>
 </template>
 

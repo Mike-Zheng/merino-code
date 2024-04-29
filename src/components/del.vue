@@ -7,9 +7,9 @@
 -->
 
 <template>
-  <Tooltip v-if="mixinState.mSelectMode" :content="$t('quick.del')">
-    <Button @click="del" icon="ios-trash" type="text"></Button>
-  </Tooltip>
+  <v-tooltip v-if="mixinState.mSelectMode" :content="$t('quick.del')">
+    <v-btn @click="del" icon="ios-trash" type="text"></v-btn>
+  </v-tooltip>
 </template>
 
 <script setup name="Del">

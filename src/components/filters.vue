@@ -11,7 +11,7 @@
     v-if="mixinState.mSelectMode === 'one' && state.type === 'image'"
     class="box"
   >
-    <Collapse>
+    <v-collapse>
       <Panel name="1">
         {{ $t("filters.simple") }}
         <template #content>
@@ -27,12 +27,12 @@
                 alt=""
                 @click="changeFilters(key, !noParamsFilters[key])"
               />
-              <Checkbox
+              <v-checkbox
                 v-model="state.noParamsFilters[key]"
                 @on-change="(val) => changeFilters(key, val)"
               >
                 {{ $t("filters." + key) }}
-              </Checkbox>
+              </v-checkbox>
             </div>
           </div>
         </template>
@@ -50,12 +50,12 @@
               ]"
               :key="item.type"
             >
-              <Checkbox
+              <v-checkbox
                 v-model="item.status"
                 @on-change="changeFiltersByParams(item.type)"
               >
                 {{ $t("filters." + item.type) }}
-              </Checkbox>
+              </v-checkbox>
               <div v-if="item.status" class="content">
                 <div
                   class="content slider-box"
@@ -86,7 +86,7 @@
                     ></Slider>
                   </div>
                   <div v-if="info.uiType === uiType.COLOR">
-                    <ColorPicker
+                    <v-colorPicker
                       v-model="info.value"
                       alpha
                       size="small"
@@ -99,7 +99,7 @@
           </div>
         </template>
       </Panel>
-    </Collapse>
+    </v-collapse>
   </div>
 </template>
 

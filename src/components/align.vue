@@ -9,8 +9,8 @@
 <template>
   <div v-if="mixinState.mSelectMode === 'multiple'" class="box attr-item">
     <!-- 水平对齐 -->
-    <Tooltip :content="$t('group_align.left')">
-      <Button :disabled="notMultiple" @click="left" size="small" type="text">
+    <v-tooltip :content="$t('group_align.left')">
+      <v-btn :disabled="notMultiple" @click="left" size="small" type="text">
         <svg
           t="1650442284704"
           class="icon"
@@ -26,10 +26,10 @@
             p-id="2346"
           ></path>
         </svg>
-      </Button>
-    </Tooltip>
-    <Tooltip :content="$t('group_align.centerX')">
-      <Button :disabled="notMultiple" @click="xcenter" size="small" type="text">
+      </v-btn>
+    </v-tooltip>
+    <v-tooltip :content="$t('group_align.centerX')">
+      <v-btn :disabled="notMultiple" @click="xcenter" size="small" type="text">
         <svg
           t="1650442754876"
           class="icon"
@@ -46,10 +46,10 @@
             p-id="1515"
           ></path>
         </svg>
-      </Button>
-    </Tooltip>
-    <Tooltip :content="$t('group_align.right')">
-      <Button :disabled="notMultiple" @click="right" size="small" type="text">
+      </v-btn>
+    </v-tooltip>
+    <v-tooltip :content="$t('group_align.right')">
+      <v-btn :disabled="notMultiple" @click="right" size="small" type="text">
         <svg
           t="1650442299564"
           class="icon"
@@ -65,11 +65,11 @@
             p-id="2544"
           ></path>
         </svg>
-      </Button>
-    </Tooltip>
+      </v-btn>
+    </v-tooltip>
     <!-- 垂直对齐 -->
-    <Tooltip :content="$t('group_align.top')">
-      <Button :disabled="notMultiple" @click="top" size="small" type="text">
+    <v-tooltip :content="$t('group_align.top')">
+      <v-btn :disabled="notMultiple" @click="top" size="small" type="text">
         <svg
           t="1650442692910"
           class="icon"
@@ -86,10 +86,10 @@
             p-id="1119"
           ></path>
         </svg>
-      </Button>
-    </Tooltip>
-    <Tooltip :content="$t('group_align.centerY')">
-      <Button :disabled="notMultiple" @click="ycenter" size="small" type="text">
+      </v-btn>
+    </v-tooltip>
+    <v-tooltip :content="$t('group_align.centerY')">
+      <v-btn :disabled="notMultiple" @click="ycenter" size="small" type="text">
         <svg
           t="1650442732396"
           class="icon"
@@ -106,10 +106,10 @@
             p-id="1317"
           ></path>
         </svg>
-      </Button>
-    </Tooltip>
-    <Tooltip :content="$t('group_align.bottom')">
-      <Button :disabled="notMultiple" @click="bottom" size="small" type="text">
+      </v-btn>
+    </v-tooltip>
+    <v-tooltip :content="$t('group_align.bottom')">
+      <v-btn :disabled="notMultiple" @click="bottom" size="small" type="text">
         <svg
           t="1650442674784"
           class="icon"
@@ -126,11 +126,11 @@
             p-id="921"
           ></path>
         </svg>
-      </Button>
-    </Tooltip>
+      </v-btn>
+    </v-tooltip>
     <!-- 平均对齐 -->
-    <Tooltip :content="$t('group_align.averageX')">
-      <Button
+    <v-tooltip :content="$t('group_align.averageX')">
+      <v-btn
         :disabled="notMultiple"
         @click="xequation"
         size="small"
@@ -152,10 +152,10 @@
             p-id="1911"
           ></path>
         </svg>
-      </Button>
-    </Tooltip>
-    <Tooltip :content="$t('group_align.averageY')">
-      <Button
+      </v-btn>
+    </v-tooltip>
+    <v-tooltip :content="$t('group_align.averageY')">
+      <v-btn
         :disabled="notMultiple"
         @click="yequation"
         size="small"
@@ -177,8 +177,8 @@
             p-id="1713"
           ></path>
         </svg>
-      </Button>
-    </Tooltip>
+      </v-btn>
+    </v-tooltip>
   </div>
 </template>
 

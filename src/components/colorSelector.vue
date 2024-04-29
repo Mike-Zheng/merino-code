@@ -31,7 +31,7 @@
     </div>
 
     <!-- 纯色选择器 -->
-    <ColorPicker
+    <v-colorPicker
       v-show="!isGradient"
       v-model="fill"
       @on-change="changePureColor"

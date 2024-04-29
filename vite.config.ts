@@ -8,6 +8,7 @@ import AutoImport from "unplugin-auto-import/vite";
 import path from "path";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import { resolve } from "path";
+import vuetify from "vite-plugin-vuetify";
 // https://vitejs.dev/config/
 
 const envPrefix = "APP_";
@@ -18,6 +19,7 @@ export default defineConfig({
       imports: ["vue"]
       // resolvers: [ElementPlusResolver()]
     }),
+    vuetify({ autoImport: true }),
     vueJsx({
       // options are passed on to @vue/babel-plugin-jsx
     })
@@ -62,9 +64,11 @@ export default defineConfig({
     }
   },
   resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "src")
-    },
+    alias: [
+      { find: /^@\//, replacement: resolve(__dirname, "src") + "/" },
+      { find: /^~/, replacement: "" },
+      { find: /^vue-i18n/, replacement: "vue-i18n/dist/vue-i18n.cjs.js" }
+    ],
     extensions: [".js", ".ts", ".jsx", ".tsx", ".vue", ".json"]
   }
 });

@@ -7,8 +7,8 @@
 -->
 <template>
   <div class="box">
-    <ButtonGroup>
-      <Button @click="big">
+    <v-btn-group>
+      <v-btn @click="big">
         <svg
           t="1650853919128"
           class="icon"
@@ -30,8 +30,8 @@
             p-id="1273"
           ></path>
         </svg>
-      </Button>
-      <Button @click="small">
+      </v-btn>
+      <v-btn @click="small">
         <svg
           t="1650853934351"
           class="icon"
@@ -53,10 +53,10 @@
             p-id="1472"
           ></path>
         </svg>
-      </Button>
-      <Button @click="rSet" icon="ios-expand"></Button>
-      <Button @click="setViewport" icon="md-contract"></Button>
-    </ButtonGroup>
+      </v-btn>
+      <v-btn @click="rSet" icon="ios-expand"></v-btn>
+      <v-btn @click="setViewport" icon="md-contract"></v-btn>
+    </v-btn-group>
   </div>
 </template>
 

@@ -8,9 +8,9 @@
 
 <template>
   <div v-if="mixinState.mSelectMode === 'one'" class="box attr-item">
-    <!-- <ButtonGroup size="small" v-if="mSelectMode === 'one'"> -->
-    <Tooltip :content="$t('flip.x')">
-      <Button :disabled="notSelectOneMode()" @click="flip('X')" type="text">
+    <!-- <v-btnGroup size="small" v-if="mSelectMode === 'one'"> -->
+    <v-tooltip :content="$t('flip.x')">
+      <v-btn :disabled="notSelectOneMode()" @click="flip('X')" type="text">
         <svg
           t="1650443094178"
           class="icon"
@@ -34,10 +34,10 @@
             p-id="1552"
           ></path>
         </svg>
-      </Button>
-    </Tooltip>
-    <Tooltip :content="$t('flip.y')">
-      <Button :disabled="notSelectOneMode()" @click="flip('Y')" type="text">
+      </v-btn>
+    </v-tooltip>
+    <v-tooltip :content="$t('flip.y')">
+      <v-btn :disabled="notSelectOneMode()" @click="flip('Y')" type="text">
         <svg
           t="1650443104385"
           class="icon"
@@ -61,8 +61,8 @@
             p-id="1752"
           ></path>
         </svg>
-      </Button>
-    </Tooltip>
+      </v-btn>
+    </v-tooltip>
   </div>
 </template>
 

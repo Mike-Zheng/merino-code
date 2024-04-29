@@ -8,24 +8,24 @@
 
 <template>
   <div v-if="!mixinState.mSelectMode">
-    <Divider plain orientation="left">{{ $t("size") }}</Divider>
-    <Form :label-width="40" class="form-wrap">
-      <FormItem :label="$t('width')" prop="name">
-        <InputNumber
+    <v-divider plain orientation="left">{{ $t("size") }}</v-divider>
+    <v-form :label-width="40" class="form-wrap">
+      <v-formItem :label="$t('width')" prop="name">
+        <v-number-Input
           disabled
           v-model="width"
           @on-change="setSize"
-        ></InputNumber>
-      </FormItem>
-      <FormItem :label="$t('height')" prop="name">
-        <InputNumber
+        ></v-number-Input>
+      </v-formItem>
+      <v-formItem :label="$t('height')" prop="name">
+        <v-number-Input
           disabled
           v-model="height"
           @on-change="setSize"
-        ></InputNumber>
-      </FormItem>
-    </Form>
-    <Button type="primary" @click="() => (showModal = true)">调整尺寸</Button>
+        ></v-number-Input>
+      </v-formItem>
+    </v-form>
+    <v-btn type="primary" @click="() => (showModal = true)">调整尺寸</v-btn>
 
     <Modal
       v-model="showModal"
@@ -34,8 +34,8 @@
       @on-cancel="handleClose"
     >
       <p>{{ $t("default_size") }}</p>
-      <ButtonGroup vertical style="margin: 10px 0">
-        <Button
+      <v-btnGroup vertical style="margin: 10px 0">
+        <v-btn
           v-for="(item, i) in presetSize"
           :key="`${i}presetSize`"
           size="small"
@@ -43,29 +43,29 @@
           @click="setSizeBy(item.width, item.height)"
         >
           {{ item.label }}:{{ item.width }}x{{ item.height }}
-        </Button>
-      </ButtonGroup>
+        </v-btn>
+      </v-btnGroup>
 
-      <Form
+      <v-form
         :label-width="40"
         class="form-wrap"
         style="justify-content: flex-start"
       >
-        <FormItem :label="$t('width')" prop="name" style="margin-right: 10px">
-          <InputNumber
+        <v-formItem :label="$t('width')" prop="name" style="margin-right: 10px">
+          <v-number-Input
             :min="1"
             :max="99999999"
             v-model="modalData.width"
-          ></InputNumber>
-        </FormItem>
-        <FormItem :label="$t('height')" prop="name">
-          <InputNumber
+          ></v-number-Input>
+        </v-formItem>
+        <v-formItem :label="$t('height')" prop="name">
+          <v-number-Input
             :min="1"
             :max="99999999"
             v-model="modalData.height"
-          ></InputNumber>
-        </FormItem>
-      </Form>
+          ></v-number-Input>
+        </v-formItem>
+      </v-form>
     </Modal>
   </div>
 </template>

@@ -8,28 +8,29 @@
 
 <template>
   <div style="display: inline-block">
-    <Dropdown transfer-class-name="fix" @on-click="insertTypeHand">
+    <v-dropdown transfer-class-name="fix" @on-click="insertTypeHand">
       <a href="javascript:void(0)">
         {{ $t("insertFile.insert") }}
-        <Icon type="ios-arrow-down"></Icon>
+        <!-- <Icon type="ios-arrow-down"></Icon> -->
+        icon down
       </a>
       <template #list>
-        <DropdownMenu>
+        <v-dropdownMenu>
           <!-- 图片 -->
-          <DropdownItem name="insertImg">{{
+          <v-dropdownItem name="insertImg">{{
             $t("insertFile.insert_picture")
-          }}</DropdownItem>
+          }}</v-dropdownItem>
           <!-- SVG -->
-          <DropdownItem name="insertSvg">{{
+          <v-dropdownItem name="insertSvg">{{
             $t("insertFile.insert_SVG")
-          }}</DropdownItem>
+          }}</v-dropdownItem>
           <!-- SVG 字符串 -->
-          <DropdownItem name="insertSvgStrModal">{{
+          <v-dropdownItem name="insertSvgStrModal">{{
             $t("insertFile.insert_SVGStr")
-          }}</DropdownItem>
-        </DropdownMenu>
+          }}</v-dropdownItem>
+        </v-dropdownMenu>
       </template>
-    </Dropdown>
+    </v-dropdown>
     <!-- 插入字符串svg元素 -->
     <Modal
       v-model="state.showModal"

@@ -1,18 +1,18 @@
 <template>
   <div v-if="!mixinState.mSelectMode">
-    <Divider orientation="left" plain>{{ $t("color") }}</Divider>
-    <Form :label-width="40">
-      <FormItem :label="$t('color')" prop="name">
-        <ColorPicker
+    <v-divider orientation="left" plain>{{ $t("color") }}</v-divider>
+    <v-form :label-width="40">
+      <v-formItem :label="$t('color')" prop="name">
+        <v-colorPicker
           v-model="color"
           @on-change="setThisColor"
           alpha
           size="small"
           transfer
         />
-      </FormItem>
-    </Form>
-    <Divider orientation="left" plain>{{ $t("color_macthing") }}</Divider>
+      </v-formItem>
+    </v-form>
+    <v-divider orientation="left" plain>{{ $t("color_macthing") }}</v-divider>
     <div class="color-list">
       <template v-for="(item, i) in colorList" :key="item.label + i">
         <div class="item">

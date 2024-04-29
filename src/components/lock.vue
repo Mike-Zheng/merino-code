@@ -7,15 +7,18 @@
 -->
 
 <template>
-  <Tooltip :content="$t('quick.lock')" v-if="mixinState.mSelectMode === 'one'">
-    <Button
+  <v-tooltip
+    :content="$t('quick.lock')"
+    v-if="mixinState.mSelectMode === 'one'"
+  >
+    <v-btn
       v-if="isLock"
       @click="doLock(false)"
       icon="md-lock"
       type="text"
-    ></Button>
-    <Button v-else @click="doLock(true)" icon="md-unlock" type="text"></Button>
-  </Tooltip>
+    ></v-btn>
+    <v-btn v-else @click="doLock(true)" icon="md-unlock" type="text"></v-btn>
+  </v-tooltip>
 </template>
 
 <script setup name="Lock">

@@ -1,7 +1,10 @@
 <template>
-  <Tooltip v-if="mixinState.mSelectMode === 'one'" :content="$t('quick.copy')">
-    <Button @click="clone" icon="ios-copy" type="text"></Button>
-  </Tooltip>
+  <v-tooltip
+    v-if="mixinState.mSelectMode === 'one'"
+    :content="$t('quick.copy')"
+  >
+    <v-btn @click="clone" icon="ios-copy" type="text"></v-btn>
+  </v-tooltip>
 </template>
 
 <script setup name="Clone">

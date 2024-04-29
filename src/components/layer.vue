@@ -9,7 +9,7 @@
 <template>
   <div class="box">
     <template v-if="list.length">
-      <Divider plain orientation="left">{{ $t("layers") }}</Divider>
+      <v-divider plain orientation="left">{{ $t("layers") }}</v-divider>
       <div class="layer-box">
         <div
           v-for="item in list"
@@ -17,7 +17,7 @@
           :key="item.id"
           :class="isSelect(item) && 'active'"
         >
-          <Tooltip
+          <v-tooltip
             :content="item.name || item.text || item.type"
             placement="left"
           >
@@ -28,23 +28,23 @@
               ></span>
               | {{ textType(item.type, item) }}
             </div>
-          </Tooltip>
+          </v-tooltip>
         </div>
       </div>
       <!-- 层级调整按钮 -->
       <div class="btn-box">
-        <ButtonGroup v-show="mixinState.mSelectMode === 'one'" size="small">
-          <Button @click="up"><span v-html="btnIconType('up')"></span></Button>
-          <Button @click="down"
+        <v-btnGroup v-show="mixinState.mSelectMode === 'one'" size="small">
+          <v-btn @click="up"><span v-html="btnIconType('up')"></span></v-btn>
+          <v-btn @click="down"
             ><span v-html="btnIconType('down')"></span
-          ></Button>
-          <Button @click="upTop"
+          ></v-btn>
+          <v-btn @click="upTop"
             ><span v-html="btnIconType('upTop')"></span
-          ></Button>
-          <Button @click="downTop"
+          ></v-btn>
+          <v-btn @click="downTop"
             ><span v-html="btnIconType('downTop')"></span
-          ></Button>
-        </ButtonGroup>
+          ></v-btn>
+        </v-btnGroup>
       </div>
     </template>
     <template v-else>

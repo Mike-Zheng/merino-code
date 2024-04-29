@@ -9,13 +9,13 @@
 <template>
   <div>
     <div class="search-box">
-      <Cascader
+      <v-cascader
         :data="[allType, ...state.materialTypelist]"
         v-model="state.materialType"
         @on-change="handleChange"
       >
-        <Button icon="ios-menu"></Button>
-      </Cascader>
+        <v-btn icon="ios-menu"></v-btn>
+      </v-cascader>
       <Input
         class="input"
         :placeholder="state.placeholder"
@@ -26,8 +26,8 @@
     </div>
 
     <div :key="item.value" v-for="item in state.materialist">
-      <Divider plain orientation="left">{{ item.label }}</Divider>
-      <Tooltip
+      <v-divider plain orientation="left">{{ item.label }}</v-divider>
+      <v-tooltip
         :content="info.label"
         v-for="(info, i) in item.list"
         :key="`${i}-bai1-button`"
@@ -39,7 +39,7 @@
           v-lazy="info.src"
           @click="beforeClearTip(info.tempUrl)"
         />
-      </Tooltip>
+      </v-tooltip>
     </div>
   </div>
 </template>

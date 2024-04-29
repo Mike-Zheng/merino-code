@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Divider plain orientation="left">{{ $t("common_elements") }}</Divider>
+    <v-divider plain orientation="left">{{ $t("common_elements") }}</v-divider>
     <div class="tool-box">
       <span
         @click="() => addText()"
@@ -130,7 +130,7 @@
         </svg>
       </span>
     </div>
-    <Divider plain orientation="left">{{ $t("draw_elements") }}</Divider>
+    <v-divider plain orientation="left">{{ $t("draw_elements") }}</v-divider>
     <div class="tool-box">
       <span
         @click="drawingLineModeSwitch(false)"
