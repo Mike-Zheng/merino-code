@@ -39,11 +39,11 @@ class HistoryPlugin {
     this.canvas.on("history:append", () => {
       this.historyUpdate();
     });
-    window.addEventListener("beforeunload", (e) => {
-      if (this.canvas.historyUndo.length > 0) {
-        (e || window.event).returnValue = "确认离开";
-      }
-    });
+    // window.addEventListener("beforeunload", (e) => {
+    //   if (this.canvas.historyUndo.length > 0) {
+    //     (e || window.event).returnValue = "确认离开";
+    //   }
+    // });
   }
 
   historyUpdate() {
