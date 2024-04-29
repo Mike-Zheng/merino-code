@@ -20,6 +20,7 @@ import DrawLinePlugin from "./plugin/DrawLinePlugin";
 import GroupTextEditorPlugin from "./plugin/GroupTextEditorPlugin";
 import GroupAlignPlugin from "./plugin/GroupAlignPlugin";
 import WorkspacePlugin from "./plugin/WorkspacePlugin";
+import HoverBorderPlugin from "./plugin/HoverBorderPlugin";
 import DownFontPlugin from "./plugin/DownFontPlugin";
 import HistoryPlugin from "./plugin/HistoryPlugin";
 import FlipPlugin from "./plugin/FlipPlugin";
@@ -43,6 +44,7 @@ export {
   GroupTextEditorPlugin,
   GroupAlignPlugin,
   WorkspacePlugin,
+  HoverBorderPlugin,
   DownFontPlugin,
   HistoryPlugin,
   FlipPlugin,

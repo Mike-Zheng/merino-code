@@ -205,6 +205,7 @@ import Editor, {
   GroupTextEditorPlugin,
   GroupAlignPlugin,
   WorkspacePlugin,
+  HoverBorderPlugin,
   DownFontPlugin,
   HistoryPlugin,
   FlipPlugin,
@@ -249,6 +250,7 @@ onMounted(() => {
   canvasEditor.use(GroupTextEditorPlugin);
   canvasEditor.use(GroupAlignPlugin);
   canvasEditor.use(WorkspacePlugin);
+  canvasEditor.use(HoverBorderPlugin);
   canvasEditor.use(DownFontPlugin);
   canvasEditor.use(HistoryPlugin);
   canvasEditor.use(FlipPlugin);
@@ -470,7 +472,7 @@ provide("canvasEditor", canvasEditor);
 .design-stage-grid {
   --offsetX: 0px;
   --offsetY: 0px;
-  --size: 16px;
+  --size: 8px;
   --color: #dedcdc;
   background-image: linear-gradient(
       45deg,
