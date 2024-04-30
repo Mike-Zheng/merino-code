@@ -20,20 +20,20 @@
         icon down
       </v-btn>
       <template #list>
-        <v-dropdownMenu>
-          <v-dropdownItem name="clipboard">{{
+        <v-dropdown-menu>
+          <v-dropdown-item name="clipboard">{{
             $t("copy_to_clipboard")
-          }}</v-dropdownItem>
-          <v-dropdownItem name="saveImg">{{
+          }}</v-dropdown-item>
+          <v-dropdown-item name="saveImg">{{
             $t("save_as_picture")
-          }}</v-dropdownItem>
-          <v-dropdownItem name="saveSvg">{{
+          }}</v-dropdown-item>
+          <v-dropdown-item name="saveSvg">{{
             $t("save_as_svg")
-          }}</v-dropdownItem>
-          <v-dropdownItem name="saveJson" divided>{{
+          }}</v-dropdown-item>
+          <v-dropdown-item name="saveJson" divided>{{
             $t("save_as_json")
-          }}</v-dropdownItem>
-        </v-dropdownMenu>
+          }}</v-dropdown-item>
+        </v-dropdown-menu>
       </template>
     </v-dropdown>
   </div>

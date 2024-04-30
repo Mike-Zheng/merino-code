@@ -10,7 +10,7 @@
     {{ $t("waterMark.text") }}
   </v-btn>
 
-  <Modal
+  <v-modal
     v-model="showWaterMadal"
     :title="$t('waterMark.modalTitle')"
     @on-ok="onModalOk"
@@ -82,7 +82,7 @@
         </RadioGroup>
       </div>
     </div>
-  </Modal>
+  </v-modal>
 </template>
 
 <script name="WaterMark" lang="ts" setup>

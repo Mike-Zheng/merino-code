@@ -15,24 +15,24 @@
         icon down
       </a>
       <template #list>
-        <v-dropdownMenu>
+        <v-dropdown-menu>
           <!-- 图片 -->
-          <v-dropdownItem name="insertImg">{{
+          <v-dropdown-item name="insertImg">{{
             $t("insertFile.insert_picture")
-          }}</v-dropdownItem>
+          }}</v-dropdown-item>
           <!-- SVG -->
-          <v-dropdownItem name="insertSvg">{{
+          <v-dropdown-item name="insertSvg">{{
             $t("insertFile.insert_SVG")
-          }}</v-dropdownItem>
+          }}</v-dropdown-item>
           <!-- SVG 字符串 -->
-          <v-dropdownItem name="insertSvgStrModal">{{
+          <v-dropdown-item name="insertSvgStrModal">{{
             $t("insertFile.insert_SVGStr")
-          }}</v-dropdownItem>
-        </v-dropdownMenu>
+          }}</v-dropdown-item>
+        </v-dropdown-menu>
       </template>
     </v-dropdown>
     <!-- 插入字符串svg元素 -->
-    <Modal
+    <v-modal
       v-model="state.showModal"
       :title="$t('insertFile.modal_tittle')"
       @on-ok="insertTypeHand('insertSvgStr')"
@@ -44,7 +44,7 @@
         type="textarea"
         :placeholder="$t('insertFile.insert_SVGStr_placeholder')"
       />
-    </Modal>
+    </v-modal>
   </div>
 </template>
 

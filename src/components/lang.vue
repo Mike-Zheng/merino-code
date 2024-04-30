@@ -14,15 +14,15 @@
       icon down
     </v-btn>
     <template #list>
-      <v-dropdownMenu>
-        <v-dropdownItem
+      <v-dropdown-menu>
+        <v-dropdown-item
           v-for="lang in langList"
           :key="lang.langType"
           :name="lang.langType"
         >
           {{ lang.langName }}
-        </v-dropdownItem>
-      </v-dropdownMenu>
+        </v-dropdown-item>
+      </v-dropdown-menu>
     </template>
   </v-dropdown>
 </template>

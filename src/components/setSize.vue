@@ -27,7 +27,7 @@
     </v-form>
     <v-btn type="primary" @click="() => (showModal = true)">调整尺寸</v-btn>
 
-    <Modal
+    <v-modal
       v-model="showModal"
       :title="$t('setSizeTip')"
       @on-ok="handleConfirm"
@@ -66,7 +66,7 @@
           ></v-number-Input>
         </v-formItem>
       </v-form>
-    </Modal>
+    </v-modal>
   </div>
 </template>
 
