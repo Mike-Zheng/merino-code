@@ -168,18 +168,7 @@ onMounted(() => {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="less">
-:deep(.ivu-tooltip-inner) {
-  white-space: normal;
-}
-
-:deep(.ivu-tooltip) {
-  display: block;
-}
-
-:deep(.ivu-tooltip-rel) {
-  display: block;
-}
+<style scoped lang="scss">
 .box {
   width: 100%;
 }
@@ -212,24 +201,11 @@ onMounted(() => {
   width: 100%;
   margin-bottom: 20px;
   background: #f3f3f3;
-  .ivu-btn-group {
-    display: flex;
-  }
-  .ivu-btn-group > .ivu-btn {
-    flex: 1;
-  }
 }
 svg {
   vertical-align: text-top;
 }
-:deep(.ivu-divider-plain) {
-  &.ivu-divider-with-text-left {
-    margin: 10px 0;
-    font-size: 16px;
-    font-weight: bold;
-    color: #000000;
-  }
-}
+
 .empty-text {
   width: 100%;
   text-align: center;
@@ -238,7 +214,7 @@ svg {
 }
 </style>
 
-<style lang="less">
+<style lang="scss">
 span {
   svg {
     vertical-align: middle;

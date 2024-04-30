@@ -166,7 +166,7 @@ const addItem = (e: Event) => {
 };
 </script>
 
-<style scoped lang="less">
+<style scoped lang="scss">
 .search-box {
   padding-top: 10px;
   display: flex;

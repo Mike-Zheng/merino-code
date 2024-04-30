@@ -13,17 +13,17 @@
 </template>
 
 <script lang="ts" setup>
-import { ImagePreview } from "view-ui-plus";
+// import { ImagePreview } from "view-ui-plus";
 
 const canvasEditor: any = inject("canvasEditor");
 const preview = () => {
   canvasEditor.preview().then((dataUrl: string) => {
     // const dataUrl = getImgUrl();
-    ImagePreview.show({
-      previewList: [dataUrl]
-    });
+    // ImagePreview.show({
+    //   previewList: [dataUrl]
+    // });
   });
 };
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="scss"></style>

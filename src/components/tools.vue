@@ -392,7 +392,7 @@ onMounted(() => {
 });
 </script>
 
-<style scoped lang="less">
+<style scoped lang="scss">
 .tool-box {
   display: flex;
   justify-content: space-around;

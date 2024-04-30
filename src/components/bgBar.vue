@@ -2,7 +2,7 @@
   <div v-if="!mixinState.mSelectMode">
     <v-divider orientation="left" plain>{{ $t("color") }}</v-divider>
     <v-form :label-width="40">
-      <v-formItem :label="$t('color')" prop="name">
+      <v-form-item :label="$t('color')" prop="name">
         <v-colorPicker
           v-model="color"
           @on-change="setThisColor"
@@ -10,7 +10,7 @@
           size="small"
           transfer
         />
-      </v-formItem>
+      </v-form-item>
     </v-form>
     <v-divider orientation="left" plain>{{ $t("color_macthing") }}</v-divider>
     <div class="color-list">
@@ -80,10 +80,7 @@ function setColor(color) {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="less">
-:deep(.ivu-form-item) {
-  margin-bottom: 0;
-}
+<style scoped lang="scss">
 .img {
   width: 50px;
   padding: 5px;
@@ -108,13 +105,6 @@ function setColor(color) {
     line-height: 20px;
     vertical-align: middle;
     cursor: pointer;
-  }
-}
-
-:deep(.ivu-divider-plain) {
-  &.ivu-divider-with-text-left {
-    margin: 10px 0;
-    font-weight: bold;
   }
 }
 </style>

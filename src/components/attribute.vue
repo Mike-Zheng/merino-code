@@ -9,7 +9,7 @@
         <div class="flex-item">
           <div class="left font-selector">
             <Select v-model="fontAttr.fontFamily" @on-change="changeFontFamily">
-              <Option
+              <v-option
                 v-for="item in fontsList"
                 :value="item.name"
                 :key="`font-${item.name}`"
@@ -26,7 +26,7 @@
                   <!-- 解决无法选中问题 -->
                   <span style="display: none">{{ item.name }}</span>
                 </div>
-              </Option>
+              </v-option>
             </Select>
           </div>
           <div class="right">
@@ -223,13 +223,13 @@
             <span class="label">{{ $t("attributes.stroke") }}</span>
             <div class="content">
               <Select v-model="baseAttr.strokeDashArray" @on-change="borderSet">
-                <Option
+                <v-option
                   v-for="item in strokeDashList"
                   :value="item.label"
                   :key="`stroke-${item.label}`"
                 >
                   {{ item.label }}
-                </Option>
+                </v-option>
               </Select>
             </div>
           </div>
@@ -310,8 +310,8 @@
               allow-create
               @on-change="changeCommon('linkData', baseAttr.linkData)"
             >
-              <Option value="src"></Option>
-              <Option value="text"></Option>
+              <v-option value="src"></v-option>
+              <v-option value="text"></v-option>
             </Select>
             <Input
               v-model="baseAttr.linkData[1]"
@@ -330,7 +330,7 @@ import useSelect from "@/hooks/select";
 import colorSelector from "@/components/colorSelector.vue";
 import { getPolygonVertices } from "@/utils/math";
 import InputNumber from "@/components/inputNumber";
-import { Spin } from "view-ui-plus";
+// import { Spin } from "view-ui-plus";
 import { useFont } from "@/hooks";
 
 const { fontsList, loadFont } = useFont();
@@ -528,7 +528,7 @@ const changeFontFamily = async (fontName) => {
     canvasEditor.canvas.renderAll();
     return;
   }
-  Spin.show();
+  // Spin.show();
   // 字体加载
   if (await loadFont(fontName)) {
     const activeObject = canvasEditor.canvas.getActiveObjects()[0];
@@ -636,24 +636,9 @@ onBeforeUnmount(() => {
 });
 </script>
 
-<style scoped lang="less">
+<style scoped lang="scss">
 // @import url('vue-color-gradient-picker/dist/index.css');
-:deep(.ivu-color-picker) {
-  display: block;
-}
-:deep(.ivu-input-number) {
-  display: block;
-  width: 100%;
-}
 
-:deep(.ivu-divider-plain) {
-  &.ivu-divider-with-text-left {
-    margin: 10px 0;
-    font-weight: bold;
-    font-size: 16px;
-    color: #000000;
-  }
-}
 .box {
   width: 100%;
 }
@@ -661,10 +646,6 @@ onBeforeUnmount(() => {
 .button-group {
   display: flex;
   width: 100%;
-  .ivu-btn,
-  .ivu-radio-wrapper {
-    flex: 1;
-  }
 }
 
 .flex-view {
@@ -700,73 +681,10 @@ onBeforeUnmount(() => {
   .right {
     flex: 1;
     margin-left: 10px;
-    :deep(.ivu-input-number) {
-      display: block;
-      width: 100%;
-    }
-  }
-  :deep(.ivu-slider-wrap) {
-    margin: 13px 0;
-  }
-  :deep(.ivu-radio-group-button) {
-    & .ivu-radio-wrapper {
-      width: 48px;
-      line-height: 40px;
-      text-align: center;
-      svg {
-        vertical-align: baseline;
-      }
-    }
-  }
-
-  :deep(.ivu-btn-group-large) {
-    & > .ivu-btn {
-      font-size: 24px;
-    }
-  }
-
-  :deep(.ivu-radio-group-button) {
-    &.ivu-radio-group-large .ivu-radio-wrapper {
-      font-size: 24px;
-    }
-  }
-}
-
-.ivu-row {
-  margin-bottom: 8px;
-
-  .ivu-col {
-    position: inherit;
-    &__box {
-      display: flex;
-      align-items: center;
-      background: #f8f8f8;
-      border-radius: 4px;
-      gap: 8px;
-    }
-  }
-
-  .label {
-    padding-left: 8px;
-  }
-
-  .content {
-    flex: 1;
-
-    :deep(.--input),
-    :deep(.ivu-select-selection) {
-      background-color: transparent;
-      border: none !important;
-      box-shadow: none !important;
-    }
   }
 }
 
 .font-selector {
-  :deep(.ivu-select-item) {
-    padding: 1px 4px;
-  }
-
   .font-item {
     background-color: #000;
     background-size: cover;

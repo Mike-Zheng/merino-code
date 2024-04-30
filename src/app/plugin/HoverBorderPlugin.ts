@@ -57,7 +57,7 @@ class HoverBorderPlugin {
       throw new Error("element #workspace is missing, plz check!");
     }
     this.workspaceEl = workspaceEl;
-    this.workspace = null;
+    // this.workspace = null;
 
     // this.canvasEvents = {
     //   "mouse:out": this.drawBorder.bind(this),

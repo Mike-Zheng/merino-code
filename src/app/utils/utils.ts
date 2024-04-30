@@ -7,7 +7,7 @@
  */
 
 import { useClipboard, useFileDialog, useBase64 } from "@vueuse/core";
-import { Message } from "view-ui-plus";
+//import { Message } from "view-ui-plus";
 
 /**
  * @description: 图片文件转字符串
@@ -66,9 +66,9 @@ export const clipboardText = async (
 ) => {
   try {
     await useClipboard({ source, ...options }).copy();
-    Message.success("复制成功");
+    // Message.success("复制成功");
   } catch (error) {
-    Message.error("复制失败");
+    // Message.error("复制失败");
     throw error;
   }
 };

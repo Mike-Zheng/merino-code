@@ -517,24 +517,24 @@ defineExpose({
   </div>
 </template>
 
-<style scoped lang="less">
+<!-- <style scoped lang="scss">
 @import "view-ui-plus/src/styles/custom.less";
 
 @input-number-prefix-cls: ~"@{css-prefix}input-number";
 
-.@{input-number-prefix-cls} {
+.${input-number-prefix-cls} {
   border: none;
-  background: @input-group-bg;
+  background: $input-group-bg;
 
   &-input {
     background: none;
   }
 
   &-handler {
-    height: (@input-height-base / 2);
+    height: ($input-height-base / 2);
 
     &-wrap {
-      background: @input-group-bg;
+      background: $input-group-bg;
       border-left-color: transparent;
     }
 
@@ -544,7 +544,7 @@ defineExpose({
 
     &-up-inner,
     &-down-inner {
-      line-height: (@input-height-base / 2);
+      line-height: ($input-height-base / 2);
     }
   }
 
@@ -561,25 +561,26 @@ defineExpose({
   }
 
   &-small {
-    .@{input-number-prefix-cls}-handler {
-      height: (@input-height-small / 2);
+    .${input-number-prefix-cls}-handler {
+      height: ($input-height-small / 2);
 
       &-up-inner,
       &-down-inner {
-        line-height: (@input-height-small / 2);
+        line-height: ($input-height-small / 2);
       }
     }
   }
 
   &-large {
-    .@{input-number-prefix-cls}-handler {
-      height: (@input-height-large / 2);
+    .${input-number-prefix-cls}-handler {
+      height: ($input-height-large / 2);
 
       &-up-inner,
       &-down-inner {
-        line-height: (@input-height-large / 2);
+        line-height: ($input-height-large / 2);
       }
     }
   }
 }
 </style>
+-->

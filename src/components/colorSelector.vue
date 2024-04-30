@@ -244,7 +244,7 @@ onMounted(() => {
 });
 </script>
 
-<style scoped lang="less">
+<style scoped lang="scss">
 .box {
   padding: 10px 0;
 }
@@ -259,23 +259,6 @@ onMounted(() => {
 
 .switch {
   margin-bottom: 10px;
-}
-
-// 提示弹框
-:deep(.ivu-color-picker) {
-  display: block;
-}
-
-:deep(.ivu-poptip-body) {
-  padding: 5px;
-}
-
-:deep(.ivu-poptip) {
-  width: 100%;
-
-  .ivu-poptip-rel {
-    width: 100%;
-  }
 }
 
 // 渐变选择器

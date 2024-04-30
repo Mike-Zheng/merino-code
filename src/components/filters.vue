@@ -314,7 +314,7 @@ function _getFabricFilterType(type) {
 }
 </script>
 
-<style scoped lang="less">
+<style scoped lang="scss">
 .filter-box {
   overflow: hidden;
   .filter-item {

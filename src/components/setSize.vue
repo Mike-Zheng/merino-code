@@ -10,24 +10,24 @@
   <div v-if="!mixinState.mSelectMode">
     <v-divider plain orientation="left">{{ $t("size") }}</v-divider>
     <v-form :label-width="40" class="form-wrap">
-      <v-formItem :label="$t('width')" prop="name">
-        <v-number-Input
+      <v-form-item :label="$t('width')" prop="name">
+        <InputNumber
           disabled
           v-model="width"
           @on-change="setSize"
-        ></v-number-Input>
-      </v-formItem>
-      <v-formItem :label="$t('height')" prop="name">
-        <v-number-Input
+        ></InputNumber>
+      </v-form-item>
+      <v-form-item :label="$t('height')" prop="name">
+        <InputNumber
           disabled
           v-model="height"
           @on-change="setSize"
-        ></v-number-Input>
-      </v-formItem>
+        ></InputNumber>
+      </v-form-item>
     </v-form>
     <v-btn type="primary" @click="() => (showModal = true)">调整尺寸</v-btn>
 
-    <v-modal
+    <!-- <Modal
       v-model="showModal"
       :title="$t('setSizeTip')"
       @on-ok="handleConfirm"
@@ -51,27 +51,31 @@
         class="form-wrap"
         style="justify-content: flex-start"
       >
-        <v-formItem :label="$t('width')" prop="name" style="margin-right: 10px">
-          <v-number-Input
+        <v-form-item
+          :label="$t('width')"
+          prop="name"
+          style="margin-right: 10px"
+        >
+          <InputNumber
             :min="1"
             :max="99999999"
             v-model="modalData.width"
-          ></v-number-Input>
-        </v-formItem>
-        <v-formItem :label="$t('height')" prop="name">
-          <v-number-Input
+          ></InputNumber>
+        </v-form-item>
+        <v-form-item :label="$t('height')" prop="name">
+          <InputNumber
             :min="1"
             :max="99999999"
             v-model="modalData.height"
-          ></v-number-Input>
-        </v-formItem>
+          ></InputNumber>
+        </v-form-item>
       </v-form>
-    </v-modal>
+    </Modal> -->
   </div>
 </template>
 
 <script setup name="CanvasSize">
-import { Modal } from "view-ui-plus";
+// import { Modal } from "view-ui-plus";
 import useSelect from "@/hooks/select";
 import { useI18n } from "vue-i18n";
 
@@ -153,17 +157,7 @@ const handleConfirm = () => {
 };
 </script>
 
-<style scoped lang="less">
-:deep(.ivu-form-item) {
-  margin-bottom: 0;
-}
-:deep(.ivu-divider-plain) {
-  &.ivu-divider-with-text-left {
-    margin: 10px 0;
-    font-weight: bold;
-  }
-}
-
+<style scoped lang="scss">
 .form-wrap {
   display: flex;
   justify-content: space-around;

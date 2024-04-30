@@ -6,29 +6,29 @@
       <!-- logo -->
 
       <!-- 导入 -->
-      <import-Json></import-Json>
-      <v-divider type="vertical" />
-      <import-file></import-file>
-      <v-divider type="vertical" />
+      <!-- <import-Json></import-Json> -->
+
+      <!-- <import-file></import-file> -->
+
       <!-- 标尺开关 -->
-      <v-tooltip :content="$t('grid')">
+      <!-- <v-tooltip :content="$t('grid')">
         <v-switch
           v-model="state.ruler"
           @on-change="rulerSwitch"
           size="small"
           class="switch"
         ></v-switch>
-      </v-tooltip>
-      <v-divider type="vertical" />
+      </v-tooltip> -->
+
       <history></history>
 
-      <div style="float: right">
-        <!-- 预览 -->
+      <!-- <div style="float: right">
+
         <previewCurrent />
         <waterMark />
         <save></save>
         <lang></lang>
-      </div>
+      </div> -->
     </div>
 
     <!-- 左侧区域 -->
@@ -401,13 +401,9 @@ provide("canvasEditor", canvasEditor);
   border-radius: 4px;
   display: flex;
   align-items: center;
-  .ivu-tooltip {
-    text-align: center;
-    flex: 1;
-  }
 }
 
-.ivu-menu-vertical .menu-item {
+.menu-item {
   text-align: center;
   padding: 10px 2px;
   box-sizing: border-box;
@@ -418,17 +414,7 @@ provide("canvasEditor", canvasEditor);
   }
 }
 
-:deep(.ivu-layout-header) {
-  --height: 30px;
-  padding: 0 10px;
-  // border-bottom: 1px solid #eef2f8;
-  background: #232323;
-  height: var(--height);
-  line-height: var(--height);
-}
-
-.home,
-.ivu-layout {
+.home {
   height: 100vh;
 }
 
@@ -473,9 +459,6 @@ provide("canvasEditor", canvasEditor);
   overflow-y: auto;
 }
 
-.ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu) {
-  background: none;
-}
 // 标尺
 .switch {
   margin-right: 10px;

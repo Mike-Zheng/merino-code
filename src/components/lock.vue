@@ -79,7 +79,7 @@ onBeforeUnmount(() => {
 });
 </script>
 
-<style scoped lang="less">
+<style scoped lang="scss">
 h3 {
   margin: 40px 0 0;
 }

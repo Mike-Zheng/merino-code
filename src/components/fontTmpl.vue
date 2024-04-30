@@ -30,7 +30,7 @@ import useSelect from "@/hooks/select";
 // import { downFontByJSON } from '@/utils/utils';
 import { v4 as uuid } from "uuid";
 import axios from "axios";
-import { Spin } from "view-ui-plus";
+// import { Spin } from "view-ui-plus";
 import { useI18n } from "vue-i18n";
 
 const repoSrc = import.meta.env.APP_REPO;
@@ -66,23 +66,23 @@ const list = [
 
 // 插入文件
 const insertFile = (str) => {
-  Spin.show({
-    render: (h) => h("div", t("alert.loading_fonts"))
-  });
+  // Spin.show({
+  //   render: (h) => h("div", t("alert.loading_fonts"))
+  // });
   const obj = JSON.parse(str);
   obj.id = uuid();
   new fabric.Textbox.fromObject(obj, (e) => {
     canvasEditor.canvas.add(e);
     e.center();
     canvasEditor.canvas.setActiveObject(e);
-    Spin.hide();
+    // Spin.hide();
   });
 };
 // 获取模板数据
 const getTempData = (tmplUrl) => {
-  Spin.show({
-    render: (h) => h("div", t("alert.loading_data"))
-  });
+  // Spin.show({
+  //   render: (h) => h("div", t("alert.loading_data"))
+  // });
   const getTemp = axios.get(tmplUrl);
   getTemp.then((res) => {
     insertFile(JSON.stringify(res.data));
@@ -90,7 +90,7 @@ const getTempData = (tmplUrl) => {
 };
 </script>
 
-<style scoped lang="less">
+<style scoped lang="scss">
 .tmpl-img {
   width: 86px;
   cursor: pointer;

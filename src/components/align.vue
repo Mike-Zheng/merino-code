@@ -223,20 +223,9 @@ const yequation = () => {
 };
 </script>
 
-<style scoped lang="less">
+<style scoped lang="scss">
 .box {
   display: flex;
   align-items: center;
-  .ivu-tooltip {
-    text-align: center;
-    flex: 1;
-  }
-}
-:deep(.ivu-btn) {
-  &[disabled] {
-    svg {
-      opacity: 0.2;
-    }
-  }
 }
 </style>

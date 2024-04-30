@@ -33,7 +33,7 @@
         v-model="waterMarkState.fontFamily"
         @on-change="changeFontFamily"
       >
-        <Option
+        <v-option
           v-for="item in fontsList"
           :value="item.name"
           :key="`font-${item.name}`"
@@ -48,7 +48,7 @@
             <!-- 解决无法选中问题 -->
             <span style="display: none">{{ item.name }}</span>
           </div>
-        </Option>
+        </v-option>
       </Select>
     </div>
     <div class="setting-item">
@@ -89,7 +89,7 @@
 import { debounce } from "lodash-es";
 import useSelect from "@/hooks/select";
 import { useFont } from "@/hooks";
-import { Message } from "view-ui-plus";
+//import { Message } from "view-ui-plus";
 
 const { fontsList, loadFont } = useFont();
 const { canvasEditor }: any = useSelect();
@@ -242,7 +242,7 @@ const addWaterMark = debounce(function () {
 }, 250);
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .mr-10px {
   margin-right: 10px;
 }
@@ -257,10 +257,6 @@ const addWaterMark = debounce(function () {
   margin-bottom: 10px;
 }
 .font-selector {
-  :deep(.ivu-select-item) {
-    padding: 1px 4px;
-  }
-
   .font-item {
     background-color: #000;
     background-size: cover;

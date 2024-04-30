@@ -140,9 +140,3 @@ function insertSvgFile(svgFile) {
   });
 }
 </script>
-
-<style scoped lang="less">
-:deep(.ivu-select-dropdown) {
-  z-index: 999;
-}
-</style>

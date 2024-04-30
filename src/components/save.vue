@@ -40,7 +40,7 @@
 </template>
 
 <script setup name="save-bar">
-import { Modal } from "view-ui-plus";
+// import { Modal } from "view-ui-plus";
 import useSelect from "@/hooks/select";
 
 import { debounce } from "lodash-es";
@@ -80,17 +80,17 @@ const clear = () => {
 };
 
 const beforeClear = () => {
-  Modal.confirm({
-    title: t("tip"),
-    content: `<p>${t("clearTip")}</p>`,
-    okText: t("ok"),
-    cancelText: t("cancel"),
-    onOk: () => clear()
-  });
+  // Modal.confirm({
+  //   title: t("tip"),
+  //   content: `<p>${t("clearTip")}</p>`,
+  //   okText: t("ok"),
+  //   cancelText: t("cancel"),
+  //   onOk: () => clear()
+  // });
 };
 </script>
 
-<style scoped lang="less">
+<style scoped lang="scss">
 .save-box {
   display: inline-block;
   padding-right: 10px;

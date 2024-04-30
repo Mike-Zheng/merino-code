@@ -78,7 +78,7 @@ const setViewport = () => {
   canvasEditor.auto();
 };
 </script>
-<style scoped lang="less">
+<style scoped lang="scss">
 .box {
   position: absolute;
   right: 10px;

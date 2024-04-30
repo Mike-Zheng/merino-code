@@ -70,21 +70,10 @@ const group = () => {
   canvasEditor.group();
 };
 </script>
-<style scoped lang="less">
+<style scoped lang="scss">
 .box {
   display: flex;
   align-items: center;
   padding: 0;
-  .ivu-btn {
-    text-align: center;
-    flex: 1;
-  }
-}
-:deep(.ivu-btn) {
-  &[disabled] {
-    svg {
-      opacity: 0.2;
-    }
-  }
 }
 </style>

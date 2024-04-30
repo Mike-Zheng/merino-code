@@ -47,7 +47,7 @@
 <script setup name="ImportTmpl" lang="ts">
 import useSelect from "@/hooks/select";
 import axios from "axios";
-import { Spin, Modal } from "view-ui-plus";
+// import { Spin, Modal } from "view-ui-plus";
 import { useI18n } from "vue-i18n";
 import { cloneDeep } from "lodash-es";
 
@@ -94,24 +94,24 @@ const insertSvgFile = () => {
 
 // 替换提示
 const beforeClearTip = (tmplUrl: string) => {
-  Modal.confirm({
-    title: t("tip"),
-    content: `<p>${t("replaceTip")}</p>`,
-    okText: t("ok"),
-    cancelText: t("cancel"),
-    onOk: () => getTempData(tmplUrl)
-  });
+  // Modal.confirm({
+  //   title: t("tip"),
+  //   content: `<p>${t("replaceTip")}</p>`,
+  //   okText: t("ok"),
+  //   cancelText: t("cancel"),
+  //   onOk: () => getTempData(tmplUrl)
+  // });
 };
 
 // 获取模板数据
 const getTempData = (tmplUrl: string) => {
-  Spin.show({
-    render: (h: any) => h("div", t("alert.loading_data"))
-  });
+  // Spin.show({
+  //   render: (h: any) => h("div", t("alert.loading_data"))
+  // });
   const getTemp = axios.get(tmplUrl);
   getTemp.then((res) => {
     state.jsonFile = JSON.stringify(res.data);
-    Spin.hide();
+    // Spin.hide();
     insertSvgFile();
   });
 };
@@ -157,7 +157,7 @@ const search = () => {
 };
 </script>
 
-<style scoped lang="less">
+<style scoped lang="scss">
 .search-box {
   padding-top: 10px;
   display: flex;

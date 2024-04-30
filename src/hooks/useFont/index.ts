@@ -8,7 +8,7 @@
 import FontFaceObserver from "fontfaceobserver";
 import fontList from "@/assets/fonts/font";
 import axios from "axios";
-import { Spin, Message } from "view-ui-plus";
+// import { Spin, Message } from "view-ui-plus";
 
 const repoSrc = import.meta.env.APP_REPO;
 
@@ -27,18 +27,18 @@ export function useFont() {
   const loadFont = (fontName: string) => {
     if (!fontName) return false;
     return new Promise((resolve: any) => {
-      Spin.show();
+      // Spin.show();
       const font = new FontFaceObserver(fontName);
       font
         .load(null, 150000)
         .then(() => {
-          Message.success("字体加载成功");
-          Spin.hide();
+          // Message.success("字体加载成功");
+          // Spin.hide();
           resolve(true);
         })
         .catch(() => {
-          Message.error("字体加载失败");
-          Spin.hide();
+          // Message.error("字体加载失败");
+          // Spin.hide();
           resolve(false);
         });
     });
