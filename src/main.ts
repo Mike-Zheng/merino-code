@@ -1,12 +1,12 @@
 import { createApp } from "vue";
 import App from "./App";
 import router from "./router";
-// import ViewUiPlus from "view-ui-plus";
-// import "view-ui-plus/dist/styles/viewuiplus.css";
-import "./styles/index.less";
+import "./styles/index.scss";
 import VueLazyLoad from "vue3-lazyload";
 // import { registerSW } from 'virtual:pwa-register';
 // 自定义字体文件
+import SvgIcon from "./icons/index.ts";
+import "virtual:svg-icons-register";
 
 // Vuetify
 import "vuetify/styles";
@@ -33,7 +33,6 @@ app
   .use(router)
   .use(i18n)
   .use(VueLazyLoad, {})
-  // .use(ViewUiPlus)
   .use(vuetify)
-
+  .use(SvgIcon)
   .mount("#app");
