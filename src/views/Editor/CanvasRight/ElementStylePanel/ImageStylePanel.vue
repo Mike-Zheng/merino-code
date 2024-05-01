@@ -24,7 +24,9 @@
           </el-button>
           <el-popover trigger="click" width="284">
             <template #reference>
-              <el-button class="clip-popover"><SvgIcon icon-class="down" /></el-button>
+              <el-button class="clip-popover"
+                ><SvgIcon icon-class="down"
+              /></el-button>
             </template>
             <div class="clip">
               <div class="title">{{ $t("style.byShape") }}：</div>

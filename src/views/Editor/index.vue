@@ -6,15 +6,19 @@
       highlightStyle: { backgroundColor: 'lightblue' }
     }"
   >
-    <CanvasHeader class="layout-header" />
-    <div class="layout-content">
-      <CanvasLeft class="layout-content-left" />
-      <CanvasMenu
+    <!-- <CanvasHeader class="layout-header" /> -->
+    <div class="editor-worksapce">
+      <CanvasCenter class="center-body" />
+      <CanvasAffix class="center-affix" />
+      <ZoomTools class="zoom-tools" />
+    </div>
+    <!-- <CanvasLeft class="layout-content-left" /> -->
+    <!-- <CanvasMenu
         class="layout-content-menu"
         :class="{ 'menu-close': poolShow !== true }"
-      />
-      <!-- <CanvasThumb class="layout-content-thumb" /> -->
-      <div
+      /> -->
+    <!-- <CanvasThumb class="layout-content-thumb" /> -->
+    <!-- <div
         class="layout-content-center"
         :class="{ 'menu-close': poolShow !== true }"
       >
@@ -22,11 +26,11 @@
 
         <CanvasAffix class="center-affix" />
         <ZoomTools class="zoom-tools" />
-      </div>
-      <CanvasRight class="layout-content-right" />
-      <CanvasDom class="layout-content-dom" />
-    </div>
-    <CanvasTools class="center-tools" />
+      </div> -->
+    <!-- <CanvasRight class="layout-content-right" /> -->
+    <!-- <CanvasDom class="layout-content-dom" /> -->
+
+    <!-- <CanvasTools class="center-tools" /> -->
   </div>
 </template>
 
@@ -54,7 +58,7 @@ const { poolShow } = storeToRefs(mainStore);
 }
 
 .layout-content {
-  height: calc(100% - 30px);
+  // height: calc(100% - 30px);
   display: flex;
 }
 .layout-header {
