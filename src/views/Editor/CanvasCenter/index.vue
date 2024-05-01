@@ -1,5 +1,6 @@
 <template>
   <div
+    class="full-size"
     ref="wrapperRef"
     @mousedown="addDrawAreaFocus"
     v-contextmenu="contextMenus"

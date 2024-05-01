@@ -70,7 +70,8 @@ const svgIconsList = ref(svgIcons);
     width: 100px;
     float: left;
     font-size: 30px;
-    color: #24292e;
+    // color: #24292e;
+    color: #919497;
     cursor: pointer;
   }
 

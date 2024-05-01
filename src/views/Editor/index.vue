@@ -8,8 +8,8 @@
   >
     <!-- <CanvasHeader class="layout-header" /> -->
     <div class="editor-worksapce">
-      <CanvasCenter class="center-body" />
-      <CanvasAffix class="center-affix" />
+      <CanvasCenter />
+      <CanvasAffix />
       <ZoomTools class="zoom-tools" />
     </div>
     <!-- <CanvasLeft class="layout-content-left" /> -->
@@ -55,6 +55,12 @@ const { poolShow } = storeToRefs(mainStore);
 <style lang="scss" scoped>
 .editor-main {
   height: 100%;
+}
+.editor-worksapce {
+  height: 100vh;
+  display: flex;
+  position: relative;
+  width: 100vw;
 }
 
 .layout-content {
