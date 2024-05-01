@@ -1,72 +1,87 @@
-<!--
- * @Author: 秦少卫
- * @Date: 2022-04-21 20:20:20
- * @LastEditors: 秦少卫
- * @LastEditTime: 2023-08-05 18:44:54
- * @Description: 缩放元素
--->
 <template>
-  <div class="box">
-    <v-btn-group>
-      <v-btn @click="big">
-        <svg
-          t="1650853919128"
-          class="icon"
-          viewBox="0 0 1024 1024"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          p-id="1271"
-          width="14"
-          height="14"
+  <div class="zoom">
+    <div class="app-zoom-tools">
+      <div class="center-bottom-option">
+        <div
+          class="fullscreen-button"
+          :title="$t('Link_tools.Full_Screen')"
+          @click="rSet"
         >
-          <path
-            d="M970.837333 919.850667l-205.696-205.653334A382.421333 382.421333 0 0 0 853.333333 469.333333a384 384 0 0 0-384-384 384 384 0 0 0-384 384 384 384 0 0 0 384 384 382.421333 382.421333 0 0 0 244.906667-88.192l205.653333 205.653334a36.053333 36.053333 0 0 0 50.986667 0 36.266667 36.266667 0 0 0-0.042667-50.944z m-380.117333-162.986667c-38.4 16.256-79.189333 24.448-121.386667 24.448a311.296 311.296 0 0 1-220.586666-91.392A311.296 311.296 0 0 1 157.312 469.333333 311.296 311.296 0 0 1 248.746667 248.746667 311.296 311.296 0 0 1 469.333333 157.354667a311.296 311.296 0 0 1 220.586667 91.392A311.296 311.296 0 0 1 781.354667 469.333333a311.296 311.296 0 0 1-91.392 220.586667 310.186667 310.186667 0 0 1-99.242667 66.901333z"
-            fill="#595959"
-            p-id="1272"
-          ></path>
-          <path
-            d="M652.672 431.829333h-147.84V292.010667a35.968 35.968 0 1 0-71.978667 0v139.818666H292.010667a35.968 35.968 0 1 0 0 72.021334h140.8v140.8a35.968 35.968 0 1 0 72.021333 0v-140.8h147.84a35.968 35.968 0 1 0 0-72.021334z"
-            fill="#595959"
-            p-id="1273"
-          ></path>
-        </svg>
-      </v-btn>
-      <v-btn @click="small">
-        <svg
-          t="1650853934351"
-          class="icon"
-          viewBox="0 0 1024 1024"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          p-id="1470"
-          width="14"
-          height="14"
+          <svg-icon icon-class="fit-to-screen-outline" />
+        </div>
+        <div
+          class="scale-slider-button"
+          :class="{
+            'scale-slider-button__disabled': +canvasZoom <= 10
+          }"
+          :title="$t('Link_tools.Zoom_Out')"
+          @click="small"
         >
-          <path
-            d="M970.837333 919.850667l-205.696-205.653334A382.421333 382.421333 0 0 0 853.333333 469.333333a384 384 0 0 0-384-384 384 384 0 0 0-384 384 384 384 0 0 0 384 384 382.421333 382.421333 0 0 0 244.906667-88.192l205.653333 205.653334a36.053333 36.053333 0 0 0 50.986667 0 36.266667 36.266667 0 0 0-0.042667-50.944z m-380.117333-162.986667c-38.4 16.256-79.189333 24.448-121.386667 24.448a311.296 311.296 0 0 1-220.586666-91.392A311.296 311.296 0 0 1 157.312 469.333333 311.296 311.296 0 0 1 248.746667 248.746667 311.296 311.296 0 0 1 469.333333 157.354667a311.296 311.296 0 0 1 220.586667 91.392A311.296 311.296 0 0 1 781.354667 469.333333a311.296 311.296 0 0 1-91.392 220.586667 310.186667 310.186667 0 0 1-99.242667 66.901333z"
-            fill="#595959"
-            p-id="1471"
-          ></path>
-          <path
-            d="M652.672 431.829333H292.010667a35.968 35.968 0 1 0 0 72.021334h360.661333a35.968 35.968 0 1 0 0-72.021334z"
-            fill="#595959"
-            p-id="1472"
-          ></path>
-        </svg>
-      </v-btn>
-      <v-btn @click="rSet" icon="ios-expand"></v-btn>
-      <v-btn @click="setViewport" icon="md-contract"></v-btn>
-    </v-btn-group>
+          <svg-icon icon-class="minus" />
+        </div>
+        <div class="scale-slider">
+          <v-slider
+            v-model="canvasZoom"
+            :step="5"
+            :min="10"
+            :max="255"
+            thumb-label
+          ></v-slider>
+        </div>
+        <div
+          class="scale-slider-button"
+          :class="{
+            'scale-slider-button__disabled': +canvasZoom >= 500
+          }"
+          :title="$t('Link_tools.Zoom_In')"
+          @click="big"
+        >
+          <svg-icon icon-class="plus" />
+        </div>
+        <div
+          class="fullscreen-button"
+          :title="$t('Link_tools.Full_Screen')"
+          @click="setViewport"
+        >
+          <svg-icon icon-class="fullscreen-exit" />
+        </div>
+
+        <div class="scale-value">{{ canvasZoom }}</div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup name="Zoom">
 import useSelect from "@/hooks/select";
+import { ref, onMounted } from "vue";
+const { canvasEditor, fabric } = useSelect();
+const canvasZoom = ref(100);
 
-const { canvasEditor } = useSelect();
+// onMounted(() => {
+//   canvasEditor.canvas.on("after:render", () => {
+//     canvasZoom.value = Math.round(canvasEditor.canvas.getZoom() * 100);
+//   });
+// });
+
+// const canvasZoom = computed({
+//   // getter
+//   get() {
+//     return Math.round(zoom.value * 100);
+//   },
+//   // setter
+//   set(newValue) {
+//     // Note: we are using destructuring assignment syntax here.
+//     // [firstName.value, lastName.value] = newValue.split(" ");
+//     setCanvasScalePercentage(newValue);
+//   }
+// });
 
 const rSet = () => {
   canvasEditor.one();
+
+  console.log("canvasEditor", canvasEditor.canvas);
+  console.log(canvasEditor.canvas.getZoom());
 };
 const big = () => {
   canvasEditor.big();
@@ -78,10 +93,153 @@ const setViewport = () => {
   canvasEditor.auto();
 };
 </script>
-<style scoped lang="scss">
-.box {
+
+<style>
+.el-popover.el-popper.viewport-size {
+  min-width: 100px;
+  padding: 0;
+}
+</style>
+
+<style lang="scss">
+.zoom {
   position: absolute;
-  right: 10px;
-  bottom: 10px;
+  bottom: 15px;
+  width: 380px;
+  transform: translateX(-50%);
+  z-index: 50;
+  height: 40px;
+  left: 50%;
+  color: #fff;
+}
+
+.app-zoom-tools {
+  top: 0;
+  background-color: #181a1e;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  border-radius: 10px;
+  .el-checkbox {
+    .el-checkbox__label {
+      color: #555;
+    }
+    .el-checkbox__inner {
+      background-color: #5586e7;
+      border-color: #5586e7;
+    }
+  }
+}
+.center-bottom-option {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .fullscreen-button {
+    cursor: pointer;
+    box-shadow: 0 0 3px 0 #27364e1f;
+    height: 24px;
+    line-height: 24px;
+    font-size: 14px;
+    background-color: #23232e;
+    width: 24px;
+    text-align: center;
+    border-radius: 3px;
+    color: #888;
+    &:hover {
+      color: #5586e7;
+    }
+  }
+
+  .scale-slider-button {
+    cursor: pointer;
+    box-shadow: 0 0 3px 0 #27364e1f;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+    background-color: #23232e;
+    width: 24px;
+    text-align: center;
+    border-radius: 50px;
+    color: #888;
+    margin-left: 15px;
+    margin-right: 15px;
+    transition: all 0.2s ease;
+    &:hover {
+      color: #5586e7;
+    }
+    .scale-slider-button__disabled {
+      color: #eee;
+      pointer-events: none;
+    }
+  }
+
+  .scale-value {
+    box-shadow: 0 0 3px 0 #27364e1f;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+    background-color: #23232e;
+    padding: 0 10px;
+    text-align: center;
+    border-radius: 3px;
+    color: #888;
+    width: 65px;
+  }
+}
+
+.scale-slider {
+  width: 150px;
+  /* height: 15px; */
+  .el-slider__bar {
+    height: 2px;
+    background-color: #5586e7;
+  }
+  .el-slider__runway {
+    margin: 0;
+    height: 2px;
+    background-color: #888;
+  }
+  .el-slider__button-wrapper {
+    top: -17px;
+  }
+  .el-slider__button {
+    width: 14px;
+    height: 14px;
+    border: 2px solid #5586e7;
+    background-color: #23232e;
+  }
+}
+
+.app-footer__version {
+  display: inline-block;
+  width: fit-content;
+  height: 100%;
+  line-height: 40px;
+  padding: 0 10px;
+  font-size: 12px;
+  text-align: center;
+  color: #888;
+  cursor: pointer;
+}
+.terms-policies-text {
+  margin: 0 10px;
+  margin-top: 8px;
+  display: inline-block;
+  height: 24px;
+  text-align: center;
+  line-height: 22px;
+  color: #5586e7;
+  vertical-align: top;
+  transition: 0.3s all ease;
+  font-size: 12px;
+  border-radius: 3px;
+  text-decoration: underline;
+  cursor: pointer;
 }
 </style>

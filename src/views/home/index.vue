@@ -320,7 +320,7 @@ provide("canvasEditor", canvasEditor);
 }
 .app-header {
   position: absolute;
-  background-color: #191919;
+  background-color: #181a1e;
   border-radius: 5px;
   padding: 5px 10px;
   top: 25px;
@@ -368,7 +368,7 @@ provide("canvasEditor", canvasEditor);
     vertical-align: top;
     font-size: 30px;
     line-height: 36px;
-    color: #333333;
+    color: #424242;
     transition: all 0.3s ease;
     cursor: pointer;
     padding: 0;

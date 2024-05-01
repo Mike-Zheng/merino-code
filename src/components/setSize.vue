@@ -1,11 +1,3 @@
-<!--
- * @Author: 秦少卫
- * @Date: 2022-09-03 19:16:55
- * @LastEditors: 秦少卫
- * @LastEditTime: 2024-04-11 13:01:36
- * @Description: 尺寸设置
--->
-
 <template>
   <div v-if="!mixinState.mSelectMode">
     <v-divider plain orientation="left">{{ $t("size") }}</v-divider>
