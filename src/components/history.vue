@@ -1,29 +1,28 @@
 <template>
-  <div style="display: inline-block" class="">
-    <!-- 后退 -->
+  <!-- 后退 -->
 
-    <div @click="undo" type="text" size="small" :disabled="!canUndo">
-      <!-- <Icon type="ios-undo" size="20" /> -->
-      <SvgIcon icon-class="undo" className="svg-size" />
-      <!-- icon undo -->
-    </div>
+  <div @click="undo" :disabled="!canUndo">
+    <!-- <Icon type="ios-undo" size="20" /> -->
+    <SvgIcon icon-class="undo" className="svg-size" />
+    <!-- icon undo -->
+  </div>
 
-    <!-- 重做 -->
+  <!-- 重做 -->
 
-    <div @click="redo" type="text" size="small" :disabled="!canRedo">
-      <!-- <Icon type="ios-redo" size="20" /> -->
-      <SvgIcon icon-class="redo" className="svg-size" />
-      <!-- icon redo -->
-    </div>
+  <div @click="redo" :disabled="!canRedo">
+    <!-- <Icon type="ios-redo" size="20" /> -->
+    <SvgIcon icon-class="redo" className="svg-size" />
+    <!-- icon redo -->
+  </div>
 
-    <!-- <span class="time" v-if="history.length">
+  <!-- <span class="time" v-if="history.length">
       {{ useDateFormat(history[0].timestamp, 'HH:mm:ss').value }}
     </span> -->
-  </div>
 </template>
 
 <script setup lang="ts">
 import useSelect from "@/hooks/select";
+import { onMounted, ref } from "vue";
 const { canvasEditor } = useSelect() as { canvasEditor: any };
 const canUndo = ref(0);
 const canRedo = ref(0);

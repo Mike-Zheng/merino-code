@@ -3,6 +3,17 @@
     <!-- 头部区域 -->
 
     <div v-if="state.show" class="app-header">
+      <div class="app-header__logo">
+        <svg-icon icon-class="logo" />
+        <span class="app-header__logo__text">Merino</span>
+
+        <!-- <svg-icon icon-class="logo-o" /> -->
+      </div>
+      <div class="app-header__divider"></div>
+      <div class="app-header__tool-item">
+        <svg-icon icon-class="menu" />
+      </div>
+
       <!-- logo -->
 
       <!-- 导入 -->
@@ -311,10 +322,61 @@ provide("canvasEditor", canvasEditor);
   position: absolute;
   background-color: #191919;
   border-radius: 5px;
-  padding: 10px;
-  top: 20px;
-  left: 20px;
+  padding: 5px 10px;
+  top: 25px;
+  left: 25px;
   z-index: 20;
+  display: flex;
+  flex-direction: row;
+
+  font-size: 16px;
+  color: #fff;
+
+  .app-header__divider {
+    display: inline-block;
+    vertical-align: top;
+    width: 1px;
+    height: 30px;
+    background-color: #333;
+    margin: 0 10px;
+    margin-top: 3px;
+  }
+
+  .app-header__logo {
+    display: inline-block;
+    vertical-align: top;
+    font-size: 30px;
+    line-height: 36px;
+    color: #fff;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    &:hover {
+      color: #86bb3d;
+    }
+    .app-header__logo__text {
+      font-size: 16px;
+      margin-left: 5px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+
+  .app-header__tool-item {
+    display: inline-block;
+    vertical-align: top;
+    font-size: 30px;
+    line-height: 36px;
+    color: #333333;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    &:hover {
+      color: #86bb3d;
+    }
+  }
 }
 
 // 左侧容器

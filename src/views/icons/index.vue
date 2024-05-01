@@ -7,7 +7,7 @@
           :key="item"
           @click="handleClipboard(generateIconCode(item), $event)"
         >
-          <div>{{ generateIconCode(item) }}</div>
+          <!-- <div>{{ generateIconCode(item) }}</div> -->
 
           <div class="icon-item">
             <svg-icon :icon-class="item" />
@@ -22,6 +22,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 // import clipboard from "@/utils/clipboard.js";
+import copy from "copy-to-clipboard";
 import svgIcons from "./svg-icons.js";
 // import svgPics from "./svg-pics.js";
 // import elementIcons from "./element-icons.js";
@@ -30,6 +31,7 @@ import svgIcons from "./svg-icons.js";
 const handleClipboard = (text: string, event: MouseEvent) => {
   console.log(text, event);
   // clipboard(text, event);
+  copy(text);
 };
 
 const generateIconCode = (symbol: string) =>
