@@ -26,8 +26,5 @@
   "i18n-ally.sourceLanguage": "zh",
   // i18n-ally
   "i18n-ally.keystyle": "nested",
-  "files.eol": "\n",
-  "[xml]": {
-    "editor.defaultFormatter": "redhat.vscode-xml"
-  }
+  "files.eol": "\n"
 }
