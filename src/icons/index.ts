@@ -7,7 +7,7 @@
  */
 
 import { App } from "vue";
-import SvgIcon from "@/components/svgIcon/index.vue";
+import SvgIcon from "@/components/SvgIcon/index.vue";
 
 export default {
   install(app: App) {
